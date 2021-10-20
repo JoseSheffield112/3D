@@ -69,7 +69,7 @@ public class A02_GLEventListener implements GLEventListener {
     gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
     gl.glUseProgram(shaderProgram);
     gl.glBindVertexArray(vertexArrayId[0]);
-    gl.glDrawArrays(GL.GL_TRIANGLES, 0, 6); // drawing one triangle
+    gl.glDrawArrays(GL.GL_TRIANGLES, 0, 6); // drawing two triangles
     gl.glBindVertexArray(0);
   }
 
