@@ -26,7 +26,7 @@ public class A03_GLEventListener implements GLEventListener {
     gl.glClearDepth(1.0f);
     gl.glEnable(GL.GL_DEPTH_TEST);
     gl.glDepthFunc(GL.GL_LESS);
-    // gl.glPolygonMode(GL.GL_FRONT_AND_BACK, GL2.GL_LINE);     // draw wireframe
+    gl.glPolygonMode(GL.GL_FRONT_AND_BACK, GL2.GL_LINE);     // draw wireframe
     // gl.glPolygonMode(GL.GL_FRONT_AND_BACK, GL2.GL_FILL);  // default
     initialise(gl);
   }
@@ -92,12 +92,14 @@ public class A03_GLEventListener implements GLEventListener {
       -0.5f,  0.5f, 0.0f,           // Top Left 
       -0.5f, -0.5f, 0.0f,           // Bottom Left
        0.5f, -0.5f, 0.0f,           // Bottom Right
-       0.5f,  0.5f, 0.0f           // Top Right
+       0.5f,  0.5f, 0.0f,           // Top Right
+	   -0.5f, 1f, 0.0f				// Added top left at edge of screen
   };  
   
   private int[] indices = {         // Note that we start from 0
       0, 1, 2,                      // First Triangle
-      0, 2, 3                       // Second Triangle
+      0, 2, 3,                      // Second Triangle
+	  0, 4, 3						// Third triangle
   }; 
   
   // ***************************************************
@@ -132,7 +134,7 @@ public class A03_GLEventListener implements GLEventListener {
     int stride = 3;                 // This is the number of values for each vertex.
                                     // In this case it is 3 because there is an x,y,z value for each 
                                     // vertex.
-    int numVertexFloats = 3;        // There are 3 floats for each vertex.
+    int numVertexFloats = 4;        // There are 3 floats for each vertex.
     int offset = 0;                 // We start at position 0 in the vertex list.
     gl.glVertexAttribPointer(0, numVertexFloats, GL.GL_FLOAT, false, stride*Float.BYTES, offset);
                                     // index, size, type, normalized, stride, pointer
