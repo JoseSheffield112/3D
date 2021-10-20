@@ -69,7 +69,7 @@ public class A02_GLEventListener implements GLEventListener {
     gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
     gl.glUseProgram(shaderProgram);
     gl.glBindVertexArray(vertexArrayId[0]);
-    gl.glDrawArrays(GL.GL_TRIANGLES, 0, 3); // drawing one triangle
+    gl.glDrawArrays(GL.GL_TRIANGLES, 0, 6); // drawing one triangle
     gl.glBindVertexArray(0);
   }
 
@@ -82,7 +82,11 @@ public class A02_GLEventListener implements GLEventListener {
   private float[] vertices = {
     -0.5f, -0.5f, 0.0f,  // Bottom Left
      0.5f, -0.5f, 0.0f,  // Bottom Right
-     0.0f,  0.5f, 0.0f   // Top middle
+     0.0f,  0.5f, 0.0f,   // Top middle
+    // second triangle
+    -0.9f, -0.9f, 0.0f,  // Bottom Left
+    -0.5f, -0.9f, 0.0f,  // Bottom Right
+    -0.7f,  0.9f, 0.0f   // Top middle 
   };
   
   // ***************************************************
@@ -149,6 +153,10 @@ public class A02_GLEventListener implements GLEventListener {
     "  gl_Position = vec4(position.x, position.y, position.z, 1.0f);\n" +
     "}";
 
+	/*
+	* Edit the FragColour do edit the colour of the fragment!
+	*/
+
   private String fragmentShaderSource = 
     "#version 330 core\n" +         // version 330 should work on most systems
     "\n" +
@@ -156,7 +164,7 @@ public class A02_GLEventListener implements GLEventListener {
                                     // for the colour produced from the fragment shader
     "\n" +
     "void main(){\n" +
-    "  fragColor = vec4(0.1f, 0.7f, 0.9f, 1.0f);\n" +
+    "  fragColor = vec4(0.18f, 0.52f, 0.76f, 1.0f);\n" +
     "}";
     
   private int shaderProgram;
