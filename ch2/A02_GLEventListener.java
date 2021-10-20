@@ -1,3 +1,8 @@
+  // ***************************************************
+  /*
+   * Everything is defined in anti-clockwise order
+   * 
+   */
 import java.nio.*;
 import com.jogamp.common.nio.*;
 import com.jogamp.opengl.*;
@@ -70,6 +75,7 @@ public class A02_GLEventListener implements GLEventListener {
 
   // ***************************************************
   /* THE DATA
+  /* Vertices are stored in anti-clocwise order
    */
    
   // one triangle
@@ -94,6 +100,11 @@ public class A02_GLEventListener implements GLEventListener {
     gl.glGenBuffers(1, vertexBufferId, 0);
                                     // Create and bind OpenGL vertex buffer object
     gl.glBindBuffer(GL.GL_ARRAY_BUFFER, vertexBufferId[0]);
+
+	/*
+	* vertex data has to be transfered into a variable of type java.nio.FloatBuffer, to then be allowed into glBufferData.
+	* This is handled in #109
+	*/
 
     FloatBuffer fb = Buffers.newDirectFloatBuffer(vertices);
                                     // Fill Java FloatBuffer.
