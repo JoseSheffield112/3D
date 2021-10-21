@@ -26,6 +26,8 @@ public class S03_GLEventListener implements GLEventListener {
     gl.glClearDepth(1.0f);
     gl.glEnable(GL.GL_DEPTH_TEST);
     gl.glDepthFunc(GL.GL_LESS);
+	
+	gl.glPolygonMode(GL.GL_FRONT_AND_BACK, GL2.GL_LINE);
     initialise(gl);
   startTime = getSeconds();
   }
@@ -87,9 +89,11 @@ public class S03_GLEventListener implements GLEventListener {
    */
    
   private float[] vertices = {
-    -0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 1.0f, // Bottom Left, blue (r=0, g=0, b=1)
-     0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 0.0f, // Bottom Right, green
-     0.0f,  0.5f, 0.0f, 1.0f, 0.0f, 0.0f  // Top middle, red
+    -0.5f, -1f, 0.0f, 0.0f, 0.0f, 1.0f, // Bottom Left, blue (r=0, g=0, b=1)
+     0.5f, -1f, 0.0f, 0.0f, 1.0f, 0.0f, // Bottom Right, green
+     0.5f,  0f, 0.0f, 1.0f, 1.0f, 0.0f,  // Top Left, red
+	 -0.5f,  0f, 0.0f, 1.0f, 1.0f, 0.0f,  // Top Right, red
+	 0.0f,  1f, 0.0f, 1.0f, 1.0f, 0.0f  // Top Middle, red
   };
   
   private int vertexStride = 6;
@@ -97,7 +101,9 @@ public class S03_GLEventListener implements GLEventListener {
   private int vertexColourFloats = 3;
   
   private int[] indices = {         // Note that we start from 0
-      0, 1, 2
+      0, 1, 2,
+	  0, 2, 3,
+	  2, 3, 4
   }; 
   
   // ***************************************************

@@ -80,11 +80,17 @@ public class S02_GLEventListener implements GLEventListener {
   
     gl.glUseProgram(shaderProgram);
   
-    float redValue = 0.9f;
+    float redValue = 0.4f;
     float greenValue = (float)Math.sin(elapsedTime*5);
-    float blueValue = 0.2f;
+    float blueValue = (float)Math.sin(elapsedTime*2);
     int vertexColourLocation = gl.glGetUniformLocation(shaderProgram, "uniformColor");
     gl.glUniform4f(vertexColourLocation, redValue, greenValue, blueValue, 1.0f);
+	
+	//uniform for vertex shader with x&y values!
+	//uniform for vertex shader with x&y values!
+	int vertexCoordLocation = gl.glGetUniformLocation(shaderProgram, "vertexCoordinates");
+	float firstVertex = (float)Math.sin(elapsedTime*5);
+	gl.glUniform2f(vertexCoordLocation,firstVertex, 0.15f);
   
     gl.glBindVertexArray(vertexArrayId[0]);
     gl.glDrawElements(GL.GL_TRIANGLES, indices.length, GL.GL_UNSIGNED_INT, 0);
@@ -146,8 +152,10 @@ public class S02_GLEventListener implements GLEventListener {
     "\n" +
     "layout (location = 0) in vec3 position;\n" +
     "\n" +
+    "uniform vec2 vertexCoordinates;\n" +
+    "\n" +
     "void main() {\n" +
-    "  gl_Position = vec4(position.x, position.y, position.z, 1.0);\n" +
+    "  gl_Position = vec4((position.x+vertexCoordinates.x), (position.y+vertexCoordinates.y), position.z, 1.0);\n" +
     "}";
 
   private String fragmentShaderSource = 
