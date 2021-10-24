@@ -27,7 +27,7 @@ public class S03_GLEventListener implements GLEventListener {
     gl.glEnable(GL.GL_DEPTH_TEST);
     gl.glDepthFunc(GL.GL_LESS);
 	
-	gl.glPolygonMode(GL.GL_FRONT_AND_BACK, GL2.GL_LINE);
+	// gl.glPolygonMode(GL.GL_FRONT_AND_BACK, GL2.GL_LINE);	//WIREFRAME mode
     initialise(gl);
   startTime = getSeconds();
   }
@@ -93,9 +93,10 @@ public class S03_GLEventListener implements GLEventListener {
      0.5f, -1f, 0.0f, 0.0f, 1.0f, 0.0f, // Bottom Right, green
      0.5f,  0f, 0.0f, 1.0f, 1.0f, 0.0f,  // Top Left, red
 	 -0.5f,  0f, 0.0f, 1.0f, 1.0f, 0.0f,  // Top Right, red
-	 0.0f,  1f, 0.0f, 1.0f, 1.0f, 0.0f  // Top Middle, red
+	 0.0f,  1f, 0.0f, 0.0f, 1.0f, 0.0f  // Top Middle, red
   };
   
+  // variables that are used for GL functions
   private int vertexStride = 6;
   private int vertexXYZFloats = 3;
   private int vertexColourFloats = 3;
