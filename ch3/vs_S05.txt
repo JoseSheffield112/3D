@@ -1,10 +1,12 @@
 #version 330 core
 
 layout (location = 0) in vec3 position;
-layout (location = 1) in vec3 color;
+layout (location = 1) in vec3 color; // Remember this is getting vec positions and color values from vertices array!
 out vec3 aColor;
 
+uniform vec3 hOffSet;
+
 void main() {
-  gl_Position = vec4(position.x, position.y, position.z, 1.0);
+  gl_Position = vec4((position.x+hOffSet.x), (-position.y+hOffSet.y), (position.z+hOffSet.z), 1.0);
   aColor = color;
 }

@@ -75,6 +75,13 @@ public class S05_GLEventListener implements GLEventListener {
   public void render(GL3 gl) {
     gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
 	
+	// Setting offSet of vertices
+	float xOffSet=0.7f;
+	float yOffSet=0.5f;
+	float zOffSet=-0.450f;
+	
+	shader.setFloat(gl, "hOffSet",xOffSet,yOffSet,zOffSet);
+	
     shader.use(gl);
 	
     gl.glBindVertexArray(vertexArrayId[0]);
