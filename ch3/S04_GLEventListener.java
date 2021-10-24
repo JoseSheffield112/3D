@@ -85,13 +85,13 @@ public class S04_GLEventListener implements GLEventListener {
     
     double elapsedTime = getSeconds() - startTime;
     
-    replaceVBO_XYZ(gl, 0, (float)Math.sin(elapsedTime), (float)Math.cos(elapsedTime),0);
+    replaceVBO_XYZ(gl, 0, (float)Math.sin(elapsedTime), (float)Math.cos(elapsedTime),1.5f);
     replaceVBO_XYZ(gl, 1, (float)Math.sin(elapsedTime)*0.5f, (float)Math.cos(elapsedTime)*0.5f,0);
     replaceVBO_XYZ(gl, 2, (float)Math.cos(elapsedTime*0.5), (float)Math.sin(elapsedTime*0.5),0);
     
-    //replaceVBO_RGB(gl, 0, inRange(Math.sin(elapsedTime)), inRange(Math.cos(elapsedTime)), inRange(Math.sin(elapsedTime)));
-    //replaceVBO_RGB(gl, 1, inRange(Math.cos(elapsedTime)), inRange(Math.sin(elapsedTime)), inRange(Math.sin(elapsedTime)));
-    //replaceVBO_RGB(gl, 2, inRange(Math.sin(elapsedTime)), inRange(Math.cos(elapsedTime)), inRange(Math.cos(elapsedTime)));
+    replaceVBO_RGB(gl, 0, inRange(Math.sin(elapsedTime)), inRange(Math.cos(elapsedTime)), inRange(Math.sin(elapsedTime)));
+    replaceVBO_RGB(gl, 1, inRange(Math.cos(elapsedTime)), inRange(Math.sin(elapsedTime)), inRange(Math.sin(elapsedTime)));
+    replaceVBO_RGB(gl, 2, inRange(Math.sin(elapsedTime)), inRange(Math.cos(elapsedTime)), inRange(Math.cos(elapsedTime)));
     
     gl.glUseProgram(shaderProgram);
     
@@ -128,6 +128,13 @@ public class S04_GLEventListener implements GLEventListener {
                                     // We now use an element buffer
   
   private void replaceVBO_XYZ(GL3 gl, int index, float x, float y, float z) {
+	if(x>1.0f){
+		x=1.0f;
+	}else if(y>1.0f){
+		y=1.0f;
+	}else if(z>1.0f){
+		z=1.0f;
+	}
     float[] aVertex = {x,y,z};
     gl.glBindBuffer(GL.GL_ARRAY_BUFFER, vertexBufferId[0]);
     FloatBuffer fb = Buffers.newDirectFloatBuffer(aVertex);
@@ -136,8 +143,15 @@ public class S04_GLEventListener implements GLEventListener {
     gl.glBindBuffer(GL.GL_ARRAY_BUFFER, 0);
   }
   
-  private void replaceVBO_RGB(GL3 gl, int index, float x, float y, float z) {
-    float[] aVertex = {x,y,z};
+  private void replaceVBO_RGB(GL3 gl, int index, float r, float g, float b) {
+	if(r>1.0f){
+		r=1.0f;
+	}else if(g>1.0f){
+		g=1.0f;
+	}else if(b>1.0f){
+		b=1.0f;
+	}
+    float[] aVertex = {r,g,b};
     gl.glBindBuffer(GL.GL_ARRAY_BUFFER, vertexBufferId[0]);
     FloatBuffer fb = Buffers.newDirectFloatBuffer(aVertex);
     gl.glBufferSubData(GL.GL_ARRAY_BUFFER, Float.BYTES * (index * vertexStride + vertexXYZFloats),
