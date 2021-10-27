@@ -77,7 +77,7 @@ public class T01_GLEventListener implements GLEventListener {
   public void initialise(GL3 gl) {
     shader = new Shader(gl, "vs_T01.txt", "fs_T01.txt");
     fillBuffers(gl);
-    textureId1 = TextureLibrary.loadTexture(gl, "slime(1).jpg");
+    textureId1 = TextureLibrary.loadTexture(gl, "slime.jpg");
     /*
     textureId1 = TextureLibrary.loadTexture(gl, "wattBook.jpg", 
                       GL.GL_CLAMP_TO_EDGE, GL.GL_CLAMP_TO_EDGE,
