@@ -31,7 +31,7 @@ public class T04_GLEventListener implements GLEventListener {
     gl.glEnable(GL.GL_DEPTH_TEST);
     gl.glDepthFunc(GL.GL_LESS);
     initialise(gl);
-	  startTime = getSeconds();
+	startTime = getSeconds();
   }
   
   /* Called to indicate the drawing surface has been moved and/or resized  */
@@ -80,7 +80,7 @@ public class T04_GLEventListener implements GLEventListener {
     shader = new Shader(gl, "vs_T04.txt", "fs_T04.txt");
     fillBuffers(gl);
     textureId1 = TextureLibrary.loadTexture(gl, "wattBook.jpg");
-    textureId2 = TextureLibrary.loadTexture(gl, "cloud.jpg");
+    textureId2 = TextureLibrary.loadTexture(gl, "slime.jpg");
   }
 
   public void render(GL3 gl) {
@@ -92,8 +92,37 @@ public class T04_GLEventListener implements GLEventListener {
     
     double t = elapsedTime*0.1;  // *0.1 slows it down a bit
     float offsetX = (float)(t - Math.floor(t));
-    float offsetY = 0.0f;
+    float offsetY = -(float)(t - Math.floor(t));
     shader.setFloat(gl, "offset", offsetX, offsetY);
+		
+/*
+	Tests for moving second_texture:
+	// My tests
+	// #1 - moves vertically left down
+	float offsetX = (float)(t - Math.floor(t));
+    float offsetY = (float)(t - Math.floor(t));
+	// #2 - moves vertically RIGHT down
+	float offsetX = -(float)(t - Math.floor(t));
+    float offsetY = (float)(t - Math.floor(t));
+	// #3 - moves vertically RIGHT UP
+	float offsetX = -(float)(t - Math.floor(t));
+    float offsetY = -(float)(t - Math.floor(t));
+	// #4 - moves vertically LEFT UP
+	float offsetX = (float)(t - Math.floor(t));
+    float offsetY = -(float)(t - Math.floor(t));
+	//Example solutions
+	double t = elapsedTime*0.1;  // *0.1 slows it down a bit
+    float offsetX = (float)(t - Math.floor(t));
+    float offsetY = (float)(Math.sin(elapsedTime)*0.1);
+    shader.setFloat(gl, "offset1", offsetX, offsetY);
+    offsetX = (float)Math.sin((t - Math.floor(t))*1.5708);
+    offsetY = (float)(Math.sin(elapsedTime*1.1)*0.2);
+    shader.setFloat(gl, "offset2", offsetX, offsetY);
+    float temp = (float)Math.sin((t - Math.floor(t))*1.5708);
+    offsetX = temp*temp;
+    offsetY = (float)(Math.sin(elapsedTime*0.9)*0.05);
+    shader.setFloat(gl, "offset3", offsetX, offsetY);
+*/    
     
     shader.setInt(gl, "first_texture", 0);
     shader.setInt(gl, "second_texture", 1);
