@@ -5,6 +5,7 @@ in vec2 aTexCoord;
 
 out vec4 fragColor;
 
+uniform float mixtureWeight;
 uniform sampler2D first_texture;
 uniform sampler2D second_texture;
 
@@ -15,7 +16,7 @@ void main() {
   // fragColor = vec4(texture(second_texture, aTexCoord).rgb * aColor, 1.0f);
   
   fragColor = vec4(mix(texture(first_texture, aTexCoord),
-                       texture(second_texture, aTexCoord), 0.3f).rgb
+                       texture(second_texture, aTexCoord), mixtureWeight).rgb
                    * aColor, 1.0f);
   
 }

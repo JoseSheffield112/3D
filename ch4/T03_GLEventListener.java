@@ -54,6 +54,7 @@ public class T03_GLEventListener implements GLEventListener {
     gl.glDeleteBuffers(1, elementBufferId, 0);
     gl.glDeleteBuffers(1, textureId1, 0);
     gl.glDeleteBuffers(1, textureId2, 0);
+    gl.glDeleteBuffers(1, textureId3, 0);
   }
 
   // ***************************************************
@@ -75,7 +76,7 @@ public class T03_GLEventListener implements GLEventListener {
      // Now for some textures
   private int[] textureId1 = new int[1];
   private int[] textureId2 = new int[1];
-  private int[] textureId3;
+  private int[] textureId3 = new int[1];
 
   public void initialise(GL3 gl) {
     shader = new Shader(gl, "vs_T03.txt", "fs_T03.txt");
@@ -84,7 +85,7 @@ public class T03_GLEventListener implements GLEventListener {
     // this will not work if the loading process is interspersed with making the textures active
     textureId1 = TextureLibrary.loadTexture(gl, "wattBook.jpg");
     textureId2 = TextureLibrary.loadTexture(gl, "chequerboard.jpg");
-    textureId3 = TextureLibrary.loadTexture(gl, "cloud.jpg");
+    textureId3 = TextureLibrary.loadTexture(gl, "slime.jpg");
 
     // bind the two textures to the first two texture units
     gl.glActiveTexture(GL.GL_TEXTURE0);
@@ -96,11 +97,21 @@ public class T03_GLEventListener implements GLEventListener {
   }
 
   public void render(GL3 gl) {
+	double elapsedTime = getSeconds() - startTime;
     gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
 	
     shader.use(gl);
-    shader.setInt(gl, "first_texture", 0);
-    shader.setInt(gl, "second_texture", 2);
+    if(((Math.sin(elapsedTime)+1)*0.5)>0.5){
+		shader.setInt(gl, "first_texture", 0);
+		shader.setInt(gl, "second_texture", 1);
+	}
+	else{
+		shader.setInt(gl, "first_texture", 2);
+		shader.setInt(gl, "second_texture", 0);		
+	}
+	
+	
+	shader.setFloat(gl, "mixtureWeight", (float)((Math.sin(elapsedTime)+1)*0.5));
   
     gl.glBindVertexArray(vertexArrayId[0]);
     gl.glDrawElements(GL.GL_TRIANGLES, indices.length, GL.GL_UNSIGNED_INT, 0);
