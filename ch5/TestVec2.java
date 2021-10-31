@@ -18,7 +18,7 @@ public class TestVec2 {
     System.out.println("v1 = " + v1);
     System.out.println("v2 = " + v2);
     
-    Vec2 v3 = Vec2.add(new Vec2(-1f,0), v2);
+    Vec2 v3 = Vec2.add(new Vec2(-1f,0), v1);
     System.out.println("v3 = v1+(-1f,0) = " + v3);
     
     float m = v3.magnitude();
