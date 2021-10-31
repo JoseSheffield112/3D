@@ -5,5 +5,7 @@ OpenGL expects all the vertices, that we want to become visible, to be in normal
 
 Important: remember that the matrices precede the vertices they are transforming. Thus they are in the order projection, view, model, so that the model matrix is the first applied to a vertex
 
+ The method Mat4.toFloatArrayForGLSL() is used to do this. It converts the row-column ordered matrix into a column-row ordered matrix stored in an array of floats which is what is required in the data type used in the vertex shader. 
+
 
 
