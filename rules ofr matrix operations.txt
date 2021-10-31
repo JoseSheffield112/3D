@@ -1,0 +1,9 @@
+It is advised to first do scaling operations, then rotations and lastly translations when combining matrices otherwise they may (negatively) affect each other
+
+
+OpenGL expects all the vertices, that we want to become visible, to be in normalized device coordinates after each vertex shader run. That is, the x, y and z coordinates of each vertex should be between -1.0 and 1.0
+
+Important: remember that the matrices precede the vertices they are transforming. Thus they are in the order projection, view, model, so that the model matrix is the first applied to a vertex
+
+
+
