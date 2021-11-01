@@ -7,5 +7,5 @@ Important: remember that the matrices precede the vertices they are transforming
 
  The method Mat4.toFloatArrayForGLSL() is used to do this. It converts the row-column ordered matrix into a column-row ordered matrix stored in an array of floats which is what is required in the data type used in the vertex shader. 
 
-
+we can try to simulate one [camera] by moving all objects in the scene in the reverse direction, giving the illusion that we are moving
 
