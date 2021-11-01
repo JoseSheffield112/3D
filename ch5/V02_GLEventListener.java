@@ -104,19 +104,22 @@ public class V02_GLEventListener implements GLEventListener {
   private Mat4 getModelMatrix() {
     double elapsedTime = getSeconds()-startTime;
     //float angle = -55;
-    //float angle = (float)(-115*Math.sin(Math.toRadians(elapsedTime*50)));
+    float angle = (float)(-115*Math.sin(Math.toRadians(elapsedTime*50)));
     Mat4 modelMatrix = new Mat4(1);
-    //modelMatrix = Mat4.multiply(Mat4Transform.rotateAroundY(angle), modelMatrix);
-    //modelMatrix = Mat4.multiply(Mat4Transform.rotateAroundX(angle), modelMatrix);
+    modelMatrix = Mat4.multiply(Mat4Transform.rotateAroundY(angle), modelMatrix);
+	// Decreasing speed of x rotation by half
+	// angle = angle - (float)(Math.floor(angle*0.5));
+    modelMatrix = Mat4.multiply(Mat4Transform.rotateAroundX(angle), modelMatrix);
     return modelMatrix;
   }
   
   private Mat4 getViewMatrix() {
     double elapsedTime = getSeconds()-startTime;
+	// editing our camera/viewing position!
     float xposition = 2;
+	//float xposition = 3.0f*(float)(Math.sin(Math.toRadians(elapsedTime*50)));
     float yposition = 3;
     float zposition = 4;
-    //float xposition = 3.0f*(float)(Math.sin(Math.toRadians(elapsedTime*50)));
     //float zposition = 3.0f*(float)(Math.cos(Math.toRadians(elapsedTime*50)));
     Mat4 viewMatrix = Mat4Transform.lookAt(new Vec3(xposition,yposition,zposition), new Vec3(0,0,0), new Vec3(0,1,0));
     return viewMatrix;
@@ -138,6 +141,8 @@ public class V02_GLEventListener implements GLEventListener {
   // anticlockwise/counterclockwise ordering
   
    private float[] vertices = new float[] {  // x,y,z, colour, s,t
+		// Each group is handling 2 parallel faces; the first group is handling the faces parallel to the -z axis
+		// First 4 vertexes handle 1 face, the second set handle the parallel face
       -0.5f, -0.5f, -0.5f,  1.0f, 0.0f, 0.0f,  0.0f, 0.0f,  // 0
       -0.5f, -0.5f,  0.5f,  1.0f, 0.0f, 0.0f,  1.0f, 0.0f,  // 1
       -0.5f,  0.5f, -0.5f,  1.0f, 0.0f, 0.0f,  0.0f, 1.0f,  // 2

@@ -84,16 +84,19 @@ public class V01_GLEventListener implements GLEventListener {
     
     Mat4 projectionMatrix = Mat4Transform.perspective(45, aspect);
     
-    float zposition = 2f;
-    //float zposition = 2f+(float)(Math.sin(Math.toRadians(elapsedTime*50)));
-    Vec3 position = new Vec3(0,0,zposition);
-    Mat4 viewMatrix = Mat4Transform.lookAt(position, new Vec3(0,0,0), new Vec3(0,1,0));
+    float zposition = 2f; //the z coordinate of camera! it's along X&Y, but z varies
+    // float zposition = 2f+(float)(Math.sin(Math.toRadians(elapsedTime*50)));
+    Vec3 position = new Vec3(0,0,zposition); // position of the camera!
+    Mat4 viewMatrix = Mat4Transform.lookAt(position, new Vec3(0,0,0), new Vec3(0,1,0));// takes camera position, the target the camera is looking at(origin in this case), and a nominal up vector for the world
     
-    float angle = -55f;
-    //float angle = (float)(-115*Math.sin(Math.toRadians(elapsedTime*50)));
+    float angle = -55f;// we're rotating the triangles around x axis by -55 degrees 
+    // float angle = (float)(-115*Math.sin(Math.toRadians(elapsedTime*50)));
     Mat4 modelMatrix = Mat4Transform.rotateAroundX(angle);
+	// Rotating around x than y -- has to be in this order for X rotation then Z rotation
+	//Mat4 modelMatrix2 = Mat4Transform.rotateAroundY(angle);
+	//modelMatrix = Mat4.multiply(modelMatrix2, modelMatrix);
     
-    Mat4 mvpMatrix = Mat4.multiply(viewMatrix, modelMatrix);
+    Mat4 mvpMatrix = Mat4.multiply(viewMatrix, modelMatrix);// order: projection*view*model
     mvpMatrix = Mat4.multiply(projectionMatrix, mvpMatrix);
     
     shader.use(gl);
