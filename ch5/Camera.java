@@ -90,6 +90,7 @@ public class Camera {
   public void updateYawPitch(float y, float p) {
     yaw += y;
     pitch += p;
+	// if it exceeds 90 degrees, we get a lookAt matrix flip
     if (pitch > 89) pitch = 89;
     else if (pitch < -89) pitch = -89;
     updateFront();
@@ -105,6 +106,7 @@ public class Camera {
     front.x = (float)(cy*cp);
     front.y = (float)(sp);
     front.z = (float)(sy*cp);
+	System.out.println("1");
     front.normalize();
     target = Vec3.add(position,front);
   }
