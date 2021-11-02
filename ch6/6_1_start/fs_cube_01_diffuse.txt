@@ -9,14 +9,14 @@ uniform vec3 objectColor;
 uniform vec3 lightColor;
 uniform vec3 lightPos;
 uniform vec3 viewPos;
+uniform float ambientStrength;
+uniform float diffuseStrength;
 
 void main() {
   // ambient
-  float ambientStrength = 0.1;
   vec3 ambient = ambientStrength * lightColor;
   
   // diffuse
-  float diffuseStrength = 0.9;
   vec3 norm = normalize(aNormal);
   vec3 lightDir = normalize(lightPos - aPos);  
   float diff = max(dot(norm, lightDir), 0.0);

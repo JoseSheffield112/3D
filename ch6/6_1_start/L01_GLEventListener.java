@@ -71,10 +71,10 @@ public class L01_GLEventListener implements GLEventListener {
    */
 
   public void initialise(GL3 gl) {
-    shaderCube = new Shader(gl, "vs_cube_01.txt", "fs_cube_01.txt");
+    //shaderCube = new Shader(gl, "vs_cube_01.txt", "fs_cube_01.txt");
     //shaderCube = new Shader(gl, "vs_cube_01.txt", "fs_cube_01_ambient.txt");
     //shaderCube = new Shader(gl, "vs_cube_01.txt", "fs_cube_01_diffuse.txt");
-    //shaderCube = new Shader(gl, "vs_cube_01.txt", "fs_cube_01_specular.txt");
+    shaderCube = new Shader(gl, "vs_cube_01.txt", "fs_cube_01_specular.txt");
     shaderLight = new Shader(gl, "vs_light_01.txt", "fs_light_01.txt");
     fillBuffers(gl);
     light_fillBuffers(gl);
@@ -109,14 +109,26 @@ public class L01_GLEventListener implements GLEventListener {
   }
   
   private void renderCube(GL3 gl, Shader shader, Mat4 modelMatrix, Mat4 viewMatrix, Mat4 projectionMatrix) {
-    Mat4 mvpMatrix = Mat4.multiply(projectionMatrix, Mat4.multiply(viewMatrix, modelMatrix));
+	double elapsedTime = getSeconds()-startTime;
+    
+	Mat4 mvpMatrix = Mat4.multiply(projectionMatrix, Mat4.multiply(viewMatrix, modelMatrix));
     
     shader.use(gl);
     shader.setFloatArray(gl, "model", modelMatrix.toFloatArrayForGLSL());
     shader.setFloatArray(gl, "view", viewMatrix.toFloatArrayForGLSL());
     shader.setFloatArray(gl, "projection", projectionMatrix.toFloatArrayForGLSL());
     shader.setFloatArray(gl, "mvpMatrix", mvpMatrix.toFloatArrayForGLSL());
+	
+	shader.setFloat(gl, "ambientStrength", 0.1f);
+	shader.setFloat(gl, "diffuseStrength", 0.9f);
+	shader.setFloat(gl, "specularStrength", 0.5f);
     
+	
+	// Messing about with dynamic values
+    //shader.setFloat(gl, "ambientStrength", (float)(0.5 * 1+Math.sin(Math.toRadians(elapsedTime*10))));
+    //shader.setFloat(gl, "diffuseStrength", (float)(0.5 * 1+Math.sin(Math.toRadians(elapsedTime*30))));
+    //shader.setFloat(gl, "specularStrength", (float)(0.5 * 1+Math.sin(Math.toRadians(elapsedTime*50))));
+	
     Mat4 m = Mat4.inverse(modelMatrix);
     m.transpose();
     shader.setFloatArray(gl, "tiModel", m.toFloatArrayForGLSL());
@@ -137,24 +149,28 @@ public class L01_GLEventListener implements GLEventListener {
    
   private Vec3 lightPosition = new Vec3(4f,5f,8f);
   
+  //private Vec3 lightPosition = new Vec3(2f,-2f,8f);  
+  
+  /* Static light source!
   private Mat4 getLightModelMatrix() {
     Mat4 modelMatrix = new Mat4(1);
     modelMatrix = Mat4.multiply(Mat4Transform.scale(0.3f,0.3f,0.3f), modelMatrix);
     modelMatrix = Mat4.multiply(Mat4Transform.translate(lightPosition), modelMatrix);
     return modelMatrix;
   }
-  
+  */
   // Alternative version for moving light
-  /* private Mat4 getLightModelMatrix() {
+  private Mat4 getLightModelMatrix() {
     double elapsedTime = getSeconds()-startTime;
-    lightPosition.x = 5.0f*(float)(Math.sin(Math.toRadians(elapsedTime*50)));
-    lightPosition.y = 3.0f;
-    lightPosition.z = 5.0f*(float)(Math.cos(Math.toRadians(elapsedTime*50)));
+	// 5.0f in x and y represents the radius
+    lightPosition.x = 5.0f*(float)(Math.sin(Math.toRadians(elapsedTime*60)));
+    lightPosition.y = 3.0f*(float)(Math.sin(Math.toRadians(elapsedTime*50)));
+    lightPosition.z = 10.0f*(float)(Math.cos(Math.toRadians(elapsedTime*60)));
     Mat4 modelMatrix = new Mat4(1);
     modelMatrix = Mat4.multiply(Mat4Transform.scale(0.3f,0.3f,0.3f), modelMatrix);
     modelMatrix = Mat4.multiply(Mat4Transform.translate(lightPosition), modelMatrix);
     return modelMatrix;
-  }*/
+  }
   
   private void renderLight(GL3 gl, Shader shader, Mat4 modelMatrix, Mat4 view, Mat4 projection) {
     Mat4 mvpMatrix = Mat4.multiply(projection, Mat4.multiply(view, modelMatrix));
