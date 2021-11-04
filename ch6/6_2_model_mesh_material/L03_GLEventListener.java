@@ -15,7 +15,7 @@ public class L03_GLEventListener implements GLEventListener {
   /* The constructor is not used to initialise anything */
   public L03_GLEventListener(Camera camera) {
     this.camera = camera;
-    this.camera.setPosition(new Vec3(6f,9f,17f));
+    this.camera.setPosition(new Vec3(2f,2f,10f));
   }
   
   // ***************************************************
@@ -73,14 +73,20 @@ public class L03_GLEventListener implements GLEventListener {
     light = new Light(gl);
     light.setCamera(camera);
     
-    Mesh m = new Mesh(gl, TwoTriangles.vertices.clone(), TwoTriangles.indices.clone());
+	// Two triangles has the vertices and indices for a flat plane
+    // From now on, first you create a mesh, which has the vertices and indices of an object
+	// then you specify the shaders to be used
+	// then you give the material details
+	// then you mae the model
+	Mesh m = new Mesh(gl, TwoTriangles.vertices.clone(), TwoTriangles.indices.clone());
     Shader shader = new Shader(gl, "vs_tt_03.txt", "fs_tt_03.txt");
-    Material material = new Material(new Vec3(0.1f, 0.5f, 0.91f), new Vec3(0.1f, 0.5f, 0.91f), new Vec3(0.3f, 0.3f, 0.3f), 4.0f);
+	Material material = new Material(new Vec3(0.1f, 0.1f, 0.1f), new Vec3(0.8f, 0.8f, 0.8f), new Vec3(0.3f, 0.3f, 0.3f), 4.0f);
     tt1 = new Model(gl, camera, light, shader, material, new Mat4(1), m);
 
     m = new Mesh(gl, Cube.vertices.clone(), Cube.indices.clone());
     shader = new Shader(gl, "vs_cube_03.txt", "fs_cube_03.txt");
-    material = new Material(new Vec3(1.0f, 0.5f, 0.31f), new Vec3(1.0f, 0.5f, 0.31f), new Vec3(0.5f, 0.5f, 0.5f), 32.0f);
+	// if you change the ambient but keep the diffuse the same, there's a colour difference when the light isn't shining on the object!
+    material = new Material(new Vec3(0.0f, 0.05f, 0.0f), new Vec3(0.4f, 0.5f, 0.4f), new Vec3(0.04f, 0.7f, 0.04f), 10f);
     cube = new Model(gl, camera, light, shader, material, new Mat4(1), m);
   }
  
@@ -93,7 +99,7 @@ public class L03_GLEventListener implements GLEventListener {
   public void render(GL3 gl) {
     gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
 
-    //updateLightColour();
+    updateLightColour();
     light.setPosition(getLightPosition());  // changing light position each frame
     light.render(gl);
     
@@ -122,10 +128,11 @@ public class L03_GLEventListener implements GLEventListener {
   }
   
   // The light's postion is continually being changed, so needs to be calculated for each frame.
+  // this function will take precedence over the x,y,z values in the light class!
   private Vec3 getLightPosition() {
     double elapsedTime = getSeconds()-startTime;
     float x = 3.0f*(float)(Math.sin(Math.toRadians(elapsedTime*50)));
-    float y = 2.4f;
+    float y = 1f;
     float z = 3.0f*(float)(Math.cos(Math.toRadians(elapsedTime*50)));
     return new Vec3(x,y,z);
   }
@@ -139,6 +146,7 @@ public class L03_GLEventListener implements GLEventListener {
   }
   
   // As the transforms do not change over time for this object, they could be stored once rather than continually being calculated
+  // Bottom plane
   private Mat4 getMforTT1() {
     float size = 16f;
     Mat4 modelMatrix = new Mat4(1);
@@ -147,6 +155,7 @@ public class L03_GLEventListener implements GLEventListener {
   }
   
   // As the transforms do not change over time for this object, they could be stored once rather than continually being calculated
+  // plane in x
   private Mat4 getMforTT2() {
     float size = 16f;
     Mat4 modelMatrix = new Mat4(1);
@@ -157,6 +166,7 @@ public class L03_GLEventListener implements GLEventListener {
   }
 
   // As the transforms do not change over time for this object, they could be stored once rather than continually being calculated
+  // plane in y
   private Mat4 getMforTT3() {
     float size = 16f;
     Mat4 modelMatrix = new Mat4(1);

@@ -11,6 +11,8 @@ public class Light {
   private Shader shader;
   private Camera camera;
     
+/* 
+	// This was used when the light source was static!
   public Light(GL3 gl) {
     material = new Material();
     material.setAmbient(0.3f, 0.3f, 0.3f);
@@ -19,6 +21,17 @@ public class Light {
     position = new Vec3(3f,2f,1f);
     model = new Mat4(1);
     shader = new Shader(gl, "vs_light_01.txt", "fs_light_01.txt");
+    fillBuffers(gl);
+  }*/
+  
+  public Light(GL3 gl) {
+    material = new Material();
+    material.setAmbient(0.5f, 0.5f, 0.5f);
+    material.setDiffuse(0.8f, 0.8f, 0.8f);
+    material.setSpecular(1.0f, 1.0f, 1.0f);
+    position = new Vec3(3f,2f,1f);
+    model = new Mat4(1);
+    shader = new Shader(gl, "vs_light_01.txt", "fs_light_02.txt");
     fillBuffers(gl);
   }
   
@@ -50,6 +63,8 @@ public class Light {
     this.camera = camera;
   }
   
+/*  
+  // Static Light render!
   public void render(GL3 gl) { 
     Mat4 model = new Mat4(1);
     model = Mat4.multiply(Mat4Transform.scale(0.3f,0.3f,0.3f), model);
@@ -63,6 +78,24 @@ public class Light {
     gl.glBindVertexArray(vertexArrayId[0]);
     gl.glDrawElements(GL.GL_TRIANGLES, indices.length, GL.GL_UNSIGNED_INT, 0);
     gl.glBindVertexArray(0);
+  }*/
+  public void render(GL3 gl) {
+    Mat4 model = new Mat4(1);
+    model = Mat4.multiply(Mat4Transform.scale(0.3f,0.3f,0.3f), model);
+    model = Mat4.multiply(Mat4Transform.translate(position), model);
+  
+	Mat4 mvpMatrix = Mat4.multiply(camera.getPerspectiveMatrix(), Mat4.multiply(camera.getViewMatrix(), model));
+  
+	shader.use(gl);
+	shader.setFloatArray(gl, "mvpMatrix", mvpMatrix.toFloatArrayForGLSL());
+  
+	Vec3 temp = material.getDiffuse();
+ 
+	shader.setVec3(gl, "lightColor", temp);
+
+	gl.glBindVertexArray(vertexArrayId[0]);
+	gl.glDrawElements(GL.GL_TRIANGLES, indices.length, GL.GL_UNSIGNED_INT, 0);
+	gl.glBindVertexArray(0);
   }
 
   public void dispose(GL3 gl) {

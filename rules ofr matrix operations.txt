@@ -23,7 +23,7 @@ Blinn-phone model : The closer this halfway vector aligns with the surface's nor
 		
 			Another subtle difference between Phong and Blinn-Phong shading is that the angle between the halfway vector and the surface normal is often shorter than the angle between the view and reflection vector. As a result, to get visuals similar to Phong shading the specular shininess exponent has to be set a bit higher. A general rule of thumb is to set it between 2 and 4 times the Phong shininess exponent
 
-
+It is assumed that before this method [Mesh] is called, other information such as textures are already enabled
 
 
 

@@ -12,9 +12,10 @@ public class Model {
   private Camera camera;
   private Light light;
   
+  //Mat4 matrix to represent the transform applied to an object
   public Model(GL3 gl, Camera camera, Light light, Shader shader, Material material, Mat4 modelMatrix, Mesh mesh) {
     this.mesh = mesh;
-    this. material = material;
+    this.material = material;
     this.modelMatrix = modelMatrix;
     this.shader = shader;
     this.camera = camera;
