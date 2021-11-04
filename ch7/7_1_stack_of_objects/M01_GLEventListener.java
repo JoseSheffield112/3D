@@ -64,13 +64,14 @@ public class M01_GLEventListener implements GLEventListener {
    */
    
   private Camera camera;
-  private Model tt1, cube, sphere;
+  private Model tt1, cube, sphere, sphere2;
   private Light light;
 
   private void disposeModels(GL3 gl) {
     tt1.dispose(gl);
     cube.dispose(gl);
     sphere.dispose(gl);
+    sphere2.dispose(gl);
     light.dispose(gl);
   }
   
@@ -79,8 +80,12 @@ public class M01_GLEventListener implements GLEventListener {
     int[] textureId0 = TextureLibrary.loadTexture(gl, "textures/chequerboard.jpg");
     int[] textureId1 = TextureLibrary.loadTexture(gl, "textures/container2.jpg");
     int[] textureId2 = TextureLibrary.loadTexture(gl, "textures/container2_specular.jpg");
-    int[] textureId3 = TextureLibrary.loadTexture(gl, "textures/jade.jpg");
-    int[] textureId4 = TextureLibrary.loadTexture(gl, "textures/jade_specular.jpg");
+    int[] textureId3 = TextureLibrary.loadTexture(gl, "textures/ear0xuu2.jpg");
+    int[] textureId4 = TextureLibrary.loadTexture(gl, "textures/ear0xuu2_specular.jpg");
+	int[] textureId5 = TextureLibrary.loadTexture(gl, "textures/cloud2.jpg");
+    int[] textureId6 = TextureLibrary.loadTexture(gl, "textures/cloud2_specular.jpg");
+	
+	float cubeHeight = 4.0f, sphereHeight = 3.0f;
     
     light = new Light(gl);
     light.setCamera(camera);
@@ -94,7 +99,7 @@ public class M01_GLEventListener implements GLEventListener {
     m = new Mesh(gl, Cube.vertices.clone(), Cube.indices.clone());
     shader = new Shader(gl, "vs_cube_04.txt", "fs_cube_04.txt");
     material = new Material(new Vec3(1.0f, 0.5f, 0.31f), new Vec3(1.0f, 0.5f, 0.31f), new Vec3(0.5f, 0.5f, 0.5f), 32.0f);
-    modelMatrix = Mat4.multiply(Mat4Transform.scale(4,4,4), Mat4Transform.translate(0,0.5f,0));
+    modelMatrix = Mat4.multiply(Mat4Transform.scale(cubeHeight,cubeHeight,cubeHeight), Mat4Transform.translate(0,0.5f,0)); // The scale value should be stored as a variable as this will be used when translating the circle
     cube = new Model(gl, camera, light, shader, material, modelMatrix, m, textureId1, textureId2);
 
     m = new Mesh(gl, Sphere.vertices.clone(), Sphere.indices.clone());
@@ -104,13 +109,28 @@ public class M01_GLEventListener implements GLEventListener {
     // shader = new Shader(gl, "vs_sphere_04.txt", "fs_sphere_04_notex.txt");
     
     material = new Material(new Vec3(1.0f, 0.5f, 0.31f), new Vec3(1.0f, 0.5f, 0.31f), new Vec3(0.5f, 0.5f, 0.5f), 32.0f);
-    modelMatrix = Mat4.multiply(Mat4Transform.scale(3,3,3), Mat4Transform.translate(0,0.5f,0));
-    modelMatrix = Mat4.multiply(Mat4Transform.translate(0,4,0), modelMatrix);
+    modelMatrix = Mat4.multiply(Mat4Transform.scale(sphereHeight,sphereHeight,sphereHeight), Mat4Transform.translate(0,0.5f,0));
+    modelMatrix = Mat4.multiply(Mat4Transform.translate(0,cubeHeight,0), modelMatrix);
     
     sphere = new Model(gl, camera, light, shader, material, modelMatrix, m, textureId3, textureId4);
     
     // no texture version
     // sphere = new Model(gl, camera, light, shader, material, modelMatrix, m); 
+	
+	
+	// Adding a second sphere on top of the original
+	modelMatrix = Mat4.multiply(Mat4Transform.translate(0,sphereHeight,0), modelMatrix);
+    
+    sphere2 = new Model(gl, camera, light, shader, material, modelMatrix, m, textureId5, textureId6);
+	/*
+	//Adding a cube on top of the previous sphere!
+	m = new Mesh(gl, Cube.vertices.clone(), Cube.indices.clone());
+    shader = new Shader(gl, "vs_cube_04.txt", "fs_cube_04.txt");
+    material = new Material(new Vec3(1.0f, 0.5f, 0.31f), new Vec3(1.0f, 0.5f, 0.31f), new Vec3(0.5f, 0.5f, 0.5f), 32.0f);
+    modelMatrix = Mat4.multiply(Mat4Transform.scale(cubeHeight,cubeHeight,cubeHeight), Mat4Transform.translate(0,0.5f,0)); // The scale value should be stored as a variable as this will be used when translating the circle
+    modelMatrix = Mat4.multiply(Mat4Transform.translate(0,(cubeHeight+sphereHeight),0), modelMatrix);
+	sphere2 = new Model(gl, camera, light, shader, material, modelMatrix, m, textureId1, textureId2);// reused the sphere name for ease of change!
+	*/
   }
  
   private void render(GL3 gl) {
@@ -122,13 +142,14 @@ public class M01_GLEventListener implements GLEventListener {
     tt1.render(gl);
     cube.render(gl);
     sphere.render(gl);
+    sphere2.render(gl);
   }
 
   // The light's postion is continually being changed, so needs to be calculated for each frame.
   private Vec3 getLightPosition() {
     double elapsedTime = getSeconds()-startTime;
     float x = 5.0f*(float)(Math.sin(Math.toRadians(elapsedTime*50)));
-    float y = 2.7f;
+    float y = 5f;
     float z = 5.0f*(float)(Math.cos(Math.toRadians(elapsedTime*50)));
     return new Vec3(x,y,z);
     
