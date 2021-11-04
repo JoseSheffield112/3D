@@ -14,6 +14,7 @@ public class Model {
   private Camera camera;
   private Light light;
   
+  // this model would have both a diffuse texture (textureId1) and then also has a specular texture (textureId2
   public Model(GL3 gl, Camera camera, Light light, Shader shader, Material material, Mat4 modelMatrix, Mesh mesh, int[] textureId1, int[] textureId2) {
     this.mesh = mesh;
     this.material = material;
@@ -25,6 +26,7 @@ public class Model {
     this.textureId2 = textureId2;
   }
   
+  // this textureId1 only counts as the diffuse texture for this model
   public Model(GL3 gl, Camera camera, Light light, Shader shader, Material material, Mat4 modelMatrix, Mesh mesh, int[] textureId1) {
     this(gl, camera, light, shader, material, modelMatrix, mesh, textureId1, null);
   }

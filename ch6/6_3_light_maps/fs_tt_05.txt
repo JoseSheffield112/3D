@@ -29,6 +29,7 @@ uniform Material material;
 
 void main() {
   // ambient
+  // Here we make use of some of the material properties - e.g. the ambient - which is what allows us to set the plane walls with a blue tinge!
   vec3 ambient = light.ambient * material.ambient * texture(first_texture, aTexCoord).rgb;
   
   // diffuse

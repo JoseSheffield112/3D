@@ -39,6 +39,7 @@ void main() {
   vec3 diffuse = light.diffuse * diff * vec3(texture(first_texture, aTexCoord)); 
   
   // specular 
+  // Here we only use the shininess value from material uniform and nothing else - fs_tt_05 still uses ambient and diffuse of material but we don't need it here!
   vec3 viewDir = normalize(viewPos - aPos);
   vec3 reflectDir = reflect(-lightDir, norm);  
   float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);

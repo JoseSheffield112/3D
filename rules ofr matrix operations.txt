@@ -25,6 +25,7 @@ Blinn-phone model : The closer this halfway vector aligns with the surface's nor
 
 It is assumed that before this method [Mesh] is called, other information such as textures are already enabled
 
+In the programs that you write, you need to decide if the fragment shader should just use the values from the texture maps or also combine these with the Material properties.
 
 
 

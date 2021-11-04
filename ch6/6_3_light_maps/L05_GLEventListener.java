@@ -78,6 +78,7 @@ public class L05_GLEventListener implements GLEventListener {
     int[] textureId1 = TextureLibrary.loadTexture(gl, "container2_specular.jpg");
     int[] textureId2 = TextureLibrary.loadTexture(gl, "chequerboard.jpg");
     int[] textureId3 = TextureLibrary.loadTexture(gl, "cloud.jpg");
+	int[] textureId4 = TextureLibrary.loadTexture(gl, "slime.jpg");
 
     light = new Light(gl);
     light.setCamera(camera);
@@ -95,10 +96,10 @@ public class L05_GLEventListener implements GLEventListener {
     tt2 = new Model(gl, camera, light, shader, material, new Mat4(1), m, textureId3);
     
     m = new Mesh(gl, TwoTriangles.vertices.clone(), TwoTriangles.indices.clone());
-    shader = new Shader(gl, "vs_tt_04.txt", "fs_tt_04.txt");
+    shader = new Shader(gl, "vs_tt_05.txt", "fs_cube_04.txt");
     material = new Material(new Vec3(0.1f, 0.5f, 0.91f), new Vec3(0.1f, 0.5f, 0.91f), new Vec3(0.3f, 0.3f, 0.3f), 4.0f);
     // no textures for this model
-    tt3 = new Model(gl, camera, light, shader, material, new Mat4(1), m);
+    tt3 = new Model(gl, camera, light, shader, material, new Mat4(1), m, textureId4, textureId1);
     
     m = new Mesh(gl, Cube.vertices.clone(), Cube.indices.clone());
     shader = new Shader(gl, "vs_cube_04.txt", "fs_cube_04.txt");
@@ -152,7 +153,7 @@ public class L05_GLEventListener implements GLEventListener {
   private Vec3 getLightPosition() {
     double elapsedTime = getSeconds()-startTime;
     float x = 5.0f*(float)(Math.sin(Math.toRadians(elapsedTime*50)));
-    float y = 3.4f;
+    float y = 0.4f;
     float z = 5.0f*(float)(Math.cos(Math.toRadians(elapsedTime*50)));
     return new Vec3(x,y,z);
   }
