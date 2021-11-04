@@ -27,6 +27,12 @@ It is assumed that before this method [Mesh] is called, other information such a
 
 In the programs that you write, you need to decide if the fragment shader should just use the values from the texture maps or also combine these with the Material properties.
 
+// The following matrix transform is irrelevant for this program. 
+  // This is because the model matrix for the object
+  // is ignored when a scene graph is used.
+  // Instead, the scene graph supplies the transformations.
+(Note: the modelMatrix set up when initialising the cube is not used when drawing an object as part of a scene graph. Thus, in this example the modelMatrix could be set to the identity matrix, new Mat4(1).)
+
 
 
 
