@@ -80,6 +80,7 @@ public class M03_GLEventListener implements GLEventListener {
    private void updateX() {
      translateX.setTransform(Mat4Transform.translate(xPosition,0,0));
      translateX.update(); // IMPORTANT – the scene graph has changed
+	 // If you notice, we're not updating from the root but instead from all the children of translateeX!
    }
    
    
@@ -95,10 +96,10 @@ public class M03_GLEventListener implements GLEventListener {
   private Light light;
   private SGNode twoBranchRoot;
   
-  private TransformNode translateX, rotateAll, rotateUpper;
+  private TransformNode translateX, rotateAll, rotateUpper, rotateUpper2;
   private float xPosition = 0;
   private float rotateAllAngleStart = 25, rotateAllAngle = rotateAllAngleStart;
-  private float rotateUpperAngleStart = -60, rotateUpperAngle = rotateUpperAngleStart;
+  private float rotateUpperAngleStart = -60, rotateUpperAngle = rotateUpperAngleStart, rotateUpperAngle2 = (rotateUpperAngleStart*-1);
   
   private void initialise(GL3 gl) {
     createRandomNumbers();
@@ -121,21 +122,38 @@ public class M03_GLEventListener implements GLEventListener {
     modelMatrix = Mat4.multiply(Mat4Transform.scale(4,4,4), Mat4Transform.translate(0,0.5f,0));
     sphere = new Model(gl, camera, light, shader, material, modelMatrix, mesh, textureId1, textureId2);
     
+	// Variables for scene graph
+	float BottomHeight=4.0f;
+	float TopHeight=3.1f;
+	
+	// root
     twoBranchRoot = new NameNode("two-branch structure");
+	// translating all children by X
     translateX = new TransformNode("translate("+xPosition+",0,0)", Mat4Transform.translate(xPosition,0,0));
+	// Rotating all children around Z axis
     rotateAll = new TransformNode("rotateAroundZ("+rotateAllAngle+")", Mat4Transform.rotateAroundZ(rotateAllAngle));
+	// making lower branch
     NameNode lowerBranch = new NameNode("lower branch");
-    Mat4 m = Mat4Transform.scale(2.5f,4,2.5f);
+    Mat4 m = Mat4Transform.scale(2.5f,BottomHeight,2.5f);
     m = Mat4.multiply(m, Mat4Transform.translate(0,0.5f,0));
-    TransformNode makeLowerBranch = new TransformNode("scale(2.5,4,2.5); translate(0,0.5,0)", m);
+    TransformNode makeLowerBranch = new TransformNode("scale(2.5,"+TopHeight+",2.5); translate(0,0.5,0)", m);
     ModelNode cube0Node = new ModelNode("Sphere(0)", sphere);
-    TransformNode translateToTop = new TransformNode("translate(0,4,0)",Mat4Transform.translate(0,4,0));
-    rotateUpper = new TransformNode("rotateAroundZ("+rotateUpperAngle+")",Mat4Transform.rotateAroundZ(rotateUpperAngle));
-    NameNode upperBranch = new NameNode("upper branch");
-    m = Mat4Transform.scale(1.4f,3.1f,1.4f);
+	// translating bottom model to the top
+    TransformNode translateToTop = new TransformNode("translate(0,"+BottomHeight+",0)",Mat4Transform.translate(0,BottomHeight,0));
+    rotateUpper = new TransformNode("rotateAroundZ("+rotateUpperAngle+")",Mat4Transform.rotateAroundZ(rotateUpperAngle)); // rotating upper branch(es)
+    NameNode upperBranchPositive = new NameNode("upper branch  - positive");
+    m = Mat4Transform.scale(1.4f,TopHeight,1.4f);
     m = Mat4.multiply(m, Mat4Transform.translate(0,0.5f,0));
-    TransformNode makeUpperBranch = new TransformNode("scale(1.4f,3.1f,1.4f);translate(0,0.5,0)", m);
+    TransformNode makeUpperBranchPositive = new TransformNode("scale(1.4f,3.1f,1.4f);translate(0,0.5,0)", m);
     ModelNode cube1Node = new ModelNode("Sphere(1)", sphere);
+	// mine
+    rotateUpper2 = new TransformNode("rotateAroundZ("+rotateUpperAngle2+")",Mat4Transform.rotateAroundZ(rotateUpperAngle2)); // rotating upper branch(es)
+    NameNode upperBranchNegative = new NameNode("upper branch  - negative");
+	m = Mat4Transform.scale(1.4f,TopHeight,1.4f);
+    m = Mat4.multiply(m, Mat4Transform.translate(0f,0.5f,0));
+    TransformNode makeUpperBranchNegative = new TransformNode("scale(1.4f,3.1f,1.4f);translate(0,0.5,0)", m);
+    ModelNode cube2Node = new ModelNode("Sphere(2)", sphere);	
+
         
     twoBranchRoot.addChild(translateX);
       translateX.addChild(rotateAll);
@@ -144,9 +162,13 @@ public class M03_GLEventListener implements GLEventListener {
             makeLowerBranch.addChild(cube0Node);
           lowerBranch.addChild(translateToTop);
             translateToTop.addChild(rotateUpper);
-              rotateUpper.addChild(upperBranch);
-                upperBranch.addChild(makeUpperBranch);
-                  makeUpperBranch.addChild(cube1Node);
+              rotateUpper.addChild(upperBranchPositive);
+                upperBranchPositive.addChild(makeUpperBranchPositive);
+                  makeUpperBranchPositive.addChild(cube1Node);
+			translateToTop.addChild(rotateUpper2);
+			  rotateUpper2.addChild(upperBranchNegative);
+                upperBranchNegative.addChild(makeUpperBranchNegative);
+                  makeUpperBranchNegative.addChild(cube2Node);
     twoBranchRoot.update();  // IMPORTANT – must be done every time any part of the scene graph changes
     //twoBranchRoot.print(0, false);
     //System.exit(0);
@@ -165,8 +187,10 @@ public class M03_GLEventListener implements GLEventListener {
     double elapsedTime = getSeconds()-startTime;
     rotateAllAngle = rotateAllAngleStart*(float)Math.sin(elapsedTime);
     rotateUpperAngle = rotateUpperAngleStart*(float)Math.sin(elapsedTime*0.7f);
+	rotateUpperAngle2 = rotateUpperAngleStart*(float)Math.sin(elapsedTime*-0.7f);
     rotateAll.setTransform(Mat4Transform.rotateAroundZ(rotateAllAngle));
     rotateUpper.setTransform(Mat4Transform.rotateAroundZ(rotateUpperAngle));
+    rotateUpper2.setTransform(Mat4Transform.rotateAroundZ(rotateUpperAngle2));
     twoBranchRoot.update(); // IMPORTANT – the scene graph has changed
   }
   
