@@ -131,6 +131,7 @@ public class M04_GLEventListener implements GLEventListener {
   
   private void initialise(GL3 gl) {
     createRandomNumbers();
+	// loading textures
     int[] textureId0 = TextureLibrary.loadTexture(gl, "textures/chequerboard.jpg");
     int[] textureId1 = TextureLibrary.loadTexture(gl, "textures/jade.jpg");
     int[] textureId2 = TextureLibrary.loadTexture(gl, "textures/jade_specular.jpg");
@@ -143,6 +144,7 @@ public class M04_GLEventListener implements GLEventListener {
     light = new Light(gl);
     light.setCamera(camera);
     
+	// loading models
     Mesh mesh = new Mesh(gl, TwoTriangles.vertices.clone(), TwoTriangles.indices.clone());
     Shader shader = new Shader(gl, "vs_tt_05.txt", "fs_tt_05.txt");
     Material material = new Material(new Vec3(0.0f, 0.5f, 0.81f), new Vec3(0.0f, 0.5f, 0.81f), new Vec3(0.3f, 0.3f, 0.3f), 32.0f);
@@ -163,11 +165,12 @@ public class M04_GLEventListener implements GLEventListener {
     
     cube2 = new Model(gl, camera, light, shader, material, modelMatrix, mesh, textureId5, textureId6); 
     
-    // robot
-    
+    // robot - scene graph construction
+	
+    // variables
     float bodyHeight = 3f;
-    float bodyWidth = 2f;
-    float bodyDepth = 1f;
+    float bodyWidth = 2f;// x
+    float bodyDepth = 1f;//z
     float headScale = 2f;
     float armLength = 3.5f;
     float armScale = 0.5f;
@@ -175,13 +178,15 @@ public class M04_GLEventListener implements GLEventListener {
     float legScale = 0.67f;
     
     robotRoot = new NameNode("root");
+	// moving whole of robot in x axis
     robotMoveTranslate = new TransformNode("robot transform",Mat4Transform.translate(xPosition,0,0));
-    
+    //Translating whole body above world floor
     TransformNode robotTranslate = new TransformNode("robot transform",Mat4Transform.translate(0,legLength,0));
     
+	//Building the body
     NameNode body = new NameNode("body");
       Mat4 m = Mat4Transform.scale(bodyWidth,bodyHeight,bodyDepth);
-      m = Mat4.multiply(m, Mat4Transform.translate(0,0.5f,0));
+      m = Mat4.multiply(m, Mat4Transform.translate(0,0.5f,0));//Raising body a further .5 above the legs top!
       TransformNode bodyTransform = new TransformNode("body transform", m);
         ModelNode bodyShape = new ModelNode("Cube(body)", cube);
 
@@ -266,10 +271,17 @@ public class M04_GLEventListener implements GLEventListener {
     light.setPosition(getLightPosition());  // changing light position each frame
     light.render(gl);
     floor.render(gl); 
-    if (animation) updateLeftArm();
+    if (animation){ updateLeftArm(); updateRightArm();}
     robotRoot.draw(gl);
   }
 
+  private void updateRightArm() {
+    double elapsedTime = getSeconds()-startTime;
+    float rotateAngle = 180f+90f*(-(float)Math.sin(elapsedTime));
+    rightArmRotate.setTransform(Mat4Transform.rotateAroundX(rotateAngle));
+    rightArmRotate.update();
+  }
+  
   private void updateLeftArm() {
     double elapsedTime = getSeconds()-startTime;
     float rotateAngle = 180f+90f*(float)Math.sin(elapsedTime);
