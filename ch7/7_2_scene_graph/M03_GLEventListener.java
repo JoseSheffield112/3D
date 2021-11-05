@@ -149,7 +149,7 @@ public class M03_GLEventListener implements GLEventListener {
 	// mine
     rotateUpper2 = new TransformNode("rotateAroundZ("+rotateUpperAngle2+")",Mat4Transform.rotateAroundZ(rotateUpperAngle2)); // rotating upper branch(es)
     NameNode upperBranchNegative = new NameNode("upper branch  - negative");
-	m = Mat4Transform.scale(1.4f,TopHeight,1.4f);
+	m = Mat4Transform.scale(1.4f,(TopHeight*0.69f),1.4f);
     m = Mat4.multiply(m, Mat4Transform.translate(0f,0.5f,0));
     TransformNode makeUpperBranchNegative = new TransformNode("scale(1.4f,3.1f,1.4f);translate(0,0.5,0)", m);
     ModelNode cube2Node = new ModelNode("Sphere(2)", sphere);	
