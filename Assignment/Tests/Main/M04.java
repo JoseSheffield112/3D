@@ -48,7 +48,7 @@ public class M04 extends JFrame implements ActionListener {
       p.add(b);
       b = new JButton("camera Z");
       b.addActionListener(this);
-      p.add(b);
+      p.add(b);/*
       b = new JButton("start");
       b.addActionListener(this);
       p.add(b);
@@ -66,7 +66,7 @@ public class M04 extends JFrame implements ActionListener {
       p.add(b);
       b = new JButton("raised arms");
       b.addActionListener(this);
-      p.add(b);
+      p.add(b);*/
       b = new JButton("Toggle Light");
       b.addActionListener(this);
       p.add(b);
@@ -92,7 +92,7 @@ public class M04 extends JFrame implements ActionListener {
     else if (e.getActionCommand().equalsIgnoreCase("camera Z")) {
       camera.setCamera(Camera.CameraType.Z);
       canvas.requestFocusInWindow();
-    }
+    }/*
     else if (e.getActionCommand().equalsIgnoreCase("start")) {
       glEventListener.startAnimation();
     }
@@ -110,7 +110,7 @@ public class M04 extends JFrame implements ActionListener {
     }
     else if (e.getActionCommand().equalsIgnoreCase("raised arms")) {
       glEventListener.raisedArms();
-    }    
+    }*/    
     else if (e.getActionCommand().equalsIgnoreCase("Toggle Light")) {
       glEventListener.toggleLight();
     }
