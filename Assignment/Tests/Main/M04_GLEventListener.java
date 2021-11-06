@@ -122,10 +122,13 @@ public class M04_GLEventListener implements GLEventListener {
 
   private Camera camera;
   private Mat4 perspective;
-  private Model floor, sphere, cube, cube2;
+  private Model floor, sphere, cube, cube2, wall; // declaring the models!
   private Light light;
   private SGNode robotRoot;
   
+  //Setting Values
+  private float wallSize = 16f;
+  private Vec3 whiteLight = new Vec3(1.0f, 1.0f, 1.0f);
   private float xPosition = 0;
   private TransformNode translateX, robotMoveTranslate, leftArmRotate, rightArmRotate;
   
@@ -139,6 +142,7 @@ public class M04_GLEventListener implements GLEventListener {
     int[] textureId4 = TextureLibrary.loadTexture(gl, "textures/container2_specular.jpg");
     int[] textureId5 = TextureLibrary.loadTexture(gl, "textures/wattBook.jpg");
     int[] textureId6 = TextureLibrary.loadTexture(gl, "textures/wattBook_specular.jpg");
+    int[] textureId7 = TextureLibrary.loadTexture(gl, "textures/brickWall.jpg");
     
         
     light = new Light(gl);
@@ -148,9 +152,20 @@ public class M04_GLEventListener implements GLEventListener {
     //Floor model
     Mesh mesh = new Mesh(gl, TwoTriangles.vertices.clone(), TwoTriangles.indices.clone());
     Shader shader = new Shader(gl, "vs_tt_05.txt", "fs_tt_05.txt");
-    Material material = new Material(new Vec3(1.0f, 1.0f, 1.0f), new Vec3(1.0f, 1.0f, 1.0f), new Vec3(0.3f, 0.3f, 0.3f), 32.0f);
-    Mat4 modelMatrix = Mat4Transform.scale(16,1f,16);
+    Material material = new Material(whiteLight, whiteLight, new Vec3(0.3f, 0.3f, 0.3f), 32.0f);
+    Mat4 modelMatrix = Mat4Transform.scale(wallSize,1f,wallSize);
     floor = new Model(gl, camera, light, shader, material, modelMatrix, mesh, textureId0);
+
+    //Wall model
+    mesh = new Mesh(gl, TwoTriangles.vertices.clone(), TwoTriangles.indices.clone());
+    shader = new Shader(gl, "vs_tt_05.txt", "fs_tt_05.txt");
+    material = new Material(whiteLight, whiteLight, new Vec3(0.3f, 0.3f, 0.3f), 32.0f);
+    modelMatrix = Mat4Transform.scale(wallSize,1f,wallSize);
+    // Far wall
+    modelMatrix = Mat4.multiply(Mat4Transform.rotateAroundX(90), modelMatrix);
+    modelMatrix = Mat4.multiply(Mat4Transform.translate(0,wallSize*0.5f,-wallSize*0.5f), modelMatrix);
+    //
+    wall = new Model(gl, camera, light, shader, material, modelMatrix, mesh, textureId7);
     
     //A Sphere model
     mesh = new Mesh(gl, Sphere.vertices.clone(), Sphere.indices.clone());
@@ -277,6 +292,7 @@ public class M04_GLEventListener implements GLEventListener {
     light.setPosition(getLightPosition());  // changing light position each frame
     light.render(gl); // can set up a vairable here to check if light is on/off
     floor.render(gl); 
+    wall.render(gl);
     if (animation){ updateLeftArm(); updateRightArm();}
     robotRoot.draw(gl);
   }
