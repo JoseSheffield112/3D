@@ -91,13 +91,13 @@ public class M04_GLEventListener implements GLEventListener {
     if (xPosition>5f) xPosition = 5f;
     myRobot.updateMove(xPosition);
   }
-/*   
+
   public void decXPosition() {
     xPosition -= 0.5f;
     if (xPosition<-5f) xPosition = -5f;
-    updateMove();
+    myRobot.updateMove(xPosition);
   }
- */
+
   /*
   public void loweredArms() {
     stopAnimation();
