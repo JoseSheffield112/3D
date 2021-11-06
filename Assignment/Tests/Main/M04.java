@@ -67,6 +67,9 @@ public class M04 extends JFrame implements ActionListener {
       b = new JButton("raised arms");
       b.addActionListener(this);
       p.add(b);
+      b = new JButton("Toggle Light");
+      b.addActionListener(this);
+      p.add(b);
     this.add(p, BorderLayout.SOUTH);
     
     addWindowListener(new WindowAdapter() {
@@ -107,6 +110,9 @@ public class M04 extends JFrame implements ActionListener {
     }
     else if (e.getActionCommand().equalsIgnoreCase("raised arms")) {
       glEventListener.raisedArms();
+    }    
+    else if (e.getActionCommand().equalsIgnoreCase("Toggle Light")) {
+      glEventListener.toggleLight();
     }
     else if(e.getActionCommand().equalsIgnoreCase("quit"))
       System.exit(0);

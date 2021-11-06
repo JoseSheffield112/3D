@@ -158,7 +158,7 @@ public class M04_GLEventListener implements GLEventListener {
     Material material = new Material(whiteLight, whiteLight, new Vec3(0.3f, 0.3f, 0.3f), 32.0f);
     Mat4 modelMatrix = Mat4Transform.scale(wallSize,1f,wallSize);
     floor = new Model(gl, camera, light, shader, material, modelMatrix, mesh, textureId0);
-
+/*
     // Far wall section
     //right section
     //
@@ -179,11 +179,9 @@ public class M04_GLEventListener implements GLEventListener {
     modelMatrix = Mat4.multiply(Mat4Transform.rotateAroundX(90), modelMatrix);
     modelMatrix = Mat4.multiply(Mat4Transform.translate(-doorSize*doorPositioning,doorSize,-wallSize*0.499f), modelMatrix);
     door = new Model(gl, camera, light, shader, material, modelMatrix, mesh, textureId8);
-/*
+*/
     // Left wall Section
     // Left wall
-    float wallRatio = 0.2f;
-    float windowSize = 1*(2*wallRatio);
     mesh = new Mesh(gl, TwoTriangles.vertices.clone(), TwoTriangles.indices.clone());
     shader = new Shader(gl, "vs_tt_05.txt", "fs_tt_05.txt");
     material = new Material(whiteLight, whiteLight, new Vec3(0.3f, 0.3f, 0.3f), 32.0f);
@@ -191,7 +189,7 @@ public class M04_GLEventListener implements GLEventListener {
     modelMatrix = Mat4.multiply(Mat4Transform.rotateAroundX(90), modelMatrix);
     modelMatrix = Mat4.multiply(Mat4Transform.translate(0f,wallSize*0.5f,-wallSize*0.5f), modelMatrix);
     wall = new Model(gl, camera, light, shader, material, modelMatrix, mesh, textureId7);
-*/
+
     
     //A Sphere model
     mesh = new Mesh(gl, Sphere.vertices.clone(), Sphere.indices.clone());
@@ -315,13 +313,34 @@ public class M04_GLEventListener implements GLEventListener {
  
   private void render(GL3 gl) {
     gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
+    // updating the light
     light.setPosition(getLightPosition());  // changing light position each frame
     light.render(gl); // can set up a vairable here to check if light is on/off
     floor.render(gl); 
     wall.render(gl);
-    door.render(gl);
+    //door.render(gl);
     if (animation){ updateLeftArm(); updateRightArm();}
     robotRoot.draw(gl);
+  }
+  /*
+  Updating light colour
+  */
+  private static float dimness[] = {0.125f,0.25f,0.5f,1.0f};
+  private static int currentDimness = 3;
+  public void toggleLight() {
+    float newDimness=dimness[currentDimness];
+    Vec3 lightColour = new Vec3();
+    lightColour.x = 1.0f * newDimness;
+    lightColour.y = 1.0f * newDimness;
+    lightColour.z = 1.0f * newDimness;
+    Material m = light.getMaterial();
+    m.setDiffuse(Vec3.multiply(lightColour,0.5f));
+    m.setAmbient(Vec3.multiply(m.getDiffuse(),0.2f));
+    light.setMaterial(m);
+    currentDimness+=1;
+    if(currentDimness>3){
+      currentDimness=0;
+    }
   }
 
   private void updateRightArm() {
@@ -354,7 +373,6 @@ public class M04_GLEventListener implements GLEventListener {
     return new Vec3(x,y,z);   
     //return new Vec3(5f,3.4f,5f);
   }
-
   
   // ***************************************************
   /* TIME
