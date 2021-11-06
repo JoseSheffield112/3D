@@ -11,7 +11,7 @@ public class M04_GLEventListener implements GLEventListener {
   
   private static final boolean DISPLAY_SHADERS = false;
   // dimness setting for light
-  private static float dimness[] = {0.125f,0.25f,1f,1.25f};
+  private static float dimness[] = {0.125f,0.25f,0.5f,1f};
   private Robot myRobot;
   private SGNode roomScene = new NameNode("roomScene");
   private float xPosition = 0;
@@ -128,7 +128,7 @@ public class M04_GLEventListener implements GLEventListener {
   private SGNode robotRoot;
   
   //Setting Values
-  private float wallSize = 12f;
+  private float wallSize = 16f;
   private float doorSize = wallSize*0.35f;
   private float doorPositioning = 0.75f;
   private Vec3 whiteLight = new Vec3(1.0f, 1.0f, 1.0f);
@@ -147,6 +147,7 @@ public class M04_GLEventListener implements GLEventListener {
     int[] textureId8 = TextureLibrary.loadTexture(gl, "textures/door.jpg");
     
     light = new Light(gl);
+    System.out.println(light.getMaterial());
     light.setCamera(camera);
     
 	// loading models
@@ -216,12 +217,14 @@ public class M04_GLEventListener implements GLEventListener {
   public void toggleLight() {
     float newDimness=dimness[currentDimness];
     Vec3 lightColour = new Vec3();
-    lightColour.x = 0.8f * newDimness;
-    lightColour.y = 0.8f * newDimness;
-    lightColour.z = 0.8f * newDimness;
+    lightColour.x = 1.6f * newDimness;
+    lightColour.y = 1.6f * newDimness;
+    lightColour.z = 1.6f * newDimness;
     Material m = light.getMaterial();
+    System.out.println("BEFORE "+ m);
     m.setDiffuse(Vec3.multiply(lightColour,0.5f));
-    m.setAmbient(Vec3.multiply(m.getDiffuse(),0.2f));
+    m.setAmbient(Vec3.multiply(m.getDiffuse(),0.62f));
+    System.out.println("AFTER "+m);
     light.setMaterial(m);
     currentDimness+=1;
     if(currentDimness>3){

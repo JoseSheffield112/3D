@@ -32,14 +32,14 @@ public class Robot{
 
     private void sceneGraph(GL3 gl){
         // variables used in body construction
-        float bodyHeight = 3f;
-        float bodyWidth = 2f;// x
-        float bodyDepth = 1f;//z
-        float headScale = 2f;
-        float armLength = 3.5f;
-        float armScale = 0.5f;
-        float legLength = 3.5f;
-        float legScale = 0.67f;
+        float bodyHeight = 1.5f;
+        float bodyWidth = 1f;// x
+        float bodyDepth = 0.5f;//z
+        float headScale = 1f;
+        float armLength = 1.75f;
+        float armScale = 0.25f;
+        float legLength = 1.75f;
+        float legScale = 0.335f;
 
         //Loading all textures
         int[] textureId0 = TextureLibrary.loadTexture(gl, "textures/chequerboard.jpg");
