@@ -10,6 +10,8 @@ import com.jogamp.opengl.util.glsl.*;
 public class M04_GLEventListener implements GLEventListener {
   
   private static final boolean DISPLAY_SHADERS = false;
+  // dimness setting for light
+  private static float dimness[] = {0.125f,0.25f,1f,1.25f};
     
   public M04_GLEventListener(Camera camera) {
     this.camera = camera;
@@ -325,14 +327,13 @@ public class M04_GLEventListener implements GLEventListener {
   /*
   Updating light colour
   */
-  private static float dimness[] = {0.125f,0.25f,0.5f,1.0f};
-  private static int currentDimness = 3;
+  private static int currentDimness = 1;
   public void toggleLight() {
     float newDimness=dimness[currentDimness];
     Vec3 lightColour = new Vec3();
-    lightColour.x = 1.0f * newDimness;
-    lightColour.y = 1.0f * newDimness;
-    lightColour.z = 1.0f * newDimness;
+    lightColour.x = 0.8f * newDimness;
+    lightColour.y = 0.8f * newDimness;
+    lightColour.z = 0.8f * newDimness;
     Material m = light.getMaterial();
     m.setDiffuse(Vec3.multiply(lightColour,0.5f));
     m.setAmbient(Vec3.multiply(m.getDiffuse(),0.2f));

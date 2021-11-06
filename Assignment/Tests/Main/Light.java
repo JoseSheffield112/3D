@@ -21,19 +21,6 @@ public class Light {
     shader = new Shader(gl, "vs_light_01.txt", "fs_light_01.txt");
     fillBuffers(gl);
   }
-  /*
-  //Low intensity light
-  //If we're toggling, could just have %
-    material = new Material();
-    material.setAmbient(0.125f, 0.125f, 0.125f);
-    material.setDiffuse(0.2f, 0.2f, 0.2f);
-    material.setSpecular(0.2f, 0.2f, 0.2f);
-    position = new Vec3(3f,2f,1f);
-    model = new Mat4(1);
-    shader = new Shader(gl, "vs_light_01.txt", "fs_light_01.txt");
-    fillBuffers(gl);
-  */  
-  //Updating the light colour
   
   public void setPosition(Vec3 v) {
     position.x = v.x;
