@@ -54,10 +54,10 @@ public class M04 extends JFrame implements ActionListener {
       p.add(b);
       b = new JButton("stop");
       b.addActionListener(this);
-      p.add(b);
+      p.add(b);*/
       b = new JButton("increase X position");
       b.addActionListener(this);
-      p.add(b);
+      p.add(b);/*
       b = new JButton("decrease X position");
       b.addActionListener(this);
       p.add(b);
@@ -98,10 +98,10 @@ public class M04 extends JFrame implements ActionListener {
     }
     else if (e.getActionCommand().equalsIgnoreCase("stop")) {
       glEventListener.stopAnimation();
-    }
+    }*/
     else if (e.getActionCommand().equalsIgnoreCase("increase X position")) {
       glEventListener.incXPosition();
-    }
+    }/*
     else if (e.getActionCommand().equalsIgnoreCase("decrease X position")) {
       glEventListener.decXPosition();
     }
@@ -110,7 +110,7 @@ public class M04 extends JFrame implements ActionListener {
     }
     else if (e.getActionCommand().equalsIgnoreCase("raised arms")) {
       glEventListener.raisedArms();
-    }*/    
+    }*/
     else if (e.getActionCommand().equalsIgnoreCase("Toggle Light")) {
       glEventListener.toggleLight();
     }

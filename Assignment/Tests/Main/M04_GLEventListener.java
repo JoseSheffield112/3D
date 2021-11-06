@@ -14,6 +14,7 @@ public class M04_GLEventListener implements GLEventListener {
   private static float dimness[] = {0.125f,0.25f,1f,1.25f};
   private Robot myRobot;
   private SGNode roomScene = new NameNode("roomScene");
+  private float xPosition = 0;
     
   public M04_GLEventListener(Camera camera) {
     this.camera = camera;
@@ -70,10 +71,10 @@ public class M04_GLEventListener implements GLEventListener {
    *
    *
    */
-/*
+
   private boolean animation = false;
   private double savedTime = 0;
-   
+ /*  
   public void startAnimation() {
     animation = true;
     startTime = getSeconds()-savedTime;
@@ -84,24 +85,20 @@ public class M04_GLEventListener implements GLEventListener {
     double elapsedTime = getSeconds()-startTime;
     savedTime = elapsedTime;
   }
-   
+*/   
   public void incXPosition() {
     xPosition += 0.5f;
     if (xPosition>5f) xPosition = 5f;
-    updateMove();
+    myRobot.updateMove(xPosition);
   }
-   
+/*   
   public void decXPosition() {
     xPosition -= 0.5f;
     if (xPosition<-5f) xPosition = -5f;
     updateMove();
   }
- 
-  private void updateMove() {
-    robotMoveTranslate.setTransform(Mat4Transform.translate(xPosition,0,0));
-    robotMoveTranslate.update();
-  }
-  
+ */
+  /*
   public void loweredArms() {
     stopAnimation();
     leftArmRotate.setTransform(Mat4Transform.rotateAroundX(180));
@@ -134,8 +131,6 @@ public class M04_GLEventListener implements GLEventListener {
   private float wallSize = 12f;
   private float doorSize = wallSize*0.35f;
   private float doorPositioning = 0.75f;
-  private float xPosition = 0;
-  private TransformNode translateX, robotMoveTranslate, leftArmRotate, rightArmRotate;
   private Vec3 whiteLight = new Vec3(1.0f, 1.0f, 1.0f);
   
   private void initialise(GL3 gl) {
@@ -194,8 +189,8 @@ public class M04_GLEventListener implements GLEventListener {
     modelMatrix = Mat4.multiply(Mat4Transform.translate(0f,wallSize*0.5f,-wallSize*0.5f), modelMatrix);
     wall = new Model(gl, camera, light, shader, material, modelMatrix, mesh, textureId7);
 
-    myRobot = new Robot(gl, light, camera);
-    
+    myRobot = new Robot(gl, light, camera, xPosition);
+
     roomScene.addChild(myRobot.getSceneGraph());
     roomScene.update();
     //roomScene.print(0, false);
@@ -212,8 +207,6 @@ public class M04_GLEventListener implements GLEventListener {
     light.render(gl); // can set up a vairable here to check if light is on/off
     floor.render(gl); 
     wall.render(gl);
-    //door.render(gl);
-    //if (animation){ updateLeftArm(); updateRightArm();}
     roomScene.draw(gl);
   }
   /*
