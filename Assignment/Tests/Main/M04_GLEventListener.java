@@ -128,8 +128,8 @@ public class M04_GLEventListener implements GLEventListener {
   
   //Setting Values
   private float wallSize = 12f;
-  private float doorSize = wallSize*0.25f;
-  private float WallToDoorRatioX = 0.25f;
+  private float doorSize = wallSize*0.35f;
+  private float doorPositioning = 0.75f;
   private float xPosition = 0;
   private TransformNode translateX, robotMoveTranslate, leftArmRotate, rightArmRotate;
   private Vec3 whiteLight = new Vec3(1.0f, 1.0f, 1.0f);
@@ -177,7 +177,7 @@ public class M04_GLEventListener implements GLEventListener {
     material = new Material(whiteLight, whiteLight, new Vec3(0.3f, 0.3f, 0.3f), 32.0f);
     modelMatrix = Mat4Transform.scale(doorSize,1f,doorSize*2);
     modelMatrix = Mat4.multiply(Mat4Transform.rotateAroundX(90), modelMatrix);
-    modelMatrix = Mat4.multiply(Mat4Transform.translate(-doorSize,doorSize,-wallSize*0.45f), modelMatrix);
+    modelMatrix = Mat4.multiply(Mat4Transform.translate(-doorSize*doorPositioning,doorSize,-wallSize*0.499f), modelMatrix);
     door = new Model(gl, camera, light, shader, material, modelMatrix, mesh, textureId8, textureId4);
 
     
