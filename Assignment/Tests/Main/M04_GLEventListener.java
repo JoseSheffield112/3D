@@ -170,7 +170,7 @@ public class M04_GLEventListener implements GLEventListener {
     modelMatrix = Mat4.multiply(Mat4Transform.translate(0f,wallSize*0.5f,-wallSize*0.5f), modelMatrix);
     wall = new Model(gl, camera, light, shader, material, modelMatrix, mesh, textureId7);
     //
-    //wall
+    //Door
     //
     mesh = new Mesh(gl, TwoTriangles.vertices.clone(), TwoTriangles.indices.clone());
     shader = new Shader(gl, "vs_tt_05.txt", "fs_tt_05.txt");
@@ -178,8 +178,20 @@ public class M04_GLEventListener implements GLEventListener {
     modelMatrix = Mat4Transform.scale(doorSize,1f,doorSize*2);
     modelMatrix = Mat4.multiply(Mat4Transform.rotateAroundX(90), modelMatrix);
     modelMatrix = Mat4.multiply(Mat4Transform.translate(-doorSize*doorPositioning,doorSize,-wallSize*0.499f), modelMatrix);
-    door = new Model(gl, camera, light, shader, material, modelMatrix, mesh, textureId8, textureId4);
-
+    door = new Model(gl, camera, light, shader, material, modelMatrix, mesh, textureId8);
+/*
+    // Left wall Section
+    // Left wall
+    float wallRatio = 0.2f;
+    float windowSize = 1*(2*wallRatio);
+    mesh = new Mesh(gl, TwoTriangles.vertices.clone(), TwoTriangles.indices.clone());
+    shader = new Shader(gl, "vs_tt_05.txt", "fs_tt_05.txt");
+    material = new Material(whiteLight, whiteLight, new Vec3(0.3f, 0.3f, 0.3f), 32.0f);
+    modelMatrix = Mat4Transform.scale(wallSize,1f,wallSize);
+    modelMatrix = Mat4.multiply(Mat4Transform.rotateAroundX(90), modelMatrix);
+    modelMatrix = Mat4.multiply(Mat4Transform.translate(0f,wallSize*0.5f,-wallSize*0.5f), modelMatrix);
+    wall = new Model(gl, camera, light, shader, material, modelMatrix, mesh, textureId7);
+*/
     
     //A Sphere model
     mesh = new Mesh(gl, Sphere.vertices.clone(), Sphere.indices.clone());
