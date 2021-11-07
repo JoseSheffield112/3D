@@ -1,0 +1,101 @@
+/*
+I have created this code using the online resource of openGL:
+  https://learnopengl.com/Lighting/Multiple-lights
+*/
+#version 330 core
+
+
+/*
+Structures
+*/
+/*
+//Light source
+struct Light {
+  vec3 position;
+  vec3 ambient;
+  vec3 diffuse;
+  vec3 specular;
+};
+*/
+
+//Material
+struct Material {
+  vec3 ambient;
+  vec3 diffuse;
+  vec3 specular;
+  float shininess;
+}; 
+
+/*
+dealing with a directional light source
+*/
+struct DirLight {
+    vec3 position;
+    vec3 ambient;
+    vec3 diffuse;
+    vec3 specular;
+};  
+
+/*
+In/Out variables
+*/
+
+//In
+in vec3 aPos;
+in vec3 aNormal;
+in vec2 aTexCoord;
+
+//out
+out vec4 fragColor;
+
+/*
+Uniforms
+*/
+
+uniform vec3 viewPos;
+
+uniform sampler2D first_texture;
+
+//uniform Light light; 
+
+uniform Material material;
+
+
+uniform DirLight dirLight;
+
+/*
+Functions
+
+The following 3 functions were heavily copied from the highlighted website/resource
+I have made minor modifications in the main function so it works with my program, but it is still largely not written by me
+
+Again, sourced from : https://learnopengl.com/Lighting/Multiple-lights
+
+*/
+
+// Calculating the direct light
+vec3 calcDirLight(DirLight light, vec3 normal, vec3 viewDir){
+  vec3 lightDir = normalize(light.position - aPos);
+  // diffuse shading
+  float diff = max(dot(normal, lightDir), 0.0);
+  // specular shading
+  vec3 reflectDir = reflect(-lightDir, normal);
+  float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
+  // combine results
+  vec3 ambient  = light.ambient * material.ambient * texture(first_texture, aTexCoord).rgb;//light.ambient  * material.ambient; //vec3(texture(material.diffuse, aTexCoord));
+  vec3 diffuse  = light.diffuse * (diff * material.diffuse) * texture(first_texture, aTexCoord).rgb;//light.diffuse  * diff * material.diffuse;// vec3(texture(material.diffuse, aTexCoord));
+  vec3 specular = light.specular * (spec * material.specular);// * texture(second_texture, aTexCoord).rgb;//light.specular * spec * material.specular;// vec3(texture(material.specular, aTexCoord));
+  return (ambient + diffuse + specular);
+}
+
+void main() {
+  // properties
+  vec3 norm = normalize(aNormal);
+  vec3 viewDir = normalize(viewPos - aPos);
+
+  // phase 1: Directional lighting
+  // looping over the different sources!
+  vec3 result = calcDirLight(dirLight, norm, viewDir);
+
+  fragColor = vec4(result, 1.0);
+}
