@@ -1,5 +1,11 @@
+/**
+ * This whole class was adapted from Dr. Maddocks code from "M04_GLEventListener.java" class
+ * Much like "Robot.java", I made this class so I could make the scene graph for the Museum room away from the Museum class
+ * 
+ * *********************TO-DO*********************
+ * - Identify methods you've introduced
+*/
 import gmaths.*;
-
 import java.nio.*;
 import com.jogamp.common.nio.*;
 import com.jogamp.opengl.*;
@@ -36,7 +42,7 @@ public class Room{
 
     private void sceneGraph(GL3 gl){
         //Texture
-        int[] textureId0 = TextureLibrary.loadTexture(gl, "textures/chequerboard.jpg");
+        int[] textureId0 = TextureLibrary.loadTexture(gl, "textures/Floor.jpg");
 
         //Shapes models
         //Floor model

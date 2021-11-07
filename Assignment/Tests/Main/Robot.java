@@ -1,5 +1,11 @@
+/**
+ * This whole class was adapted from Dr. Maddocks code from "M04_GLEventListener.java" class
+ * I have created it in order to construct my scene graph for my robot, away from the Museum class
+ * 
+ * *********************TO-DO*********************
+ * - Identify methods you've introduced
+*/
 import gmaths.*;
-
 import java.nio.*;
 import com.jogamp.common.nio.*;
 import com.jogamp.opengl.*;

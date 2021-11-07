@@ -1,5 +1,11 @@
+/**
+ * This whole class was adapted from Dr. Maddocks "M04_GLEventListener.java" class
+ * modifications have been made to it
+ * 
+ * *********************TO-DO*********************
+ * - Identify methods you've introduced
+*/
 import gmaths.*;
-
 import java.nio.*;
 import com.jogamp.common.nio.*;
 import com.jogamp.opengl.*;
@@ -7,7 +13,7 @@ import com.jogamp.opengl.util.*;
 import com.jogamp.opengl.util.awt.*;
 import com.jogamp.opengl.util.glsl.*;
   
-public class M04_GLEventListener implements GLEventListener {
+public class Museum_GLEventListener implements GLEventListener {
   
   private static final boolean DISPLAY_SHADERS = false;
 
@@ -21,7 +27,7 @@ public class M04_GLEventListener implements GLEventListener {
   // xPosition for rendering the robot
   private float xPosition = 0;
     
-  public M04_GLEventListener(Camera camera) {
+  public Museum_GLEventListener(Camera camera) {
     this.camera = camera;
     this.camera.setPosition(new Vec3(4f,12f,18f));
   }
