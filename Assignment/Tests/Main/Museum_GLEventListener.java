@@ -1,5 +1,5 @@
 /**
- * This whole class was adapted from Dr. Maddocks "M04_GLEventListener.java" class
+ * This whole class was adapted from Dr. Maddocks " M04_GLEventListener.java" class
  * modifications have been made to it
  * 
  * *********************TO-DO*********************
@@ -20,7 +20,7 @@ public class Museum_GLEventListener implements GLEventListener {
   // Scene graph stuff
   private Robot myRobot;
   private Room theRoom;
-  private SGNode roomScene = new NameNode("roomScene");
+  private SGNode roomScene = new NameNode("Museum - Root node");
 
   // dimness setting for light
   private static float dimness[] = {0.125f,0.25f,0.5f,1f};
@@ -199,8 +199,8 @@ public class Museum_GLEventListener implements GLEventListener {
     roomScene.addChild(roomChild);
       roomChild.addChild(myRobot.getSceneGraph());
     roomScene.update();
-    //roomScene.print(0, false);
-    //System.exit(0);      
+    roomScene.print(0, false);
+    System.exit(0);      
 
     // Static light source
     light.setPosition(getLightPosition());  // changing light position each frame

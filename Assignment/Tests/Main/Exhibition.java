@@ -1,9 +1,11 @@
 /**
- * This whole class was adapted from Dr. Maddocks code from "M04_GLEventListener.java" class
- * Much like "Robot.java", I made this class so I could make the scene graph for the Museum room away from the Museum class
+ * This whole class was adapted from Dr. Maddocks code
+ * 
+ * Unlike previous files, I am using code from various sources to build these objects.. Each model will identify it's source 
  * 
  * *********************TO-DO*********************
  * - Identify methods you've introduced
+ * IDENTIFY EACH MODELS SOURCE :P
 */
 import gmaths.*;
 import java.nio.*;
@@ -12,11 +14,11 @@ import com.jogamp.opengl.*;
 import com.jogamp.opengl.util.*;
 import com.jogamp.opengl.util.awt.*;
 import com.jogamp.opengl.util.glsl.*;
-public class Room{
+public class Exhibition{
     /*
     variables used in class
     */
-    private SGNode museumRoot;
+    private SGNode roomRoot;
 
     // Declaring models variables
     private Model floor, wall;
@@ -34,7 +36,7 @@ public class Room{
     private float doorPositioning = 0.75f;
     private Vec3 whiteLight = new Vec3(1.0f, 1.0f, 1.0f);
 
-    public Room(GL3 gl, Light light, Camera camera){
+    public Exhibition(GL3 gl, Light light, Camera camera){
         this.light = light;
         this.camera=camera;
         sceneGraph(gl);
@@ -54,7 +56,7 @@ public class Room{
 
         //Scene graph
         //Root
-        museumRoot = new NameNode("Room");
+        roomRoot = new NameNode("Room");
         //Building the fllor
         NameNode flooring = new NameNode("floor");      
             Mat4 m = Mat4Transform.scale(wallSize,1f,wallSize);
@@ -62,15 +64,15 @@ public class Room{
             ModelNode flooringType = new ModelNode("Flooring", floor);
 
         //Constructing scene graph
-        museumRoot.addChild(enlargen);
+        roomRoot.addChild(enlargen);
             enlargen.addChild(flooring);
                 flooring.addChild(flooringType);
-        museumRoot.update();  // IMPORTANT - don't forget this
-        //museumRoot.print(0, false);
+        roomRoot.update();  // IMPORTANT - don't forget this
+        //roomRoot.print(0, false);
         //System.exit(0);        
     }
 
     public SGNode getSceneGraph(){
-        return museumRoot;
+        return roomRoot;
     }
 }
