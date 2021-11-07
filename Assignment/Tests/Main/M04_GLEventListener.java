@@ -10,10 +10,15 @@ import com.jogamp.opengl.util.glsl.*;
 public class M04_GLEventListener implements GLEventListener {
   
   private static final boolean DISPLAY_SHADERS = false;
+
+  // Scene graph stuff
+  private Robot myRobot;
+  private Room theRoom;
+  private SGNode roomScene = new NameNode("roomScene");
+
   // dimness setting for light
   private static float dimness[] = {0.125f,0.25f,0.5f,1f};
-  private Robot myRobot;
-  private SGNode roomScene = new NameNode("roomScene");
+  // xPosition for rendering the robot
   private float xPosition = 0;
     
   public M04_GLEventListener(Camera camera) {
@@ -59,7 +64,7 @@ public class M04_GLEventListener implements GLEventListener {
   public void dispose(GLAutoDrawable drawable) {
     GL3 gl = drawable.getGL().getGL3();
     light.dispose(gl);
-    floor.dispose(gl);
+    //floor.dispose(gl);
     //sphere.dispose(gl);
     //cube.dispose(gl);
     //cube2.dispose(gl);
@@ -127,12 +132,6 @@ public class M04_GLEventListener implements GLEventListener {
   private Light light;
   private SGNode robotRoot;
   
-  //Setting Values
-  private float wallSize = 16f;
-  private float doorSize = wallSize*0.35f;
-  private float doorPositioning = 0.75f;
-  private Vec3 whiteLight = new Vec3(1.0f, 1.0f, 1.0f);
-  
   private void initialise(GL3 gl) {
     createRandomNumbers();
 	// loading textures
@@ -146,17 +145,14 @@ public class M04_GLEventListener implements GLEventListener {
     int[] textureId7 = TextureLibrary.loadTexture(gl, "textures/brickWall.jpg");
     int[] textureId8 = TextureLibrary.loadTexture(gl, "textures/door.jpg");
     
+    //Setting the scene light
     light = new Light(gl);
-    System.out.println(light.getMaterial());
     light.setCamera(camera);
     
-	// loading models
-    //Floor model
-    Mesh mesh = new Mesh(gl, TwoTriangles.vertices.clone(), TwoTriangles.indices.clone());
-    Shader shader = new Shader(gl, "vs_tt_05.txt", "fs_tt_05.txt");
-    Material material = new Material(whiteLight, whiteLight, new Vec3(0.3f, 0.3f, 0.3f), 32.0f);
-    Mat4 modelMatrix = Mat4Transform.scale(wallSize,1f,wallSize);
-    floor = new Model(gl, camera, light, shader, material, modelMatrix, mesh, textureId0);
+  	// loading models
+    Vec3 whiteLight = new Vec3(1.0f, 1.0f, 1.0f);
+    float wallSize = 16f;
+
 /*
     // Far wall section
     //right section
@@ -182,17 +178,20 @@ public class M04_GLEventListener implements GLEventListener {
     // Left wall Section
     // Left wall
     // IT's still to do - you've just set it as the far wall for now!!
-    mesh = new Mesh(gl, TwoTriangles.vertices.clone(), TwoTriangles.indices.clone());
-    shader = new Shader(gl, "vs_tt_05.txt", "fs_tt_05.txt");
-    material = new Material(whiteLight, whiteLight, new Vec3(0.3f, 0.3f, 0.3f), 32.0f);
-    modelMatrix = Mat4Transform.scale(wallSize,1f,wallSize);
+    Mesh mesh = new Mesh(gl, TwoTriangles.vertices.clone(), TwoTriangles.indices.clone());
+    Shader shader = new Shader(gl, "vs_tt_05.txt", "fs_tt_05.txt");
+    Material material = new Material(whiteLight, whiteLight, new Vec3(0.3f, 0.3f, 0.3f), 32.0f);
+    Mat4 modelMatrix = Mat4Transform.scale(wallSize,1f,wallSize);
     modelMatrix = Mat4.multiply(Mat4Transform.rotateAroundX(90), modelMatrix);
     modelMatrix = Mat4.multiply(Mat4Transform.translate(0f,wallSize*0.5f,-wallSize*0.5f), modelMatrix);
     wall = new Model(gl, camera, light, shader, material, modelMatrix, mesh, textureId7);
 
     myRobot = new Robot(gl, light, camera, xPosition);
+    theRoom = new Room(gl, light, camera);
+    SGNode roomChild = theRoom.getSceneGraph();
 
-    roomScene.addChild(myRobot.getSceneGraph());
+    roomScene.addChild(roomChild);
+      roomChild.addChild(myRobot.getSceneGraph());
     roomScene.update();
     //roomScene.print(0, false);
     //System.exit(0);      
@@ -206,7 +205,7 @@ public class M04_GLEventListener implements GLEventListener {
     // updating the light
     light.setPosition(getLightPosition());  // changing light position each frame
     light.render(gl); // can set up a vairable here to check if light is on/off
-    floor.render(gl); 
+    //floor.render(gl); 
     wall.render(gl);
     roomScene.draw(gl);
   }
@@ -221,10 +220,8 @@ public class M04_GLEventListener implements GLEventListener {
     lightColour.y = 1.6f * newDimness;
     lightColour.z = 1.6f * newDimness;
     Material m = light.getMaterial();
-    System.out.println("BEFORE "+ m);
     m.setDiffuse(Vec3.multiply(lightColour,0.5f));
     m.setAmbient(Vec3.multiply(m.getDiffuse(),0.62f));
-    System.out.println("AFTER "+m);
     light.setMaterial(m);
     currentDimness+=1;
     if(currentDimness>3){

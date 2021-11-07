@@ -13,7 +13,7 @@ public class Robot{
     private SGNode robotRoot;
 
     // Declaring models variables
-    private Model floor, sphere, cube, cube2;
+    private Model sphere, cube, cube2;
 
     //Transform node stuff
     private TransformNode translateX, robotMoveTranslate, leftArmRotate, rightArmRotate;
@@ -42,7 +42,6 @@ public class Robot{
         float legScale = 0.335f;
 
         //Loading all textures
-        int[] textureId0 = TextureLibrary.loadTexture(gl, "textures/chequerboard.jpg");
         int[] textureId1 = TextureLibrary.loadTexture(gl, "textures/jade.jpg");
         int[] textureId2 = TextureLibrary.loadTexture(gl, "textures/jade_specular.jpg");
         int[] textureId3 = TextureLibrary.loadTexture(gl, "textures/container2.jpg");
