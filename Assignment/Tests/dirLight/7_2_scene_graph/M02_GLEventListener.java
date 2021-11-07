@@ -95,17 +95,19 @@ public class M02_GLEventListener implements GLEventListener {
  
   private void render(GL3 gl) {
     gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
+    light.setPosition(getLightPosition(1));
     light.render(gl);
+    light2.setPosition(getLightPosition(-1));
     light2.render(gl);
     floor.render(gl);
   }
   
   // The light's position is continually being changed, so needs to be calculated for each frame.
-  private Vec3 getLightPosition() {
+  private Vec3 getLightPosition(int i) {
     double elapsedTime = getSeconds()-startTime;
-    float x = 5.0f*(float)(Math.sin(Math.toRadians(elapsedTime*50)));
+    float x = 5.0f*(float)(Math.sin(Math.toRadians(elapsedTime*50)))*i;
     float y = 2.7f;
-    float z = 5.0f*(float)(Math.cos(Math.toRadians(elapsedTime*50)));
+    float z = 5.0f*(float)(Math.cos(Math.toRadians(elapsedTime*50)))*i;
     return new Vec3(x,y,z);   
     //return new Vec3(5f,3.4f,5f);
   }

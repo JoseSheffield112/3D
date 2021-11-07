@@ -58,11 +58,13 @@ public class Model {
     shader.setVec3(gl, "viewPos", camera.getPosition());
 
     //Iterating over the different lights and setting them up
-    // SO EASY I GUESS! PLEASE TAKE AWAY MORE WEEKENDS ;(
-    shader.setVec3(gl, "dirLight.position", lights[1].getPosition());
-    shader.setVec3(gl, "dirLight.ambient", lights[1].getMaterial().getAmbient());
-    shader.setVec3(gl, "dirLight.diffuse", lights[1].getMaterial().getDiffuse());
-    shader.setVec3(gl, "dirLight.specular", lights[1].getMaterial().getSpecular());
+    for(int index=0; index<(lights.length); index++){
+      System.out.println(index);
+      shader.setVec3(gl, "dirLight["+index+"].position", lights[index].getPosition());
+      shader.setVec3(gl, "dirLight["+index+"].ambient", lights[index].getMaterial().getAmbient());
+      shader.setVec3(gl, "dirLight["+index+"].diffuse", lights[index].getMaterial().getDiffuse());
+      shader.setVec3(gl, "dirLight["+index+"].specular", lights[index].getMaterial().getSpecular());
+    }
 
     shader.setVec3(gl, "material.ambient", material.getAmbient());
     shader.setVec3(gl, "material.diffuse", material.getDiffuse());
