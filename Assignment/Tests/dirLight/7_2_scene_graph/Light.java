@@ -1,6 +1,3 @@
-/*
-This class is originally from Dr.Maddocks lab classes
-*/
 import gmaths.*;
 import java.nio.*;
 import com.jogamp.common.nio.*;
@@ -16,26 +13,18 @@ public class Light {
   //private Mat4 perspective;
   // My testing bed! mine alone!!
   private Vec3 lightAmbient = new Vec3(0.3f, 0.3f, 0.3f);
-  private Vec3 lightDiffuse_Specular = new Vec3(0.7f, 0.7f, 0.7f);
+  private Vec3 lightDiffuse = new Vec3(0.7f, 0.7f, 0.7f);
   private Vec3 default_position = new Vec3(3f,2f,1f);
     
   public Light(GL3 gl, float dimness) {
-    System.out.println("1");
     material = new Material();
-    System.out.println("1-2");
     material.setAmbient(Vec3.multiply(lightAmbient, dimness));
-    System.out.println("1-3");
-    material.setDiffuse(Vec3.multiply(lightDiffuse_Specular, dimness));
-    System.out.println("1-4");
-    material.setSpecular(Vec3.multiply(lightDiffuse_Specular, dimness));
-    System.out.println("1-5");
+    material.setDiffuse(Vec3.multiply(lightDiffuse, dimness));
+    material.setSpecular(Vec3.multiply(lightDiffuse, dimness));
     position = (dimness<1f) ? (Vec3.multiply(default_position, 1.5f)) : default_position;
-    System.out.println("1-6");
     model = new Mat4(1);
-    System.out.println("1-7");
     shader = new Shader(gl, "vs_light_01.txt", "fs_light_01.txt");
     fillBuffers(gl);
-    System.out.println("3");
   }
   
   public void setPosition(Vec3 v) {
