@@ -50,20 +50,40 @@ public class Model {
   }
 
   public void render(GL3 gl, Mat4 modelMatrix) {
+    System.out.println("4");
     Mat4 mvpMatrix = Mat4.multiply(camera.getPerspectiveMatrix(), Mat4.multiply(camera.getViewMatrix(), modelMatrix));
     shader.use(gl);
     shader.setFloatArray(gl, "model", modelMatrix.toFloatArrayForGLSL());
     shader.setFloatArray(gl, "mvpMatrix", mvpMatrix.toFloatArrayForGLSL());
-    
+    Vec3 lampDirection = new Vec3(0.0f, 0.0f, 0.0f);    
     shader.setVec3(gl, "viewPos", camera.getPosition());
 
     //Iterating over the different lights and setting them up
     for(int index=0; index<(lights.length); index++){
-      System.out.println(index);
-      shader.setVec3(gl, "dirLight["+index+"].position", lights[index].getPosition());
-      shader.setVec3(gl, "dirLight["+index+"].ambient", lights[index].getMaterial().getAmbient());
-      shader.setVec3(gl, "dirLight["+index+"].diffuse", lights[index].getMaterial().getDiffuse());
-      shader.setVec3(gl, "dirLight["+index+"].specular", lights[index].getMaterial().getSpecular());
+      System.out.println("5");
+      // The first light source is lamp!
+      if(index==2){
+        System.out.println("6");
+        shader.setVec3(gl, "spotLight.position", lights[index].getPosition());
+        shader.setVec3(gl, "spotLight.direction", lampDirection);// need to change this depending on where light is pointing!
+        shader.setVec3(gl, "spotLight.ambient", lights[0].getMaterial().getAmbient());
+        shader.setVec3(gl, "spotLight.diffuse", lights[0].getMaterial().getDiffuse());
+        shader.setVec3(gl, "spotLight.specular", lights[0].getMaterial().getSpecular());
+        shader.setFloat(gl, "spotLight.constant", 1.0f);
+        shader.setFloat(gl, "spotLight.linear", 0.09f);
+        shader.setFloat(gl, "spotLight.quadratic", 0.032f);
+        shader.setFloat(gl, "spotLight.cutOff", (float)Math.cos(Math.toRadians(12.5f)));
+        shader.setFloat(gl, "spotLight.outerCutOff", (float)Math.sin(Math.toRadians(15.0f)));  
+      }
+      // All the others are world lights - SO far just sun and Museum Lights
+      // note in fragment shader, we're dealing with 0..1 (<2), so I change index accordingly
+      else{
+        System.out.println("7");
+        shader.setVec3(gl, "dirLight["+(index)+"].position", lights[index].getPosition());
+        shader.setVec3(gl, "dirLight["+(index)+"].ambient", lights[index].getMaterial().getAmbient());
+        shader.setVec3(gl, "dirLight["+(index)+"].diffuse", lights[index].getMaterial().getDiffuse());
+        shader.setVec3(gl, "dirLight["+(index)+"].specular", lights[index].getMaterial().getSpecular());
+      }
     }
 
     shader.setVec3(gl, "material.ambient", material.getAmbient());

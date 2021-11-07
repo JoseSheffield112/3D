@@ -54,6 +54,7 @@ public class M02_GLEventListener implements GLEventListener {
   /* Clean up memory, if necessary */
   public void dispose(GLAutoDrawable drawable) {
     GL3 gl = drawable.getGL().getGL3();
+    //lampLight.dispose(gl);
     light.dispose(gl);
     light2.dispose(gl);
     floor.dispose(gl);
@@ -69,21 +70,30 @@ public class M02_GLEventListener implements GLEventListener {
   private Mat4 perspective;
   private Model floor, cube;
   private Light light, light2;
+  //private SpotLight lampLight;
 
   private void initialise(GL3 gl) {
     createRandomNumbers();
 	
-	// loading tectures!
+  	// loading textures!
     int[] textureId0 = TextureLibrary.loadTexture(gl, "textures/chequerboard.jpg");
     int[] textureId1 = TextureLibrary.loadTexture(gl, "textures/container2.jpg");
     int[] textureId2 = TextureLibrary.loadTexture(gl, "textures/container2_specular.jpg");
+
+    //Dimness values for the lights - allows you to the change them later!
+    float lampDimness = 1f;
+    float viewLightDimness = 1f;
+    float museumLightsDimness = 0.5f;
     
-    light = new Light(gl, 1f);
-    light2 = new Light(gl, 0.5f);
+    // Loading scene lights
+    //lampLight = new SpotLight(gl, lampDimness);
+    light = new Light(gl, viewLightDimness);
+    light2 = new Light(gl, museumLightsDimness);
+    //lampLight.setCamera(camera);
     light.setCamera(camera);
     light2.setCamera(camera);
-    // an array with the light
-    Light[] lights = {light, light2};
+    // an array with the light sources used in our scene
+    Light[] lights = { light, light2};
 	
     //Setting up model for our wall!
     Mesh mesh = new Mesh(gl, TwoTriangles.vertices.clone(), TwoTriangles.indices.clone());
@@ -95,6 +105,7 @@ public class M02_GLEventListener implements GLEventListener {
  
   private void render(GL3 gl) {
     gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
+    //lampLight.render(gl);
     light.setPosition(getLightPosition(1));
     light.render(gl);
     light2.setPosition(getLightPosition(-1));

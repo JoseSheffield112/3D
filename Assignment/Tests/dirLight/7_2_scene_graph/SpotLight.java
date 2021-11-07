@@ -1,12 +1,14 @@
-/*
-This class is originally from Dr.Maddocks lab classes
-*/
+/**
+ * 
+ * This class was adapted from Dr. Maddocks Light.java class
+ * 
+ */
 import gmaths.*;
 import java.nio.*;
 import com.jogamp.common.nio.*;
 import com.jogamp.opengl.*;
   
-public class Light {
+public class SpotLight extends Light{
   
   private Material material;
   private Vec3 position;
@@ -14,28 +16,14 @@ public class Light {
   private Shader shader;
   private Camera camera;
   //private Mat4 perspective;
-  // My testing bed! mine alone!!
-  private Vec3 lightAmbient = new Vec3(0.3f, 0.3f, 0.3f);
-  private Vec3 lightDiffuse_Specular = new Vec3(0.7f, 0.7f, 0.7f);
-  private Vec3 default_position = new Vec3(3f,2f,1f);
+  private Vec3 lightAmbient = new Vec3(0f,0f,0f);
+  private Vec3 lightDiffuse_Specular = new Vec3(1.0f, 1.0f, 1.0f);
     
-  public Light(GL3 gl, float dimness) {
-    System.out.println("1");
-    material = new Material();
+  public SpotLight(GL3 gl, float dimness) {
+    super(gl, dimness); // super constructor
+    // editing values for the lamp
+    // yes there's a better way to do it - I just want it implemented
     System.out.println("1-2");
-    material.setAmbient(Vec3.multiply(lightAmbient, dimness));
-    System.out.println("1-3");
-    material.setDiffuse(Vec3.multiply(lightDiffuse_Specular, dimness));
-    System.out.println("1-4");
-    material.setSpecular(Vec3.multiply(lightDiffuse_Specular, dimness));
-    System.out.println("1-5");
-    position = (dimness<1f) ? (Vec3.multiply(default_position, 1.5f)) : default_position;
-    System.out.println("1-6");
-    model = new Mat4(1);
-    System.out.println("1-7");
-    shader = new Shader(gl, "vs_light_01.txt", "fs_light_01.txt");
-    fillBuffers(gl);
-    System.out.println("3");
   }
   
   public void setPosition(Vec3 v) {

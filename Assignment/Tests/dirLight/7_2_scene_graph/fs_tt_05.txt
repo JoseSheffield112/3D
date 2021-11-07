@@ -8,15 +8,6 @@ I have created this code using the online resource of openGL:
 /*
 Structures
 */
-/*
-//Light source
-struct Light {
-  vec3 position;
-  vec3 ambient;
-  vec3 diffuse;
-  vec3 specular;
-};
-*/
 
 //Material
 struct Material {
@@ -35,6 +26,24 @@ struct DirLight {
     vec3 diffuse;
     vec3 specular;
 };  
+
+/*
+Dealing with lamp light
+*/
+struct SpotLight {
+    vec3 position;
+    vec3 direction;
+    float cutOff;
+    float outerCutOff;
+  
+    float constant;
+    float linear;
+    float quadratic;
+  
+    vec3 ambient;
+    vec3 diffuse;
+    vec3 specular;       
+};
 
 /*
 In/Out variables
@@ -56,17 +65,18 @@ uniform vec3 viewPos;
 
 uniform sampler2D first_texture;
 
-//uniform Light light; 
-
 uniform Material material;
 
+// direction light uniform
 #define DIR_LIGHTS 2
 uniform DirLight dirLight[DIR_LIGHTS];
+// lamp light uniform
+uniform SpotLight spotLight;
 
 /*
 Functions
 
-The following 3 functions were heavily copied from the highlighted website/resource
+The following 4 functions were heavily "inspired" from the highlighted website/resource
 I have made minor modifications in the main function so it works with my program, but it is still largely not written by me
 
 Again, sourced from : https://learnopengl.com/Lighting/Multiple-lights
@@ -74,7 +84,7 @@ Again, sourced from : https://learnopengl.com/Lighting/Multiple-lights
 */
 
 // Calculating the direct light
-vec3 calcDirLight(DirLight light, vec3 normal, vec3 viewDir){
+vec3 CalcDirLight(DirLight light, vec3 normal, vec3 viewDir){
   vec3 lightDir = normalize(light.position - aPos);
   // diffuse shading
   float diff = max(dot(normal, lightDir), 0.0);
@@ -82,23 +92,52 @@ vec3 calcDirLight(DirLight light, vec3 normal, vec3 viewDir){
   vec3 reflectDir = reflect(-lightDir, normal);
   float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
   // combine results
-  vec3 ambient  = light.ambient * material.ambient * texture(first_texture, aTexCoord).rgb;//light.ambient  * material.ambient; //vec3(texture(material.diffuse, aTexCoord));
-  vec3 diffuse  = light.diffuse * (diff * material.diffuse) * texture(first_texture, aTexCoord).rgb;//light.diffuse  * diff * material.diffuse;// vec3(texture(material.diffuse, aTexCoord));
-  vec3 specular = light.specular * (spec * material.specular);// * texture(second_texture, aTexCoord).rgb;//light.specular * spec * material.specular;// vec3(texture(material.specular, aTexCoord));
+  vec3 ambient  = light.ambient * material.ambient * texture(first_texture, aTexCoord).rgb;
+  vec3 diffuse  = light.diffuse * (diff * material.diffuse) * texture(first_texture, aTexCoord).rgb;
+  vec3 specular = light.specular * (spec * material.specular);//light.specular * (spec * material.specular);
   return (ambient + diffuse + specular);
 }
 
+// Calculating lamp light
+// calculates the color when using a spot light.
+vec3 CalcSpotLight(SpotLight light, vec3 normal, vec3 fragPos, vec3 viewDir){
+    vec3 lightDir = normalize(light.position - fragPos);
+    // diffuse shading
+    float diff = max(dot(normal, lightDir), 0.0);
+    // specular shading
+    vec3 reflectDir = reflect(-lightDir, normal);
+    float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
+    // attenuation
+    float distance = length(light.position - fragPos);
+    float attenuation = 1.0 / (light.constant + light.linear * distance + light.quadratic * (distance * distance));    
+    // spotlight intensity
+    float theta = dot(lightDir, normalize(-light.direction)); 
+    float epsilon = light.cutOff - light.outerCutOff;
+    float intensity = clamp((theta - light.outerCutOff) / epsilon, 0.0, 1.0);
+    // combine results
+    vec3 ambient = light.ambient * vec3(texture(first_texture, aTexCoord).rgb);
+    vec3 diffuse = light.diffuse * diff * texture(first_texture, aTexCoord).rgb;
+    vec3 specular = light.specular * spec * texture(first_texture, aTexCoord).rgb;
+    ambient *= attenuation * intensity;
+    diffuse *= attenuation * intensity;
+    specular *= attenuation * intensity;
+    return (ambient + diffuse + specular);
+}
+
 void main() {
-  // properties
+  // Set up for light calculations
   vec3 norm = normalize(aNormal);
   vec3 viewDir = normalize(viewPos - aPos);
   vec3 result;
 
+  // Light values added to fragment!
   // phase 1: Directional lighting
-  // looping over the different sources!
+  // looping over the different light sources!
   for(int i=0;i<DIR_LIGHTS;i++){
-    result += calcDirLight(dirLight[i], norm, viewDir);
+    result += CalcDirLight(dirLight[i], norm, viewDir);
   }
+  //phase 2: Adding spot light
+  //result += CalcSpotLight(spotLight, norm, aPos, viewDir);
 
   fragColor = vec4(result, 1.0);
 }
