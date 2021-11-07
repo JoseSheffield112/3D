@@ -1,3 +1,11 @@
+/**
+ * This whole class was adapted from Dr. Maddocks "M04.java" class
+ * minor modifications have been made to it
+ * 
+ * *********************TO-DO*********************
+ * - Identify methods you've introduced
+*/
+
 import gmaths.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -6,29 +14,29 @@ import com.jogamp.opengl.*;
 import com.jogamp.opengl.awt.GLCanvas;
 import com.jogamp.opengl.util.FPSAnimator;
 
-public class M04 extends JFrame implements ActionListener {
+public class Museum extends JFrame implements ActionListener {
   
   private static final int WIDTH = 1024;
   private static final int HEIGHT = 768;
   private static final Dimension dimension = new Dimension(WIDTH, HEIGHT);
   private GLCanvas canvas;
-  private M04_GLEventListener glEventListener;
+  private Museum_GLEventListener glEventListener;
   private final FPSAnimator animator; 
   private Camera camera;
 
   public static void main(String[] args) {
-    M04 b1 = new M04("M04");
+    Museum b1 = new Museum("COM4503 - Museum");
     b1.getContentPane().setPreferredSize(dimension);
     b1.pack();
     b1.setVisible(true);
   }
 
-  public M04(String textForTitleBar) {
+  public Museum(String textForTitleBar) {
     super(textForTitleBar);
     GLCapabilities glcapabilities = new GLCapabilities(GLProfile.get(GLProfile.GL3));
     canvas = new GLCanvas(glcapabilities);
     camera = new Camera(Camera.DEFAULT_POSITION, Camera.DEFAULT_TARGET, Camera.DEFAULT_UP);
-    glEventListener = new M04_GLEventListener(camera);
+    glEventListener = new Museum_GLEventListener(camera);
     canvas.addGLEventListener(glEventListener);
     canvas.addMouseMotionListener(new MyMouseInput(camera));
     canvas.addKeyListener(new MyKeyboardInput(camera));
@@ -48,23 +56,26 @@ public class M04 extends JFrame implements ActionListener {
       p.add(b);
       b = new JButton("camera Z");
       b.addActionListener(this);
-      p.add(b);
+      p.add(b);/*
       b = new JButton("start");
       b.addActionListener(this);
       p.add(b);
       b = new JButton("stop");
       b.addActionListener(this);
-      p.add(b);
+      p.add(b);*/
       b = new JButton("increase X position");
       b.addActionListener(this);
       p.add(b);
       b = new JButton("decrease X position");
       b.addActionListener(this);
-      p.add(b);
+      p.add(b);/*
       b = new JButton("lowered arms");
       b.addActionListener(this);
       p.add(b);
       b = new JButton("raised arms");
+      b.addActionListener(this);
+      p.add(b);*/
+      b = new JButton("Toggle Light");
       b.addActionListener(this);
       p.add(b);
     this.add(p, BorderLayout.SOUTH);
@@ -82,12 +93,6 @@ public class M04 extends JFrame implements ActionListener {
   }
   
   public void actionPerformed(ActionEvent e) {
-	  /**
-	  Here we could make a function, e.g.
-	    else if (e.getActionCommand().equalsIgnoreCase("move the robot")) {
-		  glEventListener.MOVETHEROBOTFUNCTION();
-		}
-	  */
     if (e.getActionCommand().equalsIgnoreCase("camera X")) {
       camera.setCamera(Camera.CameraType.X);
       canvas.requestFocusInWindow();
@@ -95,27 +100,84 @@ public class M04 extends JFrame implements ActionListener {
     else if (e.getActionCommand().equalsIgnoreCase("camera Z")) {
       camera.setCamera(Camera.CameraType.Z);
       canvas.requestFocusInWindow();
-    }
+    }/*
     else if (e.getActionCommand().equalsIgnoreCase("start")) {
       glEventListener.startAnimation();
     }
     else if (e.getActionCommand().equalsIgnoreCase("stop")) {
       glEventListener.stopAnimation();
-    }
+    }*/
     else if (e.getActionCommand().equalsIgnoreCase("increase X position")) {
       glEventListener.incXPosition();
     }
     else if (e.getActionCommand().equalsIgnoreCase("decrease X position")) {
       glEventListener.decXPosition();
-    }
+    }/*
     else if (e.getActionCommand().equalsIgnoreCase("lowered arms")) {
       glEventListener.loweredArms();
     }
     else if (e.getActionCommand().equalsIgnoreCase("raised arms")) {
       glEventListener.raisedArms();
+    }*/
+    else if (e.getActionCommand().equalsIgnoreCase("Toggle Light")) {
+      glEventListener.toggleLight();
     }
     else if(e.getActionCommand().equalsIgnoreCase("quit"))
       System.exit(0);
   }
+}
+
+class MyKeyboardInput extends KeyAdapter  {
+  private Camera camera;
   
+  public MyKeyboardInput(Camera camera) {
+    this.camera = camera;
+  }
+  
+  public void keyPressed(KeyEvent e) {
+    Camera.Movement m = Camera.Movement.NO_MOVEMENT;
+    switch (e.getKeyCode()) {
+      case KeyEvent.VK_LEFT:  m = Camera.Movement.LEFT;  break;
+      case KeyEvent.VK_RIGHT: m = Camera.Movement.RIGHT; break;
+      case KeyEvent.VK_UP:    m = Camera.Movement.UP;    break;
+      case KeyEvent.VK_DOWN:  m = Camera.Movement.DOWN;  break;
+      case KeyEvent.VK_A:  m = Camera.Movement.FORWARD;  break;
+      case KeyEvent.VK_Z:  m = Camera.Movement.BACK;  break;
+    }
+    camera.keyboardInput(m);
+  }
+}
+
+class MyMouseInput extends MouseMotionAdapter {
+  private Point lastpoint;
+  private Camera camera;
+  
+  public MyMouseInput(Camera camera) {
+    this.camera = camera;
+  }
+  
+    /**
+   * mouse is used to control camera position
+   *
+   * @param e  instance of MouseEvent
+   */    
+  public void mouseDragged(MouseEvent e) {
+    Point ms = e.getPoint();
+    float sensitivity = 0.001f;
+    float dx=(float) (ms.x-lastpoint.x)*sensitivity;
+    float dy=(float) (ms.y-lastpoint.y)*sensitivity;
+    //System.out.println("dy,dy: "+dx+","+dy);
+    if (e.getModifiers()==MouseEvent.BUTTON1_MASK)
+      camera.updateYawPitch(dx, -dy);
+    lastpoint = ms;
+  }
+
+  /**
+   * mouse is used to control camera position
+   *
+   * @param e  instance of MouseEvent
+   */  
+  public void mouseMoved(MouseEvent e) {   
+    lastpoint = e.getPoint(); 
+  }
 }

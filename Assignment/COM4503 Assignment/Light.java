@@ -1,3 +1,10 @@
+/**
+ * This whole class was adapted from Dr. Maddocks "Light.java" class
+ * So far no modifications have been made to it?
+ * 
+ * *********************TO-DO*********************
+ * - Identify methods you've introduced
+*/
 import gmaths.*;
 import java.nio.*;
 import com.jogamp.common.nio.*;
