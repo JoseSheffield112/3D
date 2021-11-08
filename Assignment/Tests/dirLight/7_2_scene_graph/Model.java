@@ -13,31 +13,31 @@ public class Model {
   private Shader shader;
   private Mat4 modelMatrix;
   private Camera camera;
-  private ArrayList<DirectionalLight> lights;
+  private DirectionalLight sunLight;
+  private static ArrayList<PointLight> ceilingLights = new ArrayList<PointLight>();
   private SpotLight spotLight;
-  private PointLight pointLight;
   
   // this model would have both a diffuse texture (textureId1) and then also has a specular texture (textureId2
-  public Model(GL3 gl, Camera camera, ArrayList<DirectionalLight> lights, PointLight pointLight, SpotLight spotLight, Shader shader, Material material, Mat4 modelMatrix, Mesh mesh, int[] textureId1, int[] textureId2) {
+  public Model(GL3 gl, Camera camera, DirectionalLight sunLight, ArrayList<PointLight> ceilingLights, SpotLight spotLight, Shader shader, Material material, Mat4 modelMatrix, Mesh mesh, int[] textureId1, int[] textureId2) {
     this.mesh = mesh;
     this.material = material;
     this.modelMatrix = modelMatrix;
     this.shader = shader;
     this.camera = camera;
-    this.lights = lights;
+    this.sunLight = sunLight;
+    this.ceilingLights = ceilingLights;
     this.spotLight = spotLight;
-    this.pointLight = pointLight;
     this.textureId1 = textureId1;
     this.textureId2 = textureId2;
   }
   
   // this textureId1 only counts as the diffuse texture for this model
-  public Model(GL3 gl, Camera camera, ArrayList<DirectionalLight> lights, PointLight pointLight, SpotLight spotLight, Shader shader, Material material, Mat4 modelMatrix, Mesh mesh, int[] textureId1) {
-    this(gl, camera, lights, pointLight, spotLight, shader, material, modelMatrix, mesh, textureId1, null);
+  public Model(GL3 gl, Camera camera, DirectionalLight sunLight, ArrayList<PointLight> ceilingLights, SpotLight spotLight, Shader shader, Material material, Mat4 modelMatrix, Mesh mesh, int[] textureId1) {
+    this(gl, camera, sunLight, ceilingLights, spotLight, shader, material, modelMatrix, mesh, textureId1, null);
   }
   
-  public Model(GL3 gl, Camera camera, ArrayList<DirectionalLight> lights,  PointLight pointLight,SpotLight spotLight, Shader shader, Material material, Mat4 modelMatrix, Mesh mesh) {
-    this(gl, camera, lights, pointLight, spotLight, shader, material, modelMatrix, mesh, null, null);
+  public Model(GL3 gl, Camera camera, DirectionalLight sunLight, ArrayList<PointLight> ceilingLights, SpotLight spotLight, Shader shader, Material material, Mat4 modelMatrix, Mesh mesh) {
+    this(gl, camera, sunLight, ceilingLights, spotLight, shader, material, modelMatrix, mesh, null, null);
   }
   
   // add constructors without modelMatrix? and then set to identity as the default?
@@ -65,31 +65,22 @@ public class Model {
     shader.setVec3(gl, "viewPos", camera.getPosition());
 
     // Setting up Lighting!
-    // Directional lighting
-    //Iterating over the different lights and setting them up
-    /*
-    for(int index=0; index<(lights.size()); index++){
-      shader.setVec3(gl, "dirLight["+index+"].position", lights.get(index).getPosition());
-      shader.setVec3(gl, "dirLight["+index+"].ambient", lights.get(index).getMaterial().getAmbient());
-      shader.setVec3(gl, "dirLight["+index+"].diffuse", lights.get(index).getMaterial().getDiffuse());
-      shader.setVec3(gl, "dirLight["+index+"].specular", lights.get(index).getMaterial().getSpecular());
-    }*/
-    shader.setVec3(gl, "dirLight.position", lights.get(0).getPosition());
-    shader.setVec3(gl, "dirLight.ambient", lights.get(0).getMaterial().getAmbient());
-    shader.setVec3(gl, "dirLight.diffuse", lights.get(0).getMaterial().getDiffuse());
-    shader.setVec3(gl, "dirLight.specular", lights.get(0).getMaterial().getSpecular());
+    // Directional lighting - the sun
+    shader.setVec3(gl, "dirLight.position", sunLight.getPosition());
+    shader.setVec3(gl, "dirLight.ambient", sunLight.getMaterial().getAmbient());
+    shader.setVec3(gl, "dirLight.diffuse", sunLight.getMaterial().getDiffuse());
+    shader.setVec3(gl, "dirLight.specular", sunLight.getMaterial().getSpecular());
+    // point light - ceiling lights
+    for(int index=0; index<(ceilingLights.size()); index++){
+      shader.setVec3(gl, "pointLight["+index+"].position", ceilingLights.get(index).getPosition());
+      shader.setVec3(gl, "pointLight["+index+"].ambient", ceilingLights.get(index).getMaterial().getAmbient());
+      shader.setVec3(gl, "pointLight["+index+"].diffuse", ceilingLights.get(index).getMaterial().getDiffuse());
+      shader.setVec3(gl, "pointLight["+index+"].specular", ceilingLights.get(index).getMaterial().getSpecular());
+      shader.setFloat(gl, "pointLight["+index+"].constant", ceilingLights.get(index).getConstant());
+      shader.setFloat(gl, "pointLight["+index+"].linear", ceilingLights.get(index).getLinear());
+      shader.setFloat(gl, "pointLight["+index+"].quadratic", ceilingLights.get(index).getQuadratic()); 
+    }
 /*
-    //TESTING - TESTING -TESTING - TESTING -TESTING - TESTING -TESTING - TESTING -TESTING - TESTING -TESTING - TESTING -
-    //PointLight!!
-    // Seems point light might be for the sun!!
-    shader.setVec3(gl, "pointLight.position", pointLight.getPosition());
-    shader.setVec3(gl, "pointLight.ambient", pointLight.getMaterial().getAmbient());
-    shader.setVec3(gl, "pointLight.diffuse", pointLight.getMaterial().getDiffuse());
-    shader.setVec3(gl, "pointLight.specular", pointLight.getMaterial().getSpecular());
-    shader.setFloat(gl, "pointLight.constant", pointLight.getConstant());
-    shader.setFloat(gl, "pointLight.linear", pointLight.getLinear());
-    shader.setFloat(gl, "pointLight.quadratic", pointLight.getQuadratic());    
-    //Testing ended
 
     //Spot Lighting!
     shader.setVec3(gl, "spotLight.position", spotLight.getPosition());

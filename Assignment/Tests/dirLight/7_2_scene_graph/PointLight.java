@@ -19,9 +19,6 @@ public class PointLight extends Light{
 
     public PointLight(GL3 gl, float dimness){
         super(gl, dimness);
-        this.getMaterial().setAmbient(new Vec3(0.05f, 0.05f, 0.05f));
-        this.getMaterial().setDiffuse(new Vec3(0.8f, 0.8f, 0.8f));
-        this.getMaterial().setSpecular(new Vec3(1.0f, 1.0f, 1.0f));
         this.constant = 1.0f;
         this.linear = 0.09f;
         this.quadratic = 0.032f;

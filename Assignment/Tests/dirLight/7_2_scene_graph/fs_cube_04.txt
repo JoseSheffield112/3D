@@ -32,11 +32,9 @@ Dealing with point light
 */
 struct PointLight {
     vec3 position;
-    
     float constant;
     float linear;
     float quadratic;
-	
     vec3 ambient;
     vec3 diffuse;
     vec3 specular;
@@ -81,10 +79,10 @@ uniform sampler2D second_texture;
 
 uniform Material material;
 
-#define DIR_LIGHTS 2
-uniform DirLight dirLight[DIR_LIGHTS];
+uniform DirLight dirLight;
 
-uniform PointLight pointLight;
+#define POINT_LIGHTS 2
+uniform PointLight pointLight[POINT_LIGHTS];
 
 uniform SpotLight spotLight;
 
@@ -112,6 +110,7 @@ vec3 calcDirLight(DirLight light, vec3 normal, vec3 viewDir){
   vec3 specular = light.specular * (spec * material.specular) * texture(second_texture, aTexCoord).rgb;
   return (ambient + diffuse + specular);
 }
+
 
 // Calculating point light!
 vec3 calcPointLight(PointLight light, vec3 normal, vec3 fragPos, vec3 viewDir){
@@ -167,13 +166,13 @@ void main() {
 
   // phase 1: Directional lighting
   // looping over the different sources!
-  for(int i=0;i<DIR_LIGHTS;i++){
-    result += calcDirLight(dirLight[i], norm, viewDir);
-  }
+  result += calcDirLight(dirLight, norm, viewDir);
   // phase 2 - point light
-  result += calcPointLight(pointLight, norm, aPos, viewDir);  
+  for(int i=0; i<POINT_LIGHTS; i++){
+    result += calcPointLight(pointLight[i], norm, aPos, viewDir);  
+  }
   //phase 3 - spot light
-  result += calcSpotLight(spotLight, norm, aPos, viewDir);  
+  //result += calcSpotLight(spotLight, norm, aPos, viewDir);  
 
   fragColor = vec4(result, 1.0);
 }
