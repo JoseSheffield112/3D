@@ -58,6 +58,7 @@ public class M02_GLEventListener implements GLEventListener {
     light2.dispose(gl);
     floor.dispose(gl);
     lampLight.dispose(gl);
+    pointLight1.dispose(gl);
   }
 
   // ***************************************************
@@ -71,6 +72,7 @@ public class M02_GLEventListener implements GLEventListener {
   private Model floor, cube;
   private Light light, light2;
   private SpotLight lampLight;
+  private PointLight pointLight1;
 
   private void initialise(GL3 gl) {
     createRandomNumbers();
@@ -83,9 +85,12 @@ public class M02_GLEventListener implements GLEventListener {
     light = new Light(gl, 1.0f);
     light2 = new Light(gl, 0.9f);
     lampLight = new SpotLight(gl, 1f);
+    // Messing with point lights
+    pointLight1 = new PointLight(gl, 0.5f);
     light.setCamera(camera);
     light2.setCamera(camera);
     lampLight.setCamera(camera);
+    pointLight1.setCamera(camera);
     // an array with the light
     Light[] lights = {light, light2};
 	
@@ -94,7 +99,7 @@ public class M02_GLEventListener implements GLEventListener {
     Shader shader = new Shader(gl, "vs_tt_05.txt", "fs_tt_05.txt");
     Material material = new Material(new Vec3(0.0f, 0.5f, 0.81f), new Vec3(0.0f, 0.5f, 0.81f), new Vec3(0.3f, 0.3f, 0.3f), 32.0f);
     Mat4 modelMatrix = Mat4Transform.scale(16,1f,16);
-    floor = new Model(gl, camera, lights, lampLight, shader, material, modelMatrix, mesh, textureId0);
+    floor = new Model(gl, camera, lights, pointLight1, lampLight, shader, material, modelMatrix, mesh, textureId0);
   }
  
   private void render(GL3 gl) {
@@ -106,7 +111,22 @@ public class M02_GLEventListener implements GLEventListener {
     updateLightColour();
     lampLight.setPosition(new Vec3(6f,3f,5f));
     lampLight.render(gl);
+    updatePointLightColour();
+    pointLight1.setPosition(new Vec3(-5,5,-5));
+    pointLight1.render(gl);
     floor.render(gl);
+  }
+
+  private void updatePointLightColour(){
+    double elapsedTime = getSeconds()-startTime;
+    Vec3 lightColour = new Vec3();
+    lightColour.x = (float)Math.sin(elapsedTime * 2.0f);
+    lightColour.y = (float)Math.sin(elapsedTime * 0.7f);
+    lightColour.z = (float)Math.sin(elapsedTime * 1.3f);
+    Material m = pointLight1.getMaterial();
+    m.setDiffuse(Vec3.multiply(lightColour,0.5f));
+    m.setAmbient(Vec3.multiply(m.getDiffuse(),0.2f));
+    pointLight1.setMaterial(m);
   }
 
   private void updateLightColour() {

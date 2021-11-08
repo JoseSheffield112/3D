@@ -6,38 +6,25 @@ import com.jogamp.opengl.*;
 /**
  * creating a subclass of Light class
  */
-public class SpotLight extends Light{
+public class PointLight extends Light{
 
-    private Vec3 direction;
     private Float constant, linear, quadratic, cutOff, outerCutOff;
 
-    public SpotLight(GL3 gl, float dimness){
+    public PointLight(GL3 gl, float dimness){
         super(gl, dimness);
-        this.direction = new Vec3(0f,-1f,0f); //Has to be negative in order to point down!
+        this.getMaterial().setAmbient(new Vec3(0.05f, 0.05f, 0.05f));
+        this.getMaterial().setDiffuse(new Vec3(0.8f, 0.8f, 0.8f));
+        this.getMaterial().setSpecular(new Vec3(1.0f, 1.0f, 1.0f));
         this.constant = 1.0f;
         this.linear = 0.09f;
         this.quadratic = 0.032f;
-        this.cutOff = 50f;
-        this.outerCutOff = 50f;
     }
 
     /**
-     * Setting spotlight direction
+     * Set methods
      */
-    public void setDirection(Vec3 v) {
-        direction.x = v.x;
-        direction.y = v.y;
-        direction.z = v.z;
-    }
-      
-    public void setDirection(float x, float y, float z) {
-        direction.x = x;
-        direction.y = y;
-        direction.z = z;
-    }
-
     /**
-     * Setting spotlight floats
+     * Setting pointLight floats
      */
 
     public void setConstant(float constant){
@@ -57,15 +44,11 @@ public class SpotLight extends Light{
     }
 
     /**
-     * Getting spotlight direction
+     * Get methods
      */
 
-    public Vec3 getDirection() {
-        return direction;
-    }
-
     /**
-     * Getting spotlight floats
+     * Getting pointLight floats
      */
 
     public float getConstant(){
@@ -77,11 +60,4 @@ public class SpotLight extends Light{
     public float getQuadratic(){
         return(quadratic);
     }
-    public float getCuttOff(){
-        return(cutOff);
-    }
-    public float getOuterCuttOff(){
-        return(outerCutOff);
-    }
-    
 }

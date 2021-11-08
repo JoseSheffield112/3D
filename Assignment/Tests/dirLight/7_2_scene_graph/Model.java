@@ -14,9 +14,10 @@ public class Model {
   private Camera camera;
   private Light[] lights;
   private SpotLight spotLight;
+  private PointLight pointLight;
   
   // this model would have both a diffuse texture (textureId1) and then also has a specular texture (textureId2
-  public Model(GL3 gl, Camera camera, Light[] lights, SpotLight spotLight, Shader shader, Material material, Mat4 modelMatrix, Mesh mesh, int[] textureId1, int[] textureId2) {
+  public Model(GL3 gl, Camera camera, Light[] lights, PointLight pointLight, SpotLight spotLight, Shader shader, Material material, Mat4 modelMatrix, Mesh mesh, int[] textureId1, int[] textureId2) {
     this.mesh = mesh;
     this.material = material;
     this.modelMatrix = modelMatrix;
@@ -24,17 +25,18 @@ public class Model {
     this.camera = camera;
     this.lights = lights;
     this.spotLight = spotLight;
+    this.pointLight = pointLight;
     this.textureId1 = textureId1;
     this.textureId2 = textureId2;
   }
   
   // this textureId1 only counts as the diffuse texture for this model
-  public Model(GL3 gl, Camera camera, Light[] lights, SpotLight spotLight, Shader shader, Material material, Mat4 modelMatrix, Mesh mesh, int[] textureId1) {
-    this(gl, camera, lights, spotLight, shader, material, modelMatrix, mesh, textureId1, null);
+  public Model(GL3 gl, Camera camera, Light[] lights, PointLight pointLight, SpotLight spotLight, Shader shader, Material material, Mat4 modelMatrix, Mesh mesh, int[] textureId1) {
+    this(gl, camera, lights, pointLight, spotLight, shader, material, modelMatrix, mesh, textureId1, null);
   }
   
-  public Model(GL3 gl, Camera camera, Light[] lights, SpotLight spotLight, Shader shader, Material material, Mat4 modelMatrix, Mesh mesh) {
-    this(gl, camera, lights, spotLight, shader, material, modelMatrix, mesh, null, null);
+  public Model(GL3 gl, Camera camera, Light[] lights,  PointLight pointLight,SpotLight spotLight, Shader shader, Material material, Mat4 modelMatrix, Mesh mesh) {
+    this(gl, camera, lights, pointLight, spotLight, shader, material, modelMatrix, mesh, null, null);
   }
   
   // add constructors without modelMatrix? and then set to identity as the default?
@@ -74,7 +76,19 @@ public class Model {
       shader.setVec3(gl, "dirLight["+index+"].diffuse", lights[index].getMaterial().getDiffuse());
       shader.setVec3(gl, "dirLight["+index+"].specular", lights[index].getMaterial().getSpecular());
     }
-    
+
+    //TESTING - TESTING -TESTING - TESTING -TESTING - TESTING -TESTING - TESTING -TESTING - TESTING -TESTING - TESTING -
+    //PointLight!!
+    // Seems point light might be for the sun!!
+    shader.setVec3(gl, "pointLight.position", pointLight.getPosition());
+    shader.setVec3(gl, "pointLight.ambient", pointLight.getMaterial().getAmbient());
+    shader.setVec3(gl, "pointLight.diffuse", pointLight.getMaterial().getDiffuse());
+    shader.setVec3(gl, "pointLight.specular", pointLight.getMaterial().getSpecular());
+    shader.setFloat(gl, "pointLight.constant", pointLight.getConstant());
+    shader.setFloat(gl, "pointLight.linear", pointLight.getLinear());
+    shader.setFloat(gl, "pointLight.quadratic", pointLight.getQuadratic());    
+    //Testing ended
+
     //Spot Lighting!
     shader.setVec3(gl, "spotLight.position", spotLight.getPosition());
     shader.setVec3(gl, "spotLight.direction", spotLight.getDirection());
