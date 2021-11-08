@@ -59,7 +59,6 @@ public class Model {
 
     //Iterating over the different lights and setting them up
     for(int index=0; index<(lights.length); index++){
-      System.out.println(index);
       shader.setVec3(gl, "dirLight["+index+"].position", lights[index].getPosition());
       shader.setVec3(gl, "dirLight["+index+"].ambient", lights[index].getMaterial().getAmbient());
       shader.setVec3(gl, "dirLight["+index+"].diffuse", lights[index].getMaterial().getDiffuse());
