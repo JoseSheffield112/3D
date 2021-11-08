@@ -1,5 +1,11 @@
-import gmaths.*;
+/**
+ * TODO LIST
+ * Need to add directional light class
+ * need to change all other classes that depend on that
+ * then you also need to make sure the fragment shaders are fine!
+ */
 
+import gmaths.*;
 import java.nio.*;
 import com.jogamp.common.nio.*;
 import com.jogamp.opengl.*;
@@ -70,7 +76,7 @@ public class M02_GLEventListener implements GLEventListener {
   private Camera camera;
   private Mat4 perspective;
   private Model floor, cube;
-  private Light light, light2;
+  private DirectionLight light, light2;
   private SpotLight lampLight;
   private PointLight pointLight1;
 
@@ -82,8 +88,8 @@ public class M02_GLEventListener implements GLEventListener {
     int[] textureId1 = TextureLibrary.loadTexture(gl, "textures/container2.jpg");
     int[] textureId2 = TextureLibrary.loadTexture(gl, "textures/container2_specular.jpg");
     
-    light = new Light(gl, 1.0f);
-    light2 = new Light(gl, 0.9f);
+    light = new DirectionLight(gl, 1.0f);
+    light2 = new DirectionLight(gl, 0.9f);
     lampLight = new SpotLight(gl, 1f);
     // Messing with point lights
     pointLight1 = new PointLight(gl, 0.5f);
@@ -92,7 +98,7 @@ public class M02_GLEventListener implements GLEventListener {
     lampLight.setCamera(camera);
     pointLight1.setCamera(camera);
     // an array with the light
-    Light[] lights = {light, light2};
+    DirectionLight[] lights = {light, light2};
 	
     //Setting up model for our wall!
     Mesh mesh = new Mesh(gl, TwoTriangles.vertices.clone(), TwoTriangles.indices.clone());
@@ -100,21 +106,30 @@ public class M02_GLEventListener implements GLEventListener {
     Material material = new Material(new Vec3(0.0f, 0.5f, 0.81f), new Vec3(0.0f, 0.5f, 0.81f), new Vec3(0.3f, 0.3f, 0.3f), 32.0f);
     Mat4 modelMatrix = Mat4Transform.scale(16,1f,16);
     floor = new Model(gl, camera, lights, pointLight1, lampLight, shader, material, modelMatrix, mesh, textureId0);
+    /***
+     * cube test i guess
+     */
+    mesh = new Mesh(gl, Cube.vertices.clone(), Cube.indices.clone());
+    shader = new Shader(gl, "vs_cube_04.txt", "fs_cube_04.txt");
+    material = new Material(new Vec3(1.0f, 0.5f, 0.31f), new Vec3(1.0f, 0.5f, 0.31f), new Vec3(0.5f, 0.5f, 0.5f), 32.0f);
+    modelMatrix = Mat4.multiply(Mat4Transform.scale(2,2,2), Mat4Transform.translate(0,0.5f,0));
+    cube = new Model(gl, camera, lights, pointLight1, lampLight, shader, material, modelMatrix, mesh, textureId1, textureId2);
   }
  
   private void render(GL3 gl) {
     gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
-    light.setPosition(getLightPosition(1));
+    //light.setPosition(getLightPosition(1));
     light.render(gl);
-    light2.setPosition(getLightPosition(-1));
+    //light2.setPosition(getLightPosition(-1));
     light2.render(gl);
-    updateLightColour();
-    lampLight.setPosition(new Vec3(6f,3f,5f));
+    //updateLightColour();
+    lampLight.setPosition(new Vec3(0f,8f,0f));
     lampLight.render(gl);
-    updatePointLightColour();
-    pointLight1.setPosition(new Vec3(-5,5,-5));
+    //updatePointLightColour();
+    pointLight1.setPosition(new Vec3(0f,8f,6f));
     pointLight1.render(gl);
     floor.render(gl);
+    cube.render(gl);
   }
 
   private void updatePointLightColour(){

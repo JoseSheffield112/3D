@@ -1,3 +1,9 @@
+/**
+ * TODO LIST
+ * Need to add directional light class
+ * need to change all other classes that depend on that
+ * then you also need to make sure the fragment shaders are fine!
+ */
 import gmaths.*;
 import java.nio.*;
 import com.jogamp.common.nio.*;
