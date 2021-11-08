@@ -67,12 +67,17 @@ public class Model {
     // Setting up Lighting!
     // Directional lighting
     //Iterating over the different lights and setting them up
+    /*
     for(int index=0; index<(lights.size()); index++){
       shader.setVec3(gl, "dirLight["+index+"].position", lights.get(index).getPosition());
       shader.setVec3(gl, "dirLight["+index+"].ambient", lights.get(index).getMaterial().getAmbient());
       shader.setVec3(gl, "dirLight["+index+"].diffuse", lights.get(index).getMaterial().getDiffuse());
       shader.setVec3(gl, "dirLight["+index+"].specular", lights.get(index).getMaterial().getSpecular());
-    }
+    }*/
+    shader.setVec3(gl, "dirLight.position", lights.get(0).getPosition());
+    shader.setVec3(gl, "dirLight.ambient", lights.get(0).getMaterial().getAmbient());
+    shader.setVec3(gl, "dirLight.diffuse", lights.get(0).getMaterial().getDiffuse());
+    shader.setVec3(gl, "dirLight.specular", lights.get(0).getMaterial().getSpecular());
 
     //TESTING - TESTING -TESTING - TESTING -TESTING - TESTING -TESTING - TESTING -TESTING - TESTING -TESTING - TESTING -
     //PointLight!!

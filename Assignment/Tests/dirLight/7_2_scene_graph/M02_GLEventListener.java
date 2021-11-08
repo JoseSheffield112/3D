@@ -62,7 +62,6 @@ public class M02_GLEventListener implements GLEventListener {
   public void dispose(GLAutoDrawable drawable) {
     GL3 gl = drawable.getGL().getGL3();
     light1.dispose(gl);
-    light2.dispose(gl);
     floor.dispose(gl);
     lampLight.dispose(gl);
     pointLight1.dispose(gl);
@@ -77,7 +76,7 @@ public class M02_GLEventListener implements GLEventListener {
   private Camera camera;
   private Mat4 perspective;
   private Model floor, cube;
-  private DirectionalLight light1, light2;
+  private DirectionalLight light1;
   private static ArrayList<DirectionalLight> lights = new ArrayList<DirectionalLight>();
   private SpotLight lampLight;
   private PointLight pointLight1;
@@ -91,17 +90,14 @@ public class M02_GLEventListener implements GLEventListener {
     int[] textureId2 = TextureLibrary.loadTexture(gl, "textures/container2_specular.jpg");
     
     light1 = new DirectionalLight(gl, 1.0f);
-    light2 = new DirectionalLight(gl, 0.9f);
     lampLight = new SpotLight(gl, 1f);
     // Messing with point lights
     pointLight1 = new PointLight(gl, 0.5f);
     light1.setCamera(camera);
-    light2.setCamera(camera);
     lampLight.setCamera(camera);
     pointLight1.setCamera(camera);
     // an array with the light
     lights.add(light1);
-    lights.add(light2);
 	
     //Setting up model for our wall!
     Mesh mesh = new Mesh(gl, TwoTriangles.vertices.clone(), TwoTriangles.indices.clone());
@@ -123,9 +119,7 @@ public class M02_GLEventListener implements GLEventListener {
     gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
     //light.setPosition(getLightPosition(1));
     light1.render(gl);
-    //light2.setPosition(getLightPosition(-1));
-    light2.render(gl);
-    updateLightColour();
+    //updateLightColour();
     lampLight.setPosition(new Vec3(0f,8f,0f));
     lampLight.render(gl);
     //updatePointLightColour();
