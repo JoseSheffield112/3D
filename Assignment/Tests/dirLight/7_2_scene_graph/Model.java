@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import gmaths.*;
 import java.nio.*;
 import com.jogamp.common.nio.*;
@@ -12,12 +13,12 @@ public class Model {
   private Shader shader;
   private Mat4 modelMatrix;
   private Camera camera;
-  private Light[] lights;
+  private ArrayList<DirectionalLight> lights;
   private SpotLight spotLight;
   private PointLight pointLight;
   
   // this model would have both a diffuse texture (textureId1) and then also has a specular texture (textureId2
-  public Model(GL3 gl, Camera camera, Light[] lights, PointLight pointLight, SpotLight spotLight, Shader shader, Material material, Mat4 modelMatrix, Mesh mesh, int[] textureId1, int[] textureId2) {
+  public Model(GL3 gl, Camera camera, ArrayList<DirectionalLight> lights, PointLight pointLight, SpotLight spotLight, Shader shader, Material material, Mat4 modelMatrix, Mesh mesh, int[] textureId1, int[] textureId2) {
     this.mesh = mesh;
     this.material = material;
     this.modelMatrix = modelMatrix;
@@ -31,11 +32,11 @@ public class Model {
   }
   
   // this textureId1 only counts as the diffuse texture for this model
-  public Model(GL3 gl, Camera camera, Light[] lights, PointLight pointLight, SpotLight spotLight, Shader shader, Material material, Mat4 modelMatrix, Mesh mesh, int[] textureId1) {
+  public Model(GL3 gl, Camera camera, ArrayList<DirectionalLight> lights, PointLight pointLight, SpotLight spotLight, Shader shader, Material material, Mat4 modelMatrix, Mesh mesh, int[] textureId1) {
     this(gl, camera, lights, pointLight, spotLight, shader, material, modelMatrix, mesh, textureId1, null);
   }
   
-  public Model(GL3 gl, Camera camera, Light[] lights,  PointLight pointLight,SpotLight spotLight, Shader shader, Material material, Mat4 modelMatrix, Mesh mesh) {
+  public Model(GL3 gl, Camera camera, ArrayList<DirectionalLight> lights,  PointLight pointLight,SpotLight spotLight, Shader shader, Material material, Mat4 modelMatrix, Mesh mesh) {
     this(gl, camera, lights, pointLight, spotLight, shader, material, modelMatrix, mesh, null, null);
   }
   
@@ -47,10 +48,6 @@ public class Model {
   
   public void setCamera(Camera camera) {
     this.camera = camera;
-  }
-  
-  public void setLight(Light light, int index) {
-    this.lights[index] = light;
   }
   /**
    * Setting spotLight
@@ -70,11 +67,11 @@ public class Model {
     // Setting up Lighting!
     // Directional lighting
     //Iterating over the different lights and setting them up
-    for(int index=0; index<(lights.length); index++){
-      shader.setVec3(gl, "dirLight["+index+"].position", lights[index].getPosition());
-      shader.setVec3(gl, "dirLight["+index+"].ambient", lights[index].getMaterial().getAmbient());
-      shader.setVec3(gl, "dirLight["+index+"].diffuse", lights[index].getMaterial().getDiffuse());
-      shader.setVec3(gl, "dirLight["+index+"].specular", lights[index].getMaterial().getSpecular());
+    for(int index=0; index<(lights.size()); index++){
+      shader.setVec3(gl, "dirLight["+index+"].position", lights.get(index).getPosition());
+      shader.setVec3(gl, "dirLight["+index+"].ambient", lights.get(index).getMaterial().getAmbient());
+      shader.setVec3(gl, "dirLight["+index+"].diffuse", lights.get(index).getMaterial().getDiffuse());
+      shader.setVec3(gl, "dirLight["+index+"].specular", lights.get(index).getMaterial().getSpecular());
     }
 
     //TESTING - TESTING -TESTING - TESTING -TESTING - TESTING -TESTING - TESTING -TESTING - TESTING -TESTING - TESTING -

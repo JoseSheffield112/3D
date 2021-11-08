@@ -4,6 +4,7 @@
  * need to change all other classes that depend on that
  * then you also need to make sure the fragment shaders are fine!
  */
+import java.util.ArrayList;
 import gmaths.*;
 import java.nio.*;
 import com.jogamp.common.nio.*;
