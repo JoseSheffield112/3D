@@ -1,6 +1,7 @@
 /*
 I have created this code using the online resource of openGL:
   https://learnopengl.com/Lighting/Multiple-lights
+  As well as shader code from Dr.Maddocks lab classes
 */
 #version 330 core
 

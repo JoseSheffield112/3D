@@ -81,7 +81,7 @@ public class M02_GLEventListener implements GLEventListener {
     int[] textureId2 = TextureLibrary.loadTexture(gl, "textures/container2_specular.jpg");
     
     light = new Light(gl, 1.0f);
-    light2 = new Light(gl, 0.5f);
+    light2 = new Light(gl, 0.9f);
     lampLight = new SpotLight(gl, 1f);
     light.setCamera(camera);
     light2.setCamera(camera);
