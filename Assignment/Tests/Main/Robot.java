@@ -7,6 +7,7 @@
 */
 import gmaths.*;
 import java.nio.*;
+import java.util.ArrayList;
 import com.jogamp.common.nio.*;
 import com.jogamp.opengl.*;
 import com.jogamp.opengl.util.*;
@@ -25,14 +26,16 @@ public class Robot{
     private TransformNode translateX, robotMoveTranslate, leftArmRotate, rightArmRotate;
 
     //TEMP
-    private Light light;
+    private ArrayList<Light> lights = new ArrayList<Light>();  
     private Camera camera;
-    private float xPosition;
+    private float xPosition, yPosition, zPosition;
 
-    public Robot(GL3 gl, Light light, Camera camera, float xPosition) {
-        this.light = light;
+    public Robot(GL3 gl, ArrayList<Light> lights, Camera camera, float xPosition, float yPosition, float zPosition) {
+        this.lights = lights;
         this.camera=camera;
         this.xPosition = xPosition;
+        this.yPosition = yPosition;
+        this.zPosition = zPosition;
         sceneGraph(gl);
     }
 
@@ -61,23 +64,23 @@ public class Robot{
         Shader shader = new Shader(gl, "vs_cube_04.txt", "fs_cube_04.txt");
         Material material = new Material(new Vec3(1.0f, 0.5f, 0.31f), new Vec3(1.0f, 0.5f, 0.31f), new Vec3(0.5f, 0.5f, 0.5f), 32.0f);
         Mat4 modelMatrix = Mat4.multiply(Mat4Transform.scale(4,4,4), Mat4Transform.translate(0,0.5f,0));
-        cube = new Model(gl, camera, light, shader, material, modelMatrix, mesh, textureId3, textureId4);
+        cube = new Model(gl, camera, lights, shader, material, modelMatrix, mesh, textureId3, textureId4);
         // same cube model, but different textures
-        cube2 = new Model(gl, camera, light, shader, material, modelMatrix, mesh, textureId5, textureId6); 
+        cube2 = new Model(gl, camera, lights, shader, material, modelMatrix, mesh, textureId5, textureId6); 
 
         //Sphere model
         mesh = new Mesh(gl, Sphere.vertices.clone(), Sphere.indices.clone());
         shader = new Shader(gl, "vs_cube_04.txt", "fs_cube_04.txt");
         material = new Material(new Vec3(1.0f, 0.5f, 0.31f), new Vec3(1.0f, 0.5f, 0.31f), new Vec3(0.5f, 0.5f, 0.5f), 32.0f);
         modelMatrix = Mat4.multiply(Mat4Transform.scale(4,4,4), Mat4Transform.translate(0,0.5f,0));
-        sphere = new Model(gl, camera, light, shader, material, modelMatrix, mesh, textureId1, textureId2);
+        sphere = new Model(gl, camera, lights, shader, material, modelMatrix, mesh, textureId1, textureId2);
 
         // Scenegraph nodes
         // robot - scene graph construction
         // Root node for Robot scene graph
         robotRoot = new NameNode("robot");
         // moving whole of robot in x axis
-        robotMoveTranslate = new TransformNode("robot transform",Mat4Transform.translate(xPosition,0,0));
+        robotMoveTranslate = new TransformNode("robot transform",Mat4Transform.translate(xPosition,yPosition,zPosition));
         //Translating whole body above world floor
         TransformNode robotTranslate = new TransformNode("robot transform",Mat4Transform.translate(0,legLength,0));
 
@@ -165,9 +168,21 @@ public class Robot{
         //System.exit(0);        
     }
 
-    public void updateMove(float newxPosition) {
+    public void updateMoveX(float newxPosition) {
         xPosition = newxPosition;
-        robotMoveTranslate.setTransform(Mat4Transform.translate(xPosition,0,0));
+        robotMoveTranslate.setTransform(Mat4Transform.translate(xPosition,yPosition,zPosition));
+        robotMoveTranslate.update();
+    }
+
+    public void updateMoveY(float newYPosition) {
+        yPosition = newYPosition;
+        robotMoveTranslate.setTransform(Mat4Transform.translate(xPosition,yPosition,zPosition));
+        robotMoveTranslate.update();
+    }
+
+    public void updateMoveZ(float newZPosition) {
+        zPosition = newZPosition;
+        robotMoveTranslate.setTransform(Mat4Transform.translate(xPosition,yPosition,zPosition));
         robotMoveTranslate.update();
     }
 

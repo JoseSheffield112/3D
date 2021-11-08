@@ -7,6 +7,7 @@
 */
 import gmaths.*;
 import java.nio.*;
+import java.util.ArrayList;
 import com.jogamp.common.nio.*;
 import com.jogamp.opengl.*;
   
@@ -17,13 +18,16 @@ public class Light {
   private Mat4 model;
   private Shader shader;
   private Camera camera;
+  //
+  private Vec3 lightAmbient = new Vec3(0.3f, 0.3f, 0.3f);
+  private Vec3 lightDiffuse = new Vec3(0.8f, 0.8f, 0.8f);
     
-  public Light(GL3 gl) {
+  public Light(GL3 gl, float dimness) {
     material = new Material();
-    material.setAmbient(0.5f, 0.5f, 0.5f);
-    material.setDiffuse(0.8f, 0.8f, 0.8f);
-    material.setSpecular(0.8f, 0.8f, 0.8f);
-    position = new Vec3(3f,2f,1f);
+    material.setAmbient(Vec3.multiply(lightAmbient, dimness));
+    material.setDiffuse(Vec3.multiply(lightDiffuse, dimness));
+    material.setSpecular(Vec3.multiply(lightDiffuse, dimness));
+    position = new Vec3(1f,1f,1f); // default position for all lights!
     model = new Mat4(1);
     shader = new Shader(gl, "vs_light_01.txt", "fs_light_01.txt");
     fillBuffers(gl);

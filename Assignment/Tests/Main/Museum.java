@@ -68,7 +68,20 @@ public class Museum extends JFrame implements ActionListener {
       p.add(b);
       b = new JButton("decrease X position");
       b.addActionListener(this);
-      p.add(b);/*
+      p.add(b);
+      b = new JButton("increase Y position");
+      b.addActionListener(this);
+      p.add(b);
+      b = new JButton("decrease Y position");
+      b.addActionListener(this);
+      p.add(b);  
+      b = new JButton("increase Z position");
+      b.addActionListener(this);
+      p.add(b);
+      b = new JButton("decrease Z position");
+      b.addActionListener(this);
+      p.add(b);      
+      /*
       b = new JButton("lowered arms");
       b.addActionListener(this);
       p.add(b);
@@ -112,7 +125,20 @@ public class Museum extends JFrame implements ActionListener {
     }
     else if (e.getActionCommand().equalsIgnoreCase("decrease X position")) {
       glEventListener.decXPosition();
-    }/*
+    }
+    else if (e.getActionCommand().equalsIgnoreCase("increase Y position")) {
+      glEventListener.incYPosition();
+    }
+    else if (e.getActionCommand().equalsIgnoreCase("decrease Y position")) {
+      glEventListener.decYPosition();
+    }    
+    else if (e.getActionCommand().equalsIgnoreCase("increase Z position")) {
+      glEventListener.incZPosition();
+    }
+    else if (e.getActionCommand().equalsIgnoreCase("decrease Z position")) {
+      glEventListener.decZPosition();
+    }    
+    /*
     else if (e.getActionCommand().equalsIgnoreCase("lowered arms")) {
       glEventListener.loweredArms();
     }

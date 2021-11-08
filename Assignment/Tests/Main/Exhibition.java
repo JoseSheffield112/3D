@@ -9,6 +9,7 @@
 */
 import gmaths.*;
 import java.nio.*;
+import java.util.ArrayList;
 import com.jogamp.common.nio.*;
 import com.jogamp.opengl.*;
 import com.jogamp.opengl.util.*;
@@ -27,7 +28,7 @@ public class Exhibition{
     private TransformNode enlargen;
 
     //TEMP
-    private Light light;
+    private ArrayList<Light> lights = new ArrayList<Light>();  
     private Camera camera;
   
     //Setting Values
@@ -36,8 +37,8 @@ public class Exhibition{
     private float doorPositioning = 0.75f;
     private Vec3 whiteLight = new Vec3(1.0f, 1.0f, 1.0f);
 
-    public Exhibition(GL3 gl, Light light, Camera camera){
-        this.light = light;
+    public Exhibition(GL3 gl, ArrayList<Light> lights, Camera camera){
+        this.lights = lights;
         this.camera=camera;
         sceneGraph(gl);
     }
@@ -52,7 +53,7 @@ public class Exhibition{
         Shader shader = new Shader(gl, "vs_tt_05.txt", "fs_tt_05.txt");
         Material material = new Material(whiteLight, whiteLight, new Vec3(0.3f, 0.3f, 0.3f), 32.0f);
         Mat4 modelMatrix = Mat4Transform.scale(1f,1f,1f);
-        floor = new Model(gl, camera, light, shader, material, modelMatrix, mesh, textureId0);
+        floor = new Model(gl, camera, lights, shader, material, modelMatrix, mesh, textureId0);
 
         //Scene graph
         //Root

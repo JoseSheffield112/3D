@@ -7,6 +7,7 @@
 */
 import gmaths.*;
 import java.nio.*;
+import java.util.ArrayList;
 import com.jogamp.common.nio.*;
 import com.jogamp.opengl.*;
 import com.jogamp.opengl.util.*;
@@ -23,9 +24,12 @@ public class Museum_GLEventListener implements GLEventListener {
   private SGNode roomScene = new NameNode("Museum - Root node");
 
   // dimness setting for light
-  private static float dimness[] = {0.125f,0.25f,0.5f,1f};
+  private static float dimness[] = {0f,0.33f,0.66f,1f}; // different dimness settings for the lights
+  private static int currentDimness = 1; // dimness used for the museum lights - they're fancy but expensive!
   // xPosition for rendering the robot
   private float xPosition = 0;
+  private float yPosition = 0;
+  private float zPosition = 0;
     
   public Museum_GLEventListener(Camera camera) {
     this.camera = camera;
@@ -69,7 +73,9 @@ public class Museum_GLEventListener implements GLEventListener {
   /* Clean up memory, if necessary */
   public void dispose(GLAutoDrawable drawable) {
     GL3 gl = drawable.getGL().getGL3();
-    light.dispose(gl);
+    for(int i=0; i<(lights.size()); i++){
+      lights.get(i).dispose(gl);
+    }
     //floor.dispose(gl);
     //sphere.dispose(gl);
     //cube.dispose(gl);
@@ -100,14 +106,38 @@ public class Museum_GLEventListener implements GLEventListener {
   public void incXPosition() {
     xPosition += 0.5f;
     if (xPosition>5f) xPosition = 5f;
-    myRobot.updateMove(xPosition);
+    myRobot.updateMoveX(xPosition);
   }
 
   public void decXPosition() {
     xPosition -= 0.5f;
     if (xPosition<-5f) xPosition = -5f;
-    myRobot.updateMove(xPosition);
+    myRobot.updateMoveX(xPosition);
   }
+  public void incYPosition() {
+    yPosition += 0.5f;
+    if (yPosition>5f) yPosition = 5f;
+    myRobot.updateMoveY(yPosition);
+  }
+
+  public void decYPosition() {
+    yPosition -= 0.5f;
+    if (yPosition<-5f) yPosition = -5f;
+    myRobot.updateMoveY(yPosition);
+  }
+
+  public void incZPosition() {
+    zPosition += 0.5f;
+    if (zPosition>5f) zPosition = 5f;
+    myRobot.updateMoveZ(zPosition);
+  }
+
+  public void decZPosition() {
+    zPosition -= 0.5f;
+    if (zPosition<-5f) zPosition = -5f;
+    myRobot.updateMoveZ(zPosition);
+  }
+
 
   /*
   public void loweredArms() {
@@ -135,8 +165,12 @@ public class Museum_GLEventListener implements GLEventListener {
   private Camera camera;
   private Mat4 perspective;
   private Model floor, wall, door; // declaring the models!
-  private Light light;
   private SGNode robotRoot;
+  private Light light1, light2, light3, light4;
+  private SpotLight sunLight;
+  private PointLight lampLight;
+  private ArrayList<Light> lights = new ArrayList<Light>();  
+
   
   private void initialise(GL3 gl) {
     createRandomNumbers();
@@ -151,9 +185,34 @@ public class Museum_GLEventListener implements GLEventListener {
     int[] textureId7 = TextureLibrary.loadTexture(gl, "textures/brickWall.jpg");
     int[] textureId8 = TextureLibrary.loadTexture(gl, "textures/door.jpg");
     
-    //Setting the scene light
-    light = new Light(gl);
-    light.setCamera(camera);
+    /**
+     * Initialising all my lights!
+     */
+    // Setting the ceiling lights of the museum - these are directional lights (museum did this for maximum exhibition clarity :) )
+    // code is wasteful, but it solves my need
+    light1 = new Light(gl, dimness[3]);
+    light1.setCamera(camera);
+    light1.setPosition(new Vec3(-6f,8f,2f));
+    light2 = new Light(gl, dimness[3]);
+    light2.setCamera(camera);
+    light2.setPosition(new Vec3(6f,8f,-2f));
+    light3 = new Light(gl, dimness[3]);
+    light3.setCamera(camera);
+    light3.setPosition(new Vec3(-6f,8f,-2f));
+    light4 = new Light(gl, dimness[3]);
+    light4.setCamera(camera);
+    light4.setPosition(new Vec3(6f,8f,2f));
+    lights.add(light1);
+    lights.add(light2);
+    lights.add(light3);
+    lights.add(light4);
+    /*
+    // Setting the sun light coming in from the window - this is a point light
+    sunLight = new SpotLight(gl);
+    sunLight.setCamera(camera);
+    // Setting the lampLight - this is a point light
+    lampLight = new LampLight(gl);
+    lampLight.setCamera(camera);*/
     
   	// loading models
     Vec3 whiteLight = new Vec3(1.0f, 1.0f, 1.0f);
@@ -190,27 +249,25 @@ public class Museum_GLEventListener implements GLEventListener {
     Mat4 modelMatrix = Mat4Transform.scale(wallSize,1f,wallSize);
     modelMatrix = Mat4.multiply(Mat4Transform.rotateAroundX(90), modelMatrix);
     modelMatrix = Mat4.multiply(Mat4Transform.translate(0f,wallSize*0.5f,-wallSize*0.5f), modelMatrix);
-    wall = new Model(gl, camera, light, shader, material, modelMatrix, mesh, textureId7);
+    wall = new Model(gl, camera, lights, shader, material, modelMatrix, mesh, textureId7);
 
-    myRobot = new Robot(gl, light, camera, xPosition);
-    theRoom = new Room(gl, light, camera);
+    myRobot = new Robot(gl, lights, camera, xPosition, yPosition, zPosition);
+    theRoom = new Room(gl, lights, camera);
     SGNode roomChild = theRoom.getSceneGraph();
 
     roomScene.addChild(roomChild);
       roomChild.addChild(myRobot.getSceneGraph());
     roomScene.update();
-    roomScene.print(0, false);
-    System.exit(0);      
-
-    // Static light source
-    light.setPosition(getLightPosition());  // changing light position each frame
+    //roomScene.print(0, false);
+    //System.exit(0);      
   }
  
   private void render(GL3 gl) {
     gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
-    // updating the light
-    light.setPosition(getLightPosition());  // changing light position each frame
-    light.render(gl); // can set up a vairable here to check if light is on/off
+    // updating the lights
+    for(int i=0; i<(lights.size()); i++){
+      lights.get(i).render(gl);
+    }
     //floor.render(gl); 
     wall.render(gl);
     roomScene.draw(gl);
@@ -218,17 +275,20 @@ public class Museum_GLEventListener implements GLEventListener {
   /*
   Updating light colour
   */
-  private static int currentDimness = 1;
   public void toggleLight() {
     float newDimness=dimness[currentDimness];
     Vec3 lightColour = new Vec3();
     lightColour.x = 1.6f * newDimness;
     lightColour.y = 1.6f * newDimness;
     lightColour.z = 1.6f * newDimness;
-    Material m = light.getMaterial();
-    m.setDiffuse(Vec3.multiply(lightColour,0.5f));
-    m.setAmbient(Vec3.multiply(m.getDiffuse(),0.62f));
-    light.setMaterial(m);
+    // changing lights
+    Material m = light1.getMaterial();
+    for(int i=0; i<(lights.size()); i++){
+      m = lights.get(i).getMaterial();
+      m.setDiffuse(Vec3.multiply(lightColour,0.5f));
+      m.setAmbient(Vec3.multiply(m.getDiffuse(),0.62f));
+      lights.get(i).setMaterial(m);
+    }
     currentDimness+=1;
     if(currentDimness>3){
       currentDimness=0;
