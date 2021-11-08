@@ -70,6 +70,7 @@ public class Model {
     shader.setVec3(gl, "dirLight.ambient", sunLight.getMaterial().getAmbient());
     shader.setVec3(gl, "dirLight.diffuse", sunLight.getMaterial().getDiffuse());
     shader.setVec3(gl, "dirLight.specular", sunLight.getMaterial().getSpecular());
+
     // point light - ceiling lights
     for(int index=0; index<(ceilingLights.size()); index++){
       shader.setVec3(gl, "pointLight["+index+"].position", ceilingLights.get(index).getPosition());
@@ -80,9 +81,8 @@ public class Model {
       shader.setFloat(gl, "pointLight["+index+"].linear", ceilingLights.get(index).getLinear());
       shader.setFloat(gl, "pointLight["+index+"].quadratic", ceilingLights.get(index).getQuadratic()); 
     }
-/*
 
-    //Spot Lighting!
+    // Spot Light - swinging lamp (not swinging yet :( )
     shader.setVec3(gl, "spotLight.position", spotLight.getPosition());
     shader.setVec3(gl, "spotLight.direction", spotLight.getDirection());
     shader.setVec3(gl, "spotLight.ambient", spotLight.getMaterial().getAmbient());
@@ -93,7 +93,7 @@ public class Model {
     shader.setFloat(gl, "spotLight.quadratic", spotLight.getQuadratic());
     shader.setFloat(gl, "spotLight.cutOff", (float)Math.cos(Math.toRadians(spotLight.getCuttOff())));
     shader.setFloat(gl, "spotLight.outerCutOff", (float)Math.cos(Math.toRadians(spotLight.getOuterCuttOff()))); 
-*/
+
     shader.setVec3(gl, "material.ambient", material.getAmbient());
     shader.setVec3(gl, "material.diffuse", material.getDiffuse());
     shader.setVec3(gl, "material.specular", material.getSpecular());

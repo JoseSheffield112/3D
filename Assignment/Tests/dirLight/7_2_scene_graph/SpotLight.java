@@ -24,8 +24,8 @@ public class SpotLight extends Light{
         this.constant = 1.0f;
         this.linear = 0.09f;
         this.quadratic = 0.032f;
-        this.cutOff = 50f;
-        this.outerCutOff = 50f;
+        this.cutOff = 12.5f;
+        this.outerCutOff = 17.5f;
     }
 
     /**

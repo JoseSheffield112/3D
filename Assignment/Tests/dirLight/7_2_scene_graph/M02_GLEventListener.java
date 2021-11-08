@@ -121,16 +121,15 @@ public class M02_GLEventListener implements GLEventListener {
  
   private void render(GL3 gl) {
     gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
-    sunLight.setPosition(new Vec3(0f,-1f,0f));
+    sunLight.setPosition(new Vec3(0f,10f,0f));
     sunLight.render(gl);
-    updatePointLightColour();
-    lightBulb.setPosition(new Vec3(-2f,4f,0f));
+    lightBulb.setPosition(new Vec3(-2f,-4f,0f));
     lightBulb.render(gl);
-    lightBulb2.setPosition(new Vec3(2f,4f,0f));
+    lightBulb2.setPosition(new Vec3(2f,-4f,0f));
     lightBulb2.render(gl);
-    // //updatePointLightColour();
-    // lightBulb.setPosition(new Vec3(0f,-1f,0f));
-    // lightBulb.render(gl);
+    updateLightColour();
+    lampLight.setPosition(new Vec3(0f,4f,0f));
+    lampLight.render(gl);
     floor.render(gl);
     cube.render(gl);
   }
@@ -148,14 +147,9 @@ public class M02_GLEventListener implements GLEventListener {
   }
 
   private void updateLightColour() {
-    double elapsedTime = getSeconds()-startTime;
-    Vec3 lightColour = new Vec3();
-    lightColour.x = (float)Math.sin(elapsedTime * 2.0f);
-    lightColour.y = (float)Math.sin(elapsedTime * 0.7f);
-    lightColour.z = (float)Math.sin(elapsedTime * 1.3f);
     Material m = lampLight.getMaterial();
-    m.setDiffuse(Vec3.multiply(lightColour,0.5f));
-    m.setAmbient(Vec3.multiply(m.getDiffuse(),0.2f));
+    m.setDiffuse(new Vec3(0.1f, 0.8f, 0.1f));
+    m.setAmbient(new Vec3(0.1f, 0.1f, 0.1f));
     lampLight.setMaterial(m);
   }
   
