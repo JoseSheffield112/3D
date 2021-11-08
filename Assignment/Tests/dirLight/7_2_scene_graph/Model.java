@@ -78,7 +78,7 @@ public class Model {
     shader.setVec3(gl, "dirLight.ambient", lights.get(0).getMaterial().getAmbient());
     shader.setVec3(gl, "dirLight.diffuse", lights.get(0).getMaterial().getDiffuse());
     shader.setVec3(gl, "dirLight.specular", lights.get(0).getMaterial().getSpecular());
-
+/*
     //TESTING - TESTING -TESTING - TESTING -TESTING - TESTING -TESTING - TESTING -TESTING - TESTING -TESTING - TESTING -
     //PointLight!!
     // Seems point light might be for the sun!!
@@ -102,7 +102,7 @@ public class Model {
     shader.setFloat(gl, "spotLight.quadratic", spotLight.getQuadratic());
     shader.setFloat(gl, "spotLight.cutOff", (float)Math.cos(Math.toRadians(spotLight.getCuttOff())));
     shader.setFloat(gl, "spotLight.outerCutOff", (float)Math.cos(Math.toRadians(spotLight.getOuterCuttOff()))); 
-
+*/
     shader.setVec3(gl, "material.ambient", material.getAmbient());
     shader.setVec3(gl, "material.diffuse", material.getDiffuse());
     shader.setVec3(gl, "material.specular", material.getSpecular());

@@ -13,8 +13,8 @@ public class Light {
   private Camera camera;
   //private Mat4 perspective;
   // My testing bed! mine alone!!
-  private Vec3 lightAmbient = new Vec3(0.3f, 0.3f, 0.3f);
-  private Vec3 lightDiffuse = new Vec3(0.7f, 0.7f, 0.7f);
+  private Vec3 lightAmbient = new Vec3(1f,1f,1f);
+  private Vec3 lightDiffuse = new Vec3(1f,1f,1f);
   private Vec3 default_position = new Vec3(3f,2f,1f);
     
   public Light(GL3 gl, float dimness) {
@@ -22,7 +22,7 @@ public class Light {
     material.setAmbient(Vec3.multiply(lightAmbient, dimness));
     material.setDiffuse(Vec3.multiply(lightDiffuse, dimness));
     material.setSpecular(Vec3.multiply(lightDiffuse, dimness));
-    position = (dimness<1f) ? (Vec3.multiply(default_position, 1.5f)) : default_position;
+    position = default_position;
     model = new Mat4(1);
     shader = new Shader(gl, "vs_light_01.txt", "fs_light_01.txt");
     fillBuffers(gl);

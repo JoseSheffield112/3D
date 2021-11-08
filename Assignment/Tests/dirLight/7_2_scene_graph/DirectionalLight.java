@@ -18,7 +18,6 @@ public class DirectionalLight extends Light{
     private Vec3 direction;
     public DirectionalLight(GL3 gl, float dimness){
         super(gl, dimness);
-        this.direction = new Vec3(0f,-1f,0f); //Has to be negative in order to point down!
     }
 
     /**
@@ -34,6 +33,10 @@ public class DirectionalLight extends Light{
         direction.x = x;
         direction.y = y;
         direction.z = z;
+    }
+
+    public Vec3 getDirection() {
+        return direction;
     }
    
 }

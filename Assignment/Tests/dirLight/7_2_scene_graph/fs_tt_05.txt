@@ -113,6 +113,7 @@ vec3 calcDirLight(DirLight light, vec3 normal, vec3 viewDir){
   return (ambient + diffuse + specular);
 }
 
+
 // Calculating point light!
 vec3 calcPointLight(PointLight light, vec3 normal, vec3 fragPos, vec3 viewDir){
     vec3 lightDir = normalize(light.position - fragPos);
@@ -169,9 +170,9 @@ void main() {
   // looping over the different sources!
   result += calcDirLight(dirLight, norm, viewDir);
   // phase 2 - point light
-  result += calcPointLight(pointLight, norm, aPos, viewDir);  
+  //result += calcPointLight(pointLight, norm, aPos, viewDir);  
   //phase 3 - spot light
-  result += calcSpotLight(spotLight, norm, aPos, viewDir);  
+  //result += calcSpotLight(spotLight, norm, aPos, viewDir);  
 
   fragColor = vec4(result, 1.0);
 }
