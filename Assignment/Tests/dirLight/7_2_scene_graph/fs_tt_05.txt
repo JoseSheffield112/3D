@@ -25,7 +25,22 @@ struct DirLight {
     vec3 ambient;
     vec3 diffuse;
     vec3 specular;
-};  
+}; 
+
+/*
+Dealing with point light
+*/
+struct PointLight {
+    vec3 position;
+    
+    float constant;
+    float linear;
+    float quadratic;
+	
+    vec3 ambient;
+    vec3 diffuse;
+    vec3 specular;
+};
 
 /*
 Dealing with a spot light
@@ -69,12 +84,14 @@ uniform Material material;
 #define DIR_LIGHTS 2
 uniform DirLight dirLight[DIR_LIGHTS];
 
+uniform PointLight pointLight;
+
 uniform SpotLight spotLight;
 
 /*
 Functions
 
-The following 3 functions were heavily copied from the highlighted website/resource
+The following 4 functions were heavily copied from the highlighted website/resource
 I have made minor modifications so they work with my code, but it is still largely not written by me
 
 Again, sourced from : https://learnopengl.com/Lighting/Multiple-lights
@@ -96,6 +113,26 @@ vec3 calcDirLight(DirLight light, vec3 normal, vec3 viewDir){
   return (ambient + diffuse + specular);
 }
 
+// Calculating point light!
+vec3 calcPointLight(PointLight light, vec3 normal, vec3 fragPos, vec3 viewDir){
+    vec3 lightDir = normalize(light.position - fragPos);
+    // diffuse shading
+    float diff = max(dot(normal, lightDir), 0.0);
+    // specular shading
+    vec3 reflectDir = reflect(-lightDir, normal);
+    float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
+    // attenuation
+    float distance = length(light.position - fragPos);
+    float attenuation = 1.0 / (light.constant + light.linear * distance + light.quadratic * (distance * distance));    
+    // combine results
+    vec3 ambient = light.ambient * vec3(texture(first_texture, aTexCoord));
+    vec3 diffuse = light.diffuse * diff * vec3(texture(first_texture, aTexCoord));
+    vec3 specular = light.specular * spec * vec3(texture(second_texture, aTexCoord));
+    ambient *= attenuation;
+    diffuse *= attenuation;
+    specular *= attenuation;
+    return (ambient + diffuse + specular);
+}
 
 // Calculating a spot light
 vec3 calcSpotLight(SpotLight light, vec3 normal, vec3 fragPos, vec3 viewDir){
@@ -133,7 +170,9 @@ void main() {
   for(int i=0;i<DIR_LIGHTS;i++){
     result += calcDirLight(dirLight[i], norm, viewDir);
   }
-  //phase 2 - spot light
+  // phase 2 - point light
+  result += calcPointLight(pointLight, norm, aPos, viewDir);  
+  //phase 3 - spot light
   result += calcSpotLight(spotLight, norm, aPos, viewDir);  
 
   fragColor = vec4(result, 1.0);
