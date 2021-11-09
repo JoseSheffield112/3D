@@ -182,6 +182,10 @@ public class Museum_GLEventListener implements GLEventListener {
     ceilingLights.add(lightBulb4);
     ceilingLights.add(lightBulb5);
     ceilingLights.add(lightBulb6);
+
+    // resetting values
+    currentCycle=0;
+    currentDimness+=1;
     
   	// loading models
     Vec3 whiteLight = new Vec3(1.0f, 1.0f, 1.0f);
@@ -237,17 +241,17 @@ public class Museum_GLEventListener implements GLEventListener {
     sunLight.setPosition(new Vec3(-12f,6f,0f));
     sunLight.render(gl);
     /* Setting ceiling lights*/
-    lightBulb.setPosition(new Vec3(-10f,10f,-8f));
+    lightBulb.setPosition(new Vec3(-6f,8f,-6f));
     lightBulb.render(gl);
-    lightBulb2.setPosition(new Vec3(0f,10f,-8f));
+    lightBulb2.setPosition(new Vec3(0f,8f,-6f));
     lightBulb2.render(gl);
-    lightBulb3.setPosition(new Vec3(10f,10f,-8f));
+    lightBulb3.setPosition(new Vec3(6f,8f,-6f));
     lightBulb3.render(gl);
-    lightBulb4.setPosition(new Vec3(-10f,10f,0f));
+    lightBulb4.setPosition(new Vec3(-6f,8f,4f));
     lightBulb4.render(gl);
-    lightBulb5.setPosition(new Vec3(0f,10f,0f));
+    lightBulb5.setPosition(new Vec3(0f,8f,4f));
     lightBulb5.render(gl);
-    lightBulb6.setPosition(new Vec3(10f,10f,0f));
+    lightBulb6.setPosition(new Vec3(6f,8f,4f));
     lightBulb6.render(gl);
     updateLightColour();
     lampLight.setPosition(new Vec3(6f,5.5f,-2f));

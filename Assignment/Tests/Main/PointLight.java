@@ -20,8 +20,8 @@ public class PointLight extends Light{
     public PointLight(GL3 gl, float dimness){
         super(gl, dimness);
         this.constant = 1.0f;
-        this.linear = 0.09f;
-        this.quadratic = 0.032f;
+        this.linear = 0.07f;
+        this.quadratic = 0.017f;
     }
 
     /**

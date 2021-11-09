@@ -42,7 +42,7 @@ public class DirectionalLight extends Light{
     }
 
     public void setDefaultDiffuseSpecular(float dimness){
-        Vec3 defaultSpecular = new Vec3(1f,1f,1f);
+        Vec3 defaultSpecular = new Vec3(0.8f,0.8f,0.8f);
         this.getMaterial().setAmbient(Vec3.multiply(defaultSpecular, dimness));
         this.getMaterial().setDiffuse(defaultSpecular);
     }
