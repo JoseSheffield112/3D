@@ -81,7 +81,7 @@ uniform Material material;
 
 uniform DirLight dirLight;
 
-#define POINT_LIGHTS 2
+#define POINT_LIGHTS 6
 uniform PointLight pointLight[POINT_LIGHTS];
 
 uniform SpotLight spotLight;
@@ -162,15 +162,17 @@ void main() {
   // properties
   vec3 norm = normalize(aNormal);
   vec3 viewDir = normalize(viewPos - aPos);
-  vec3 result;
+  vec3 result, result2;
 
   // phase 1: Directional lighting
   // looping over the different sources!
   result += calcDirLight(dirLight, norm, viewDir);
   // phase 2 - point light
   for(int i=0; i<POINT_LIGHTS; i++){
-    result += calcPointLight(pointLight[i], norm, aPos, viewDir);  
+    result2 += calcPointLight(pointLight[i], norm, aPos, viewDir);  
   }
+  //offsetting the number of ceiling lights!
+  result +=  (result2/POINT_LIGHTS);
   //phase 3 - spot light
   result += calcSpotLight(spotLight, norm, aPos, viewDir);  
 

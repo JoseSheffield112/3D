@@ -56,7 +56,7 @@ public class Museum extends JFrame implements ActionListener {
       p.add(b);
       b = new JButton("camera Z");
       b.addActionListener(this);
-      p.add(b);
+      p.add(b);/*
       b = new JButton("increase X position");
       b.addActionListener(this);
       p.add(b);
@@ -74,8 +74,11 @@ public class Museum extends JFrame implements ActionListener {
       p.add(b);
       b = new JButton("decrease Z position");
       b.addActionListener(this);
-      p.add(b); 
+      p.add(b); */
       b = new JButton("Toggle Ceiling Lights");
+      b.addActionListener(this);
+      p.add(b);
+      b = new JButton("Toggle Day/Night");
       b.addActionListener(this);
       p.add(b);
     this.add(p, BorderLayout.SOUTH);
@@ -100,7 +103,7 @@ public class Museum extends JFrame implements ActionListener {
     else if (e.getActionCommand().equalsIgnoreCase("camera Z")) {
       camera.setCamera(Camera.CameraType.Z);
       canvas.requestFocusInWindow();
-    }
+    }/*
     else if (e.getActionCommand().equalsIgnoreCase("increase X position")) {
       glEventListener.incXPosition();
     }
@@ -118,9 +121,12 @@ public class Museum extends JFrame implements ActionListener {
     }
     else if (e.getActionCommand().equalsIgnoreCase("decrease Z position")) {
       glEventListener.decZPosition();
-    } 
+    } */
     else if (e.getActionCommand().equalsIgnoreCase("Toggle Ceiling Lights")) {
       glEventListener.toggleCeilingLights();
+    }
+    else if (e.getActionCommand().equalsIgnoreCase("Toggle Day/Night")) {
+      glEventListener.toggleSunLight();
     }
     else if(e.getActionCommand().equalsIgnoreCase("quit"))
       System.exit(0);

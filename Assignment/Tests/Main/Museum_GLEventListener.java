@@ -21,7 +21,7 @@ public class Museum_GLEventListener implements GLEventListener {
   private Mat4 perspective;
   private Model wall;
   private DirectionalLight sunLight;
-  private PointLight lightBulb, lightBulb2;
+  private PointLight lightBulb, lightBulb2, lightBulb3, lightBulb4, lightBulb5, lightBulb6;
   private static ArrayList<PointLight> ceilingLights = new ArrayList<PointLight>();
   private SpotLight lampLight;
 
@@ -155,17 +155,29 @@ public class Museum_GLEventListener implements GLEventListener {
     // Setting the ceiling lights of the museum - these are directional lights (museum did this for maximum exhibition clarity :) )
     // code is wasteful, but it solves my need
     sunLight = new DirectionalLight(gl, 1f);
-    lightBulb = new PointLight(gl, 1f);
-    lightBulb2 = new PointLight(gl, 1f);
+    lightBulb = new PointLight(gl, dimness[currentDimness]);
+    lightBulb2 = new PointLight(gl, dimness[currentDimness]);
+    lightBulb3 = new PointLight(gl, dimness[currentDimness]);
+    lightBulb4 = new PointLight(gl, dimness[currentDimness]);
+    lightBulb5 = new PointLight(gl, dimness[currentDimness]);
+    lightBulb6 = new PointLight(gl, dimness[currentDimness]);
     // Messing with point lights
     lampLight = new SpotLight(gl, 0.5f);
     sunLight.setCamera(camera);
     lightBulb.setCamera(camera);
     lightBulb2.setCamera(camera);
+    lightBulb3.setCamera(camera);
+    lightBulb4.setCamera(camera);
+    lightBulb5.setCamera(camera);
+    lightBulb6.setCamera(camera);
     lampLight.setCamera(camera);
     // an array with the different ceiling lights
     ceilingLights.add(lightBulb);
     ceilingLights.add(lightBulb2);
+    ceilingLights.add(lightBulb3);
+    ceilingLights.add(lightBulb4);
+    ceilingLights.add(lightBulb5);
+    ceilingLights.add(lightBulb6);
     
   	// loading models
     Vec3 whiteLight = new Vec3(1.0f, 1.0f, 1.0f);
@@ -218,20 +230,29 @@ public class Museum_GLEventListener implements GLEventListener {
   private void render(GL3 gl) {
     gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
     //For now rendering the lights - won't need to render them soon!
-    sunLight.setPosition(new Vec3(0f,10f,0f));
+    sunLight.setPosition(new Vec3(-12f,6f,0f));
     sunLight.render(gl);
-    lightBulb.setPosition(new Vec3(-2f,-4f,0f));
+    /* Setting ceiling lights*/
+    lightBulb.setPosition(new Vec3(-10f,10f,-8f));
     lightBulb.render(gl);
-    lightBulb2.setPosition(new Vec3(2f,-4f,0f));
+    lightBulb2.setPosition(new Vec3(0f,10f,-8f));
     lightBulb2.render(gl);
+    lightBulb3.setPosition(new Vec3(10f,10f,-8f));
+    lightBulb3.render(gl);
+    lightBulb4.setPosition(new Vec3(-10f,10f,0f));
+    lightBulb4.render(gl);
+    lightBulb5.setPosition(new Vec3(0f,10f,0f));
+    lightBulb5.render(gl);
+    lightBulb6.setPosition(new Vec3(10f,10f,0f));
+    lightBulb6.render(gl);
     updateLightColour();
-    lampLight.setPosition(new Vec3(0f,12f,0f));
+    lampLight.setPosition(new Vec3(6f,5.5f,-2f));
     lampLight.render(gl);
     wall.render(gl);
     roomScene.draw(gl);
   }
   /*
-  Updating light colour
+  Updating Ceiling lights
   */
   public void toggleCeilingLights() {
     float newDimness=dimness[currentDimness];
@@ -252,6 +273,14 @@ public class Museum_GLEventListener implements GLEventListener {
       currentDimness=0;
     }
   }
+
+  /**
+   * Updating day/night light
+   */
+
+   public void toggleSunLight(){
+     System.out.println("TO-DO LIST AGAIN! HOLD ON!");
+   }
   
   /**
    * For now a method to make it easier to notice lights!
