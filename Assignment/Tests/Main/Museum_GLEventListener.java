@@ -233,25 +233,24 @@ public class Museum_GLEventListener implements GLEventListener {
   /*
   Updating light colour
   */
-  public void toggleLight() {/*
+  public void toggleCeilingLights() {
     float newDimness=dimness[currentDimness];
     Vec3 lightColour = new Vec3();
     lightColour.x = 1.6f * newDimness;
     lightColour.y = 1.6f * newDimness;
     lightColour.z = 1.6f * newDimness;
     // changing lights
-    Material m = light1.getMaterial();
-    for(int i=0; i<(lights.size()); i++){
-      m = lights.get(i).getMaterial();
+    Material m = ceilingLights.get(1).getMaterial();
+    for(int i=0; i<(ceilingLights.size()); i++){
+      m = ceilingLights.get(i).getMaterial();
       m.setDiffuse(Vec3.multiply(lightColour,0.5f));
       m.setAmbient(Vec3.multiply(m.getDiffuse(),0.62f));
-      lights.get(i).setMaterial(m);
+      ceilingLights.get(i).setMaterial(m);
     }
     currentDimness+=1;
     if(currentDimness>3){
       currentDimness=0;
-    }*/
-    System.out.println("In the TO-DO LIST!");
+    }
   }
   
   /**

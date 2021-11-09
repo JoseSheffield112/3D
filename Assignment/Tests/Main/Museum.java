@@ -56,13 +56,7 @@ public class Museum extends JFrame implements ActionListener {
       p.add(b);
       b = new JButton("camera Z");
       b.addActionListener(this);
-      p.add(b);/*
-      b = new JButton("start");
-      b.addActionListener(this);
       p.add(b);
-      b = new JButton("stop");
-      b.addActionListener(this);
-      p.add(b);*/
       b = new JButton("increase X position");
       b.addActionListener(this);
       p.add(b);
@@ -80,15 +74,8 @@ public class Museum extends JFrame implements ActionListener {
       p.add(b);
       b = new JButton("decrease Z position");
       b.addActionListener(this);
-      p.add(b);      
-      /*
-      b = new JButton("lowered arms");
-      b.addActionListener(this);
-      p.add(b);
-      b = new JButton("raised arms");
-      b.addActionListener(this);
-      p.add(b);*/
-      b = new JButton("Toggle Light");
+      p.add(b); 
+      b = new JButton("Toggle Ceiling Lights");
       b.addActionListener(this);
       p.add(b);
     this.add(p, BorderLayout.SOUTH);
@@ -113,13 +100,7 @@ public class Museum extends JFrame implements ActionListener {
     else if (e.getActionCommand().equalsIgnoreCase("camera Z")) {
       camera.setCamera(Camera.CameraType.Z);
       canvas.requestFocusInWindow();
-    }/*
-    else if (e.getActionCommand().equalsIgnoreCase("start")) {
-      glEventListener.startAnimation();
     }
-    else if (e.getActionCommand().equalsIgnoreCase("stop")) {
-      glEventListener.stopAnimation();
-    }*/
     else if (e.getActionCommand().equalsIgnoreCase("increase X position")) {
       glEventListener.incXPosition();
     }
@@ -137,16 +118,9 @@ public class Museum extends JFrame implements ActionListener {
     }
     else if (e.getActionCommand().equalsIgnoreCase("decrease Z position")) {
       glEventListener.decZPosition();
-    }    
-    /*
-    else if (e.getActionCommand().equalsIgnoreCase("lowered arms")) {
-      glEventListener.loweredArms();
-    }
-    else if (e.getActionCommand().equalsIgnoreCase("raised arms")) {
-      glEventListener.raisedArms();
-    }*/
-    else if (e.getActionCommand().equalsIgnoreCase("Toggle Light")) {
-      glEventListener.toggleLight();
+    } 
+    else if (e.getActionCommand().equalsIgnoreCase("Toggle Ceiling Lights")) {
+      glEventListener.toggleCeilingLights();
     }
     else if(e.getActionCommand().equalsIgnoreCase("quit"))
       System.exit(0);
