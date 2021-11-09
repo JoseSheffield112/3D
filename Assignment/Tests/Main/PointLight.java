@@ -1,8 +1,6 @@
 /**
  * TODO LIST
- * Need to add directional light class
- * need to change all other classes that depend on that
- * then you also need to make sure the fragment shaders are fine!
+ * sort out set and get methods
  */
 import java.util.ArrayList;
 import gmaths.*;

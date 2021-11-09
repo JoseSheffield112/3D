@@ -1,4 +1,13 @@
 /**
+ * 
+ * TODO LIST
+ * 
+ * sort out get and set methods
+ * For all lights classes, you need to figure out a way to set their lights correctly (this, sunlight, should not have same light values as a lamp!)
+ * Current way of doing it sucks - maybe the light class constructor should take an int, and that is used to change the values?
+ * 
+ * 
+ * 
  * Explanation : Directional lights in the tutorial have a directin - 
  * however I didn't bother with that as it required more work and I can get direction by subtracting light.position from fragment
  * 

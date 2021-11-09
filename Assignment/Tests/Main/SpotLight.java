@@ -1,8 +1,9 @@
 /**
  * TODO LIST
- * Need to add directional light class
- * need to change all other classes that depend on that
- * then you also need to make sure the fragment shaders are fine!
+ * sort out get and set methods
+ * when you've introduced the lamp to the scene, you need to!
+ *      1   - Turn off the light rotation
+ *      2   - Make this light move - don't know how yet :D
  */
 import java.util.ArrayList;
 import gmaths.*;
