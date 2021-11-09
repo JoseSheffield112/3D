@@ -26,7 +26,9 @@ public class Room{
     private TransformNode enlargen;
 
     //TEMP
-    private ArrayList<Light> lights = new ArrayList<Light>();  
+    private DirectionalLight sunLight;
+    private static ArrayList<PointLight> ceilingLights = new ArrayList<PointLight>();
+    private SpotLight lampLight;
     private Camera camera;
   
     //Setting Values
@@ -35,9 +37,11 @@ public class Room{
     private float doorPositioning = 0.75f;
     private Vec3 whiteLight = new Vec3(1.0f, 1.0f, 1.0f);
 
-    public Room(GL3 gl, ArrayList<Light> lights, Camera camera){
-        this.lights = lights;
+    public Room(GL3 gl, Camera camera, DirectionalLight sunLight, ArrayList<PointLight> ceilingLights, SpotLight lampLight){
         this.camera=camera;
+        this.sunLight = sunLight;
+        this.ceilingLights = ceilingLights;
+        this.lampLight = lampLight;
         sceneGraph(gl);
     }
 
@@ -51,7 +55,7 @@ public class Room{
         Shader shader = new Shader(gl, "vs_tt_05.txt", "fs_tt_05.txt");
         Material material = new Material(whiteLight, whiteLight, new Vec3(0.3f, 0.3f, 0.3f), 32.0f);
         Mat4 modelMatrix = Mat4Transform.scale(1f,1f,1f);
-        floor = new Model(gl, camera, lights, shader, material, modelMatrix, mesh, textureId0);
+        floor = new Model(gl, camera, sunLight, ceilingLights, lampLight, shader, material, modelMatrix, mesh, textureId0);
 
         //Scene graph
         //Root

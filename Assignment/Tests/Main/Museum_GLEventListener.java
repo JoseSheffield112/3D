@@ -5,9 +5,9 @@
  * *********************TO-DO*********************
  * - Identify methods you've introduced
 */
+import java.util.ArrayList;
 import gmaths.*;
 import java.nio.*;
-import java.util.ArrayList;
 import com.jogamp.common.nio.*;
 import com.jogamp.opengl.*;
 import com.jogamp.opengl.util.*;
@@ -17,6 +17,13 @@ import com.jogamp.opengl.util.glsl.*;
 public class Museum_GLEventListener implements GLEventListener {
   
   private static final boolean DISPLAY_SHADERS = false;
+  private Camera camera;
+  private Mat4 perspective;
+  private Model wall;
+  private DirectionalLight sunLight;
+  private PointLight lightBulb, lightBulb2;
+  private static ArrayList<PointLight> ceilingLights = new ArrayList<PointLight>();
+  private SpotLight lampLight;
 
   // Scene graph stuff
   private Robot myRobot;
@@ -73,13 +80,11 @@ public class Museum_GLEventListener implements GLEventListener {
   /* Clean up memory, if necessary */
   public void dispose(GLAutoDrawable drawable) {
     GL3 gl = drawable.getGL().getGL3();
-    for(int i=0; i<(lights.size()); i++){
-      lights.get(i).dispose(gl);
-    }
-    //floor.dispose(gl);
-    //sphere.dispose(gl);
-    //cube.dispose(gl);
-    //cube2.dispose(gl);
+    sunLight.dispose(gl);
+    lightBulb.dispose(gl);
+    lightBulb2.dispose(gl);
+    lampLight.dispose(gl);
+    wall.dispose(gl);
   }
   
   
@@ -88,21 +93,7 @@ public class Museum_GLEventListener implements GLEventListener {
    *
    *
    */
-
-  private boolean animation = false;
-  private double savedTime = 0;
- /*  
-  public void startAnimation() {
-    animation = true;
-    startTime = getSeconds()-savedTime;
-  }
-   
-  public void stopAnimation() {
-    animation = false;
-    double elapsedTime = getSeconds()-startTime;
-    savedTime = elapsedTime;
-  }
-*/   
+ 
   public void incXPosition() {
     xPosition += 0.5f;
     if (xPosition>5f) xPosition = 5f;
@@ -138,38 +129,11 @@ public class Museum_GLEventListener implements GLEventListener {
     myRobot.updateMoveZ(zPosition);
   }
 
-
-  /*
-  public void loweredArms() {
-    stopAnimation();
-    leftArmRotate.setTransform(Mat4Transform.rotateAroundX(180));
-    leftArmRotate.update();
-    rightArmRotate.setTransform(Mat4Transform.rotateAroundX(180));
-    rightArmRotate.update();
-  }
-   
-  public void raisedArms() {
-    stopAnimation();
-    leftArmRotate.setTransform(Mat4Transform.rotateAroundX(0));
-    leftArmRotate.update();
-    rightArmRotate.setTransform(Mat4Transform.rotateAroundX(0));
-    rightArmRotate.update();
-  }
-*/
   // ***************************************************
   /* THE SCENE
    * Now define all the methods to handle the scene.
    * This will be added to in later examples.
    */
-
-  private Camera camera;
-  private Mat4 perspective;
-  private Model floor, wall, door; // declaring the models!
-  private SGNode robotRoot;
-  private Light light1, light2, light3, light4;
-  private SpotLight sunLight;
-  private PointLight lampLight;
-  private ArrayList<Light> lights = new ArrayList<Light>();  
 
   
   private void initialise(GL3 gl) {
@@ -190,29 +154,18 @@ public class Museum_GLEventListener implements GLEventListener {
      */
     // Setting the ceiling lights of the museum - these are directional lights (museum did this for maximum exhibition clarity :) )
     // code is wasteful, but it solves my need
-    light1 = new Light(gl, dimness[3]);
-    light1.setCamera(camera);
-    light1.setPosition(new Vec3(-6f,8f,2f));
-    light2 = new Light(gl, dimness[3]);
-    light2.setCamera(camera);
-    light2.setPosition(new Vec3(6f,8f,-2f));
-    light3 = new Light(gl, dimness[3]);
-    light3.setCamera(camera);
-    light3.setPosition(new Vec3(-6f,8f,-2f));
-    light4 = new Light(gl, dimness[3]);
-    light4.setCamera(camera);
-    light4.setPosition(new Vec3(6f,8f,2f));
-    lights.add(light1);
-    lights.add(light2);
-    lights.add(light3);
-    lights.add(light4);
-    /*
-    // Setting the sun light coming in from the window - this is a point light
-    sunLight = new SpotLight(gl);
+    sunLight = new DirectionalLight(gl, 1f);
+    lightBulb = new PointLight(gl, 1f);
+    lightBulb2 = new PointLight(gl, 1f);
+    // Messing with point lights
+    lampLight = new SpotLight(gl, 0.5f);
     sunLight.setCamera(camera);
-    // Setting the lampLight - this is a point light
-    lampLight = new LampLight(gl);
-    lampLight.setCamera(camera);*/
+    lightBulb.setCamera(camera);
+    lightBulb2.setCamera(camera);
+    lampLight.setCamera(camera);
+    // an array with the different ceiling lights
+    ceilingLights.add(lightBulb);
+    ceilingLights.add(lightBulb2);
     
   	// loading models
     Vec3 whiteLight = new Vec3(1.0f, 1.0f, 1.0f);
@@ -249,10 +202,10 @@ public class Museum_GLEventListener implements GLEventListener {
     Mat4 modelMatrix = Mat4Transform.scale(wallSize,1f,wallSize);
     modelMatrix = Mat4.multiply(Mat4Transform.rotateAroundX(90), modelMatrix);
     modelMatrix = Mat4.multiply(Mat4Transform.translate(0f,wallSize*0.5f,-wallSize*0.5f), modelMatrix);
-    wall = new Model(gl, camera, lights, shader, material, modelMatrix, mesh, textureId7);
+    wall = new Model(gl, camera, sunLight, ceilingLights, lampLight, shader, material, modelMatrix, mesh, textureId7);
 
-    myRobot = new Robot(gl, lights, camera, xPosition, yPosition, zPosition);
-    theRoom = new Room(gl, lights, camera);
+    myRobot = new Robot(gl,camera, sunLight, ceilingLights, lampLight,  xPosition, yPosition, zPosition);
+    theRoom = new Room(gl, camera, sunLight, ceilingLights, lampLight);
     SGNode roomChild = theRoom.getSceneGraph();
 
     roomScene.addChild(roomChild);
@@ -264,18 +217,23 @@ public class Museum_GLEventListener implements GLEventListener {
  
   private void render(GL3 gl) {
     gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
-    // updating the lights
-    for(int i=0; i<(lights.size()); i++){
-      lights.get(i).render(gl);
-    }
-    //floor.render(gl); 
+    //For now rendering the lights - won't need to render them soon!
+    sunLight.setPosition(new Vec3(0f,10f,0f));
+    sunLight.render(gl);
+    lightBulb.setPosition(new Vec3(-2f,-4f,0f));
+    lightBulb.render(gl);
+    lightBulb2.setPosition(new Vec3(2f,-4f,0f));
+    lightBulb2.render(gl);
+    updateLightColour();
+    lampLight.setPosition(new Vec3(0f,12f,0f));
+    lampLight.render(gl);
     wall.render(gl);
     roomScene.draw(gl);
   }
   /*
   Updating light colour
   */
-  public void toggleLight() {
+  public void toggleLight() {/*
     float newDimness=dimness[currentDimness];
     Vec3 lightColour = new Vec3();
     lightColour.x = 1.6f * newDimness;
@@ -292,7 +250,23 @@ public class Museum_GLEventListener implements GLEventListener {
     currentDimness+=1;
     if(currentDimness>3){
       currentDimness=0;
-    }
+    }*/
+    System.out.println("In the TO-DO LIST!");
+  }
+  
+  /**
+   * For now a method to make it easier to notice lights!
+   */
+  private void updateLightColour() {
+    double elapsedTime = getSeconds()-startTime;
+    Vec3 lightColour = new Vec3();
+    lightColour.x = (float)Math.sin(elapsedTime * 2.0f);
+    lightColour.y = (float)Math.sin(elapsedTime * 0.7f);
+    lightColour.z = (float)Math.sin(elapsedTime * 1.3f);
+    Material m = lightBulb.getMaterial();
+    m.setDiffuse(Vec3.multiply(lightColour,0.5f));
+    m.setAmbient(Vec3.multiply(m.getDiffuse(),0.2f));
+    lightBulb.setMaterial(m);
   }
 /*
   private void updateRightArm() {

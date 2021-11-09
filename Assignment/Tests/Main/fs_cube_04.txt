@@ -2,8 +2,10 @@
 I have created this code using the online resource of openGL:
   https://learnopengl.com/Lighting/Multiple-lights
   As well as shader code from Dr.Maddocks lab classes
-*/
 
+  TO-DO
+  PLEASE clean this up... it all looks atrocious
+*/
 #version 330 core
 
 /*
@@ -29,28 +31,63 @@ struct DirLight {
 }; 
 
 /*
+Dealing with point light
+*/
+struct PointLight {
+    vec3 position;
+    float constant;
+    float linear;
+    float quadratic;
+    vec3 ambient;
+    vec3 diffuse;
+    vec3 specular;
+};
+
+/*
+Dealing with a spot light
+*/
+struct SpotLight {
+    vec3 position;
+    vec3 direction;
+    vec3 ambient;
+    vec3 diffuse;
+    vec3 specular; 
+    float constant;
+    float linear;
+    float quadratic;  
+    float cutOff;
+    float outerCutOff;    
+};
+
+/*
 In/Out variables
 */
 
+//In
 in vec3 aPos;
 in vec3 aNormal;
 in vec2 aTexCoord;
 
+//out
 out vec4 fragColor;
 
 /*
 Uniforms
 */
 
+uniform vec3 viewPos;
+
 uniform sampler2D first_texture;
 uniform sampler2D second_texture;
-uniform vec3 viewPos;
-  
+
 uniform Material material;
 
-#define DIR_LIGHTS 4
-uniform DirLight dirLight[DIR_LIGHTS];
+uniform DirLight dirLight;
 
+#define POINT_LIGHTS 2
+uniform PointLight pointLight[POINT_LIGHTS];
+
+uniform SpotLight spotLight;
 
 /*
 Functions
@@ -71,16 +108,13 @@ vec3 calcDirLight(DirLight light, vec3 normal, vec3 viewDir){
   vec3 reflectDir = reflect(-lightDir, normal);
   float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
   // combine results
-//  vec3 ambient  = light.ambient * material.ambient * texture(first_texture, aTexCoord).rgb;
-//  vec3 diffuse  = light.diffuse * (diff * material.diffuse) * texture(first_texture, aTexCoord).rgb;
-//  vec3 specular = light.specular * (spec * material.specular) * texture(second_texture, aTexCoord).rgb;
-  vec3 ambient = light.ambient * material.ambient * texture(first_texture, aTexCoord).rgb;
-  vec3 diffuse = light.diffuse * (diff * material.diffuse) * texture(first_texture, aTexCoord).rgb;
-  vec3 specular = light.specular * (spec * material.specular);
+  vec3 ambient  = light.ambient * material.ambient * texture(first_texture, aTexCoord).rgb;
+  vec3 diffuse  = light.diffuse * (diff * material.diffuse) * texture(first_texture, aTexCoord).rgb;
+  vec3 specular = light.specular * (spec * material.specular) * texture(second_texture, aTexCoord).rgb;
   return (ambient + diffuse + specular);
 }
 
-/*
+
 // Calculating point light!
 vec3 calcPointLight(PointLight light, vec3 normal, vec3 fragPos, vec3 viewDir){
     vec3 lightDir = normalize(light.position - fragPos);
@@ -126,20 +160,6 @@ vec3 calcSpotLight(SpotLight light, vec3 normal, vec3 fragPos, vec3 viewDir){
     specular *= attenuation * intensity;
     return (ambient + diffuse + specular);
 }
-*/
-
-    // OIOIOIOIOIO
-    /////////////////
-    /////////////////
-    /////////////////
-    // Can you do 
-    //vec3 diffuse = light.diffuse * (diff * material.diffuse) * texture(first_texture, aTexCoord).rgb;
-    //vec3 diffuse = light.diffuse * (diff * material.diffuse) * texture(first_texture, aTexCoord).rgb;
-    //vec3 specular = light.specular * (spec * material.specular);
-    // Instead of the above?!
-    /////////////////
-    /////////////////
-    /////////////////
 
 void main() {
   // properties
@@ -149,13 +169,13 @@ void main() {
 
   // phase 1: Directional lighting
   // looping over the different sources!
-  for(int i=0;i<DIR_LIGHTS;i++){
-    result += calcDirLight(dirLight[i], norm, viewDir);
-  }
+  result += calcDirLight(dirLight, norm, viewDir);
   // phase 2 - point light
-  //result += calcPointLight(pointLight, norm, aPos, viewDir);  
+  for(int i=0; i<POINT_LIGHTS; i++){
+    result += calcPointLight(pointLight[i], norm, aPos, viewDir);  
+  }
   //phase 3 - spot light
-  //result += calcSpotLight(spotLight, norm, aPos, viewDir);  
+  result += calcSpotLight(spotLight, norm, aPos, viewDir);  
 
   fragColor = vec4(result, 1.0);
 }

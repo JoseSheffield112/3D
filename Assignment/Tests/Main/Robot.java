@@ -26,13 +26,17 @@ public class Robot{
     private TransformNode translateX, robotMoveTranslate, leftArmRotate, rightArmRotate;
 
     //TEMP
-    private ArrayList<Light> lights = new ArrayList<Light>();  
+    private DirectionalLight sunLight;
+    private static ArrayList<PointLight> ceilingLights = new ArrayList<PointLight>();
+    private SpotLight lampLight;
     private Camera camera;
     private float xPosition, yPosition, zPosition;
 
-    public Robot(GL3 gl, ArrayList<Light> lights, Camera camera, float xPosition, float yPosition, float zPosition) {
-        this.lights = lights;
+    public Robot(GL3 gl, Camera camera, DirectionalLight sunLight, ArrayList<PointLight> ceilingLights, SpotLight lampLight,float xPosition, float yPosition, float zPosition) {
         this.camera=camera;
+        this.sunLight = sunLight;
+        this.ceilingLights = ceilingLights;
+        this.lampLight = lampLight;
         this.xPosition = xPosition;
         this.yPosition = yPosition;
         this.zPosition = zPosition;
@@ -64,16 +68,16 @@ public class Robot{
         Shader shader = new Shader(gl, "vs_cube_04.txt", "fs_cube_04.txt");
         Material material = new Material(new Vec3(1.0f, 0.5f, 0.31f), new Vec3(1.0f, 0.5f, 0.31f), new Vec3(0.5f, 0.5f, 0.5f), 32.0f);
         Mat4 modelMatrix = Mat4.multiply(Mat4Transform.scale(4,4,4), Mat4Transform.translate(0,0.5f,0));
-        cube = new Model(gl, camera, lights, shader, material, modelMatrix, mesh, textureId3, textureId4);
+        cube = new Model(gl, camera, sunLight, ceilingLights, lampLight, shader, material, modelMatrix, mesh, textureId3, textureId4);
         // same cube model, but different textures
-        cube2 = new Model(gl, camera, lights, shader, material, modelMatrix, mesh, textureId5, textureId6); 
+        cube2 = new Model(gl, camera, sunLight, ceilingLights, lampLight, shader, material, modelMatrix, mesh, textureId5, textureId6); 
 
         //Sphere model
         mesh = new Mesh(gl, Sphere.vertices.clone(), Sphere.indices.clone());
         shader = new Shader(gl, "vs_cube_04.txt", "fs_cube_04.txt");
         material = new Material(new Vec3(1.0f, 0.5f, 0.31f), new Vec3(1.0f, 0.5f, 0.31f), new Vec3(0.5f, 0.5f, 0.5f), 32.0f);
         modelMatrix = Mat4.multiply(Mat4Transform.scale(4,4,4), Mat4Transform.translate(0,0.5f,0));
-        sphere = new Model(gl, camera, lights, shader, material, modelMatrix, mesh, textureId1, textureId2);
+        sphere = new Model(gl, camera, sunLight, ceilingLights, lampLight, shader, material, modelMatrix, mesh, textureId1, textureId2);
 
         // Scenegraph nodes
         // robot - scene graph construction
