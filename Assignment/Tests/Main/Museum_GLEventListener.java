@@ -30,10 +30,14 @@ public class Museum_GLEventListener implements GLEventListener {
   private Room theRoom;
   private SGNode roomScene = new NameNode("Museum - Root node");
 
-  // dimness setting for light
-  private static float dimness[] = {0f,0.33f,0.66f,1f}; // different dimness settings for the lights
+  // dimness setting for lights
+  // Ceiling lights
+  private static float ceilingLightsDimness[] = {0f,0.33f,0.66f,1f}; // different dimness settings for the lights
   private static int currentDimness = 1; // dimness used for the museum lights - they're fancy but expensive!
-  // xPosition for rendering the robot
+  // sunLight
+  private static float dayLight[] = {0f, 1f};
+  private static int currentCycle = 1;
+  // 3D positions for robot render
   private float xPosition = 0;
   private float yPosition = 0;
   private float zPosition = 0;
@@ -154,13 +158,13 @@ public class Museum_GLEventListener implements GLEventListener {
      */
     // Setting the ceiling lights of the museum - these are directional lights (museum did this for maximum exhibition clarity :) )
     // code is wasteful, but it solves my need
-    sunLight = new DirectionalLight(gl, 1f);
-    lightBulb = new PointLight(gl, dimness[currentDimness]);
-    lightBulb2 = new PointLight(gl, dimness[currentDimness]);
-    lightBulb3 = new PointLight(gl, dimness[currentDimness]);
-    lightBulb4 = new PointLight(gl, dimness[currentDimness]);
-    lightBulb5 = new PointLight(gl, dimness[currentDimness]);
-    lightBulb6 = new PointLight(gl, dimness[currentDimness]);
+    sunLight = new DirectionalLight(gl, dayLight[currentCycle]);
+    lightBulb = new PointLight(gl, ceilingLightsDimness[currentDimness]);
+    lightBulb2 = new PointLight(gl, ceilingLightsDimness[currentDimness]);
+    lightBulb3 = new PointLight(gl, ceilingLightsDimness[currentDimness]);
+    lightBulb4 = new PointLight(gl, ceilingLightsDimness[currentDimness]);
+    lightBulb5 = new PointLight(gl, ceilingLightsDimness[currentDimness]);
+    lightBulb6 = new PointLight(gl, ceilingLightsDimness[currentDimness]);
     // Messing with point lights
     lampLight = new SpotLight(gl, 0.5f);
     sunLight.setCamera(camera);
@@ -255,7 +259,7 @@ public class Museum_GLEventListener implements GLEventListener {
   Updating Ceiling lights
   */
   public void toggleCeilingLights() {
-    float newDimness=dimness[currentDimness];
+    float newDimness=ceilingLightsDimness[currentDimness];
     Vec3 lightColour = new Vec3();
     lightColour.x = 1.6f * newDimness;
     lightColour.y = 1.6f * newDimness;
@@ -268,18 +272,20 @@ public class Museum_GLEventListener implements GLEventListener {
       m.setAmbient(Vec3.multiply(m.getDiffuse(),0.62f));
       ceilingLights.get(i).setMaterial(m);
     }
-    currentDimness+=1;
-    if(currentDimness>3){
-      currentDimness=0;
-    }
+    currentDimness = (currentDimness==3) ? 0 : (currentDimness+1);
   }
 
   /**
    * Updating day/night light
    */
-
+  
    public void toggleSunLight(){
-     System.out.println("TO-DO LIST AGAIN! HOLD ON!");
+     float newCycleLight = dayLight[currentCycle];
+     sunLight.setDefaultAmbient(newCycleLight);
+     sunLight.setDefaultDiffuseSpecular(newCycleLight);
+     System.out.println(currentCycle);
+     currentCycle=(currentCycle==1) ? 0 : 1;
+     System.out.println(currentCycle);
    }
   
   /**
@@ -291,10 +297,10 @@ public class Museum_GLEventListener implements GLEventListener {
     lightColour.x = (float)Math.sin(elapsedTime * 2.0f);
     lightColour.y = (float)Math.sin(elapsedTime * 0.7f);
     lightColour.z = (float)Math.sin(elapsedTime * 1.3f);
-    Material m = lightBulb.getMaterial();
+    Material m = lampLight.getMaterial();
     m.setDiffuse(Vec3.multiply(lightColour,0.5f));
     m.setAmbient(Vec3.multiply(m.getDiffuse(),0.2f));
-    lightBulb.setMaterial(m);
+    lampLight.setMaterial(m);
   }
 /*
   private void updateRightArm() {

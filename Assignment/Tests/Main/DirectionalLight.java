@@ -2,6 +2,11 @@
  * Explanation : Directional lights in the tutorial have a directin - 
  * however I didn't bother with that as it required more work and I can get direction by subtracting light.position from fragment
  * 
+ * Though a directional light is supposed to have a direction and no position, since the class we extend from (Light)
+ * has a position, for now I have left direction light with a position and no direction - for calculation I can just do position-fragPosition
+ * As this will allow me to render the light for debugging
+ * 
+ * Further into the project I could explore getting rid of the position
  */
 import java.util.ArrayList;
 import gmaths.*;
@@ -15,27 +20,22 @@ import com.jogamp.opengl.*;
 public class DirectionalLight extends Light{
 
     private Vec3 direction;
+
     public DirectionalLight(GL3 gl, float dimness){
         super(gl, dimness);
+        // I can either do it this horrible way, or I can pass the vectors into the constructor - though I'd still need the default for use in glEventListener class
+        this.setDefaultAmbient(dimness);
+    }   
+
+    // public as i need to call this is the gleventlistener to update the day cycle!
+    public void setDefaultAmbient(float dimness){
+        Vec3 defaultAmbient = new Vec3(0.5f,0.5f,0.5f);
+        this.getMaterial().setAmbient(Vec3.multiply(defaultAmbient, dimness));
     }
 
-    /**
-     * Setting spotlight direction
-     */
-    public void setDirection(Vec3 v) {
-        direction.x = v.x;
-        direction.y = v.y;
-        direction.z = v.z;
+    public void setDefaultDiffuseSpecular(float dimness){
+        Vec3 defaultSpecular = new Vec3(0.8f,0.8f,0.8f);
+        this.getMaterial().setAmbient(Vec3.multiply(defaultSpecular, dimness));
+        this.getMaterial().setDiffuse(defaultSpecular);
     }
-      
-    public void setDirection(float x, float y, float z) {
-        direction.x = x;
-        direction.y = y;
-        direction.z = z;
-    }
-
-    public Vec3 getDirection() {
-        return direction;
-    }
-   
 }
