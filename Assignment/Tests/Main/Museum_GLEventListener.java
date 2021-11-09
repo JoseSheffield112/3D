@@ -35,7 +35,7 @@ public class Museum_GLEventListener implements GLEventListener {
   private static float ceilingLightsDimness[] = {0f,0.33f,0.66f,1f}; // different dimness settings for the lights
   private static int currentDimness = 1; // dimness used for the museum lights - they're fancy but expensive!
   // sunLight
-  private static float dayLight[] = {0f, 1f};
+  private static float dayLight[] = {0.1f, 1f};
   private static int currentCycle = 1;
   // 3D positions for robot render
   private float xPosition = 0;

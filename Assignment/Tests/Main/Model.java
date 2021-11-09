@@ -66,7 +66,7 @@ public class Model {
 
     // Setting up Lighting!
     // Directional lighting - the sun
-    shader.setVec3(gl, "dirLight.position", sunLight.getPosition());
+    shader.setVec3(gl, "dirLight.direction", sunLight.getDirection());
     shader.setVec3(gl, "dirLight.ambient", sunLight.getMaterial().getAmbient());
     shader.setVec3(gl, "dirLight.diffuse", sunLight.getMaterial().getDiffuse());
     shader.setVec3(gl, "dirLight.specular", sunLight.getMaterial().getSpecular());

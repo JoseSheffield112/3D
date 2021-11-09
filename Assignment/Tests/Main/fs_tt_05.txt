@@ -21,7 +21,7 @@ struct Material {
 dealing with a directional light source
 */
 struct DirLight {
-    vec3 position;
+    vec3 direction;
     vec3 ambient;
     vec3 diffuse;
     vec3 specular;
@@ -98,7 +98,8 @@ Again, sourced from : https://learnopengl.com/Lighting/Multiple-lights
 
 // Calculating the directional lighting
 vec3 calcDirLight(DirLight light, vec3 normal, vec3 viewDir){
-  vec3 lightDir = normalize(light.position - aPos);
+  //vec3 lightDir = normalize(light.position - aPos);
+  vec3 lightDir = normalize(-light.direction);
   // diffuse shading
   float diff = max(dot(normal, lightDir), 0.0);
   // specular shading

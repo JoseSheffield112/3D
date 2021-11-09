@@ -23,9 +23,17 @@ public class DirectionalLight extends Light{
 
     public DirectionalLight(GL3 gl, float dimness){
         super(gl, dimness);
+        this.direction = new Vec3(10f,0f,0f); //goes left to right
         // I can either do it this horrible way, or I can pass the vectors into the constructor - though I'd still need the default for use in glEventListener class
         this.setDefaultAmbient(dimness);
     }   
+
+
+    
+    public Vec3 getDirection() {
+        return direction;
+    }
+
 
     // public as i need to call this is the gleventlistener to update the day cycle!
     public void setDefaultAmbient(float dimness){
@@ -34,7 +42,7 @@ public class DirectionalLight extends Light{
     }
 
     public void setDefaultDiffuseSpecular(float dimness){
-        Vec3 defaultSpecular = new Vec3(0.8f,0.8f,0.8f);
+        Vec3 defaultSpecular = new Vec3(1f,1f,1f);
         this.getMaterial().setAmbient(Vec3.multiply(defaultSpecular, dimness));
         this.getMaterial().setDiffuse(defaultSpecular);
     }
