@@ -167,7 +167,6 @@ public class Room{
     public SGNode updateView(GL3 gl, int cycle){
         this.dayCycle=cycle;
         sceneGraph(gl);
-        museumRoot.update();
         return museumRoot;
     }
 

@@ -172,24 +172,27 @@ public class Museum_GLEventListener implements GLEventListener {
     ceilingLights.add(lightBulb3);
     ceilingLights.add(lightBulb4);
     ceilingLights.add(lightBulb5);
-    ceilingLights.add(lightBulb6);
-
+    ceilingLights.add(lightBulb6);   
+    
     //Loading up scene graphs!
     theRoom = new Room(gl, camera, sunLight, ceilingLights, lampLight);
     myRobot = new Robot(gl,camera, sunLight, ceilingLights, lampLight,  xPosition, yPosition, zPosition);
+    
 
+    drawRoomScene(gl);
 
+    // resetting values
+    currentDimness+=1;
+  }
+
+  private void drawRoomScene(GL3 gl){
     // Constructing scene graph
-    roomChild = theRoom.getSceneGraph();
-
+    roomScene = theRoom.updateView(gl, currentCycle);
     roomScene.addChild(roomChild);
       roomChild.addChild(myRobot.getSceneGraph());// think you should put robot outside of this?
     roomScene.update();
     //roomScene.print(0, false);
-    //System.exit(0);      
-    
-    // resetting values
-    currentDimness+=1;
+    //System.exit(0);   
   }
  
   private void render(GL3 gl) {
@@ -214,8 +217,7 @@ public class Museum_GLEventListener implements GLEventListener {
     lampLight.setPosition(new Vec3(6f,5.5f,-2f));
     lampLight.render(gl);
     if(oldCycle!=currentCycle){
-      roomScene = theRoom.updateView(gl, currentCycle);
-      roomScene.update();
+      drawRoomScene(gl);
       oldCycle=currentCycle;
     }
     roomScene.draw(gl);
