@@ -19,7 +19,6 @@ public class Museum_GLEventListener implements GLEventListener {
   private static final boolean DISPLAY_SHADERS = false;
   private Camera camera;
   private Mat4 perspective;
-  private Model wall;
   private DirectionalLight sunLight;
   private PointLight lightBulb, lightBulb2, lightBulb3, lightBulb4, lightBulb5, lightBulb6;
   private static ArrayList<PointLight> ceilingLights = new ArrayList<PointLight>();
@@ -88,7 +87,6 @@ public class Museum_GLEventListener implements GLEventListener {
     lightBulb.dispose(gl);
     lightBulb2.dispose(gl);
     lampLight.dispose(gl);
-    wall.dispose(gl);
   }
   
   
@@ -186,46 +184,12 @@ public class Museum_GLEventListener implements GLEventListener {
     // resetting values
     currentCycle=0;
     currentDimness+=1;
-    
-  	// loading models
-    Vec3 whiteLight = new Vec3(1.0f, 1.0f, 1.0f);
-    float wallSize = 16f;
 
-/*
-    // Far wall section
-    //right section
-    //
-    mesh = new Mesh(gl, TwoTriangles.vertices.clone(), TwoTriangles.indices.clone());
-    shader = new Shader(gl, "vs_tt_05.txt", "fs_tt_05.txt");
-    material = new Material(whiteLight, whiteLight, new Vec3(0.3f, 0.3f, 0.3f), 32.0f);
-    modelMatrix = Mat4Transform.scale(wallSize,1f,wallSize);
-    modelMatrix = Mat4.multiply(Mat4Transform.rotateAroundX(90), modelMatrix);
-    modelMatrix = Mat4.multiply(Mat4Transform.translate(0f,wallSize*0.5f,-wallSize*0.5f), modelMatrix);
-    wall = new Model(gl, camera, light, shader, material, modelMatrix, mesh, textureId7);
-    //
-    //Door
-    //
-    mesh = new Mesh(gl, TwoTriangles.vertices.clone(), TwoTriangles.indices.clone());
-    shader = new Shader(gl, "vs_tt_05.txt", "fs_tt_05.txt");
-    material = new Material(whiteLight, whiteLight, new Vec3(0.3f, 0.3f, 0.3f), 32.0f);
-    modelMatrix = Mat4Transform.scale(doorSize,1f,doorSize*2);
-    modelMatrix = Mat4.multiply(Mat4Transform.rotateAroundX(90), modelMatrix);
-    modelMatrix = Mat4.multiply(Mat4Transform.translate(-doorSize*doorPositioning,doorSize,-wallSize*0.499f), modelMatrix);
-    door = new Model(gl, camera, light, shader, material, modelMatrix, mesh, textureId8);
-*/
-    // Left wall Section
-    // Left wall
-    // IT's still to do - you've just set it as the far wall for now!!
-    Mesh mesh = new Mesh(gl, TwoTriangles.vertices.clone(), TwoTriangles.indices.clone());
-    Shader shader = new Shader(gl, "vs_tt_05.txt", "fs_tt_05.txt");
-    Material material = new Material(whiteLight, whiteLight, new Vec3(0.3f, 0.3f, 0.3f), 32.0f);
-    Mat4 modelMatrix = Mat4Transform.scale(wallSize,1f,wallSize);
-    modelMatrix = Mat4.multiply(Mat4Transform.rotateAroundX(90), modelMatrix);
-    modelMatrix = Mat4.multiply(Mat4Transform.translate(0f,wallSize*0.5f,-wallSize*0.5f), modelMatrix);
-    wall = new Model(gl, camera, sunLight, ceilingLights, lampLight, shader, material, modelMatrix, mesh, textureId7);
-
-    myRobot = new Robot(gl,camera, sunLight, ceilingLights, lampLight,  xPosition, yPosition, zPosition);
+    //Loading up scene graphs!
     theRoom = new Room(gl, camera, sunLight, ceilingLights, lampLight);
+    myRobot = new Robot(gl,camera, sunLight, ceilingLights, lampLight,  xPosition, yPosition, zPosition);
+
+    // Constructing scene graph
     SGNode roomChild = theRoom.getSceneGraph();
 
     roomScene.addChild(roomChild);
@@ -256,7 +220,6 @@ public class Museum_GLEventListener implements GLEventListener {
     updateLightColour();
     lampLight.setPosition(new Vec3(6f,5.5f,-2f));
     lampLight.render(gl);
-    wall.render(gl);
     roomScene.draw(gl);
   }
   /*

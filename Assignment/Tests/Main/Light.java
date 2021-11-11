@@ -29,7 +29,7 @@ public class Light {
     material.setSpecular(Vec3.multiply(lightDiffuse, dimness));
     position = new Vec3(1f,1f,1f); // default position for all lights!
     model = new Mat4(1);
-    shader = new Shader(gl, "vs_light_01.txt", "fs_light_01.txt");
+    shader = new Shader(gl, "vs_light.txt", "fs_light.txt");
     fillBuffers(gl);
   }
   

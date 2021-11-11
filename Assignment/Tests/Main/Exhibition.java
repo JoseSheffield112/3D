@@ -54,7 +54,7 @@ public class Exhibition{
         //Shapes models
         //Floor model
         Mesh mesh = new Mesh(gl, TwoTriangles.vertices.clone(), TwoTriangles.indices.clone());
-        Shader shader = new Shader(gl, "vs_tt_05.txt", "fs_tt_05.txt");
+        Shader shader = new Shader(gl, "vs_tt.txt", "fs_tt.txt");
         Material material = new Material(whiteLight, whiteLight, new Vec3(0.3f, 0.3f, 0.3f), 32.0f);
         Mat4 modelMatrix = Mat4Transform.scale(1f,1f,1f);
         floor = new Model(gl, camera, sunLight, ceilingLights, lampLight, shader, material, modelMatrix, mesh, textureId0);
