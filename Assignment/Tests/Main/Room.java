@@ -20,7 +20,7 @@ public class Room{
     private SGNode museumRoot;
 
     // Declaring models variables
-    private Model floor, wall;
+    private Model floor, wall, door;
 
     //Transform node stuff
     private TransformNode enlargen;
@@ -69,17 +69,14 @@ public class Room{
         shader = new Shader(gl, "vs_tt.txt", "fs_tt.txt");
         material = new Material(whiteLight, whiteLight, new Vec3(0.3f, 0.3f, 0.3f), 32.0f);
         wall = new Model(gl, camera, sunLight, ceilingLights, lampLight, shader, material, modelMatrix, mesh, textureId7);
-/*        
+        
         //Door
         //
         mesh = new Mesh(gl, TwoTriangles.vertices.clone(), TwoTriangles.indices.clone());
         shader = new Shader(gl, "vs_tt.txt", "fs_tt.txt");
         material = new Material(whiteLight, whiteLight, new Vec3(0.3f, 0.3f, 0.3f), 32.0f);
-        modelMatrix = Mat4Transform.scale(doorSize,1f,doorSize*2);
-        modelMatrix = Mat4.multiply(Mat4Transform.rotateAroundX(90), modelMatrix);
-        modelMatrix = Mat4.multiply(Mat4Transform.translate(-doorSize*doorPositioning,doorSize,-wallSize*0.499f), modelMatrix);
-        door = new Model(gl, camera, light, shader, material, modelMatrix, mesh, textureId8);
-*/
+        door = new Model(gl, camera, sunLight, ceilingLights, lampLight, shader, material, modelMatrix, mesh, textureId8);
+
         //Scene graph
         //Root
         museumRoot = new NameNode("Museum");
@@ -95,6 +92,9 @@ public class Room{
         TransformNode enlargenWall = new TransformNode("Enlargening by "+wallSize+" in x & "+(wallSize*0.7f)+"y", m);
         TransformNode enlargenWallX = new TransformNode("Enlargening by "+wallSize+" in x & "+(wallSize*0.7f)+"y", m);
         TransformNode enlargenWallX2 = new TransformNode("Enlargening by "+wallSize+" in x & "+(wallSize*0.7f)+"y", m);
+        // Scaling door!
+        m = Mat4Transform.scale((wallSize*0.25f),1f,(wallSize*0.4f));
+        TransformNode scaleDoor = new TransformNode("Enlargening by "+wallSize+" in x & "+(wallSize*0.7f)+"y", m);
         // Transforming about X
         m = Mat4Transform.rotateAroundX(90);
         TransformNode xAxisRotation = new TransformNode("Rotating about X Axis", m);
@@ -102,19 +102,28 @@ public class Room{
         m = Mat4Transform.rotateAroundZ(-90);
         TransformNode zAxisRotation = new TransformNode("Rotating about Z Axis", m);
         // Translation
+        // used for far wall
         m = Mat4Transform.translate(0f, -(wallSize*0.5f), -(wallSize*0.35f));//x,y,z where z is right and y is to us
         TransformNode farWallTranslation = new TransformNode("Translating about Y and Z axis", m);
+        // used for door
+        // 2nd value moves it closer to us
+        // 3rd value moves it up on screen
+        m = Mat4Transform.translate(-(wallSize*0.47f),0.2f,+(wallSize*0.32f));//x,y,z where z is right and y is to us
+        TransformNode doorTranslation = new TransformNode("Translating about X axis", m);
+        // used for left wall
         m = Mat4Transform.translate(0f, -(wallSize*0.5f), -(wallSize*0.35f));//x,y,z where z is right and y is to us
-        TransformNode XAxisTranslation = new TransformNode("Translating about X axis", m);
+        TransformNode leftWallTranslation = new TransformNode("Translating about X axis", m);
 
         // Texturing the the floor
         NameNode flooring = new NameNode("floor");      
             ModelNode floorTexture = new ModelNode("Flooring", floor);
-
         // Texturing the wall
         NameNode farWall = new NameNode("far wall");      
             ModelNode wallTexture = new ModelNode("Wall", wall);
-        //
+        // Texturing the door:D
+        NameNode doorNode = new NameNode("Door");  
+            ModelNode doorTexture = new ModelNode("Door", door);
+        // Texturing the left wall
         NameNode leftWall = new NameNode("left wall");    
             ModelNode leftWallTexture = new ModelNode("left wall view", wall);
 
@@ -129,11 +138,15 @@ public class Room{
                     ZYPlanes.addChild(farWallTranslation);
                         farWallTranslation.addChild(enlargenWallX);
                             enlargenWallX.addChild(farWall);
-                                farWall.addChild(wallTexture);
+                                    farWall.addChild(wallTexture);
+                        farWallTranslation.addChild(doorTranslation);
+                            doorTranslation.addChild(scaleDoor);
+                                scaleDoor.addChild(doorNode);
+                                    doorNode.addChild(doorTexture);
                     ZYPlanes.addChild(zAxisRotation);
                         zAxisRotation.addChild(YPlane);
-                            YPlane.addChild(XAxisTranslation);
-                                XAxisTranslation.addChild(enlargenWallX2);
+                            YPlane.addChild(leftWallTranslation);
+                                leftWallTranslation.addChild(enlargenWallX2);
                                     enlargenWallX2.addChild(leftWall);
                                         leftWall.addChild(leftWallTexture);
         museumRoot.update();  // IMPORTANT - don't forget this
