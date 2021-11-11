@@ -34,7 +34,7 @@ public class Museum_GLEventListener implements GLEventListener {
   private static float ceilingLightsDimness[] = {0f,0.33f,0.66f,1f}; // different dimness settings for the lights
   private static int currentDimness = 1; // dimness used for the museum lights - they're fancy but expensive!
   // sunLight
-  private static float dayLight[] = {0.1f, 1f};
+  private static float dayLight[] = {0.1f, 0.6f};
   private static int currentCycle = 1;
   // 3D positions for robot render
   private float xPosition = 0;
@@ -202,20 +202,20 @@ public class Museum_GLEventListener implements GLEventListener {
   private void render(GL3 gl) {
     gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
     //For now rendering the lights - won't need to render them soon!
-    sunLight.setPosition(new Vec3(-12f,6f,0f));
+    sunLight.setPosition(new Vec3(-12f,16f,0f));
     sunLight.render(gl);
     /* Setting ceiling lights*/
-    lightBulb.setPosition(new Vec3(-6f,8f,-6f));
+    lightBulb.setPosition(new Vec3(-6f,11f,-6f));
     lightBulb.render(gl);
-    lightBulb2.setPosition(new Vec3(0f,8f,-6f));
+    lightBulb2.setPosition(new Vec3(0f,11f,-6f));
     lightBulb2.render(gl);
-    lightBulb3.setPosition(new Vec3(6f,8f,-6f));
+    lightBulb3.setPosition(new Vec3(6f,11f,-6f));
     lightBulb3.render(gl);
-    lightBulb4.setPosition(new Vec3(-6f,8f,4f));
+    lightBulb4.setPosition(new Vec3(-6f,11f,4f));
     lightBulb4.render(gl);
-    lightBulb5.setPosition(new Vec3(0f,8f,4f));
+    lightBulb5.setPosition(new Vec3(0f,11f,4f));
     lightBulb5.render(gl);
-    lightBulb6.setPosition(new Vec3(6f,8f,4f));
+    lightBulb6.setPosition(new Vec3(6f,11f,4f));
     lightBulb6.render(gl);
     updateLightColour();
     lampLight.setPosition(new Vec3(6f,5.5f,-2f));
@@ -250,9 +250,7 @@ public class Museum_GLEventListener implements GLEventListener {
      float newCycleLight = dayLight[currentCycle];
      sunLight.setDefaultAmbient(newCycleLight);
      sunLight.setDefaultDiffuseSpecular(newCycleLight);
-     System.out.println(currentCycle);
      currentCycle=(currentCycle==1) ? 0 : 1;
-     System.out.println(currentCycle);
    }
   
   /**

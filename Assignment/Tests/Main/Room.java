@@ -93,7 +93,7 @@ public class Room{
         TransformNode enlargenWallX = new TransformNode("Enlargening by "+wallSize+" in x & "+(wallSize*0.7f)+"y", m);
         TransformNode enlargenWallX2 = new TransformNode("Enlargening by "+wallSize+" in x & "+(wallSize*0.7f)+"y", m);
         // Scaling door!
-        m = Mat4Transform.scale((wallSize*0.25f),1f,(wallSize*0.4f));
+        m = Mat4Transform.scale((wallSize*0.25f),1f,(wallSize*0.45f));
         TransformNode scaleDoor = new TransformNode("Enlargening by "+wallSize+" in x & "+(wallSize*0.7f)+"y", m);
         // Transforming about X
         m = Mat4Transform.rotateAroundX(90);
@@ -102,13 +102,15 @@ public class Room{
         m = Mat4Transform.rotateAroundZ(-90);
         TransformNode zAxisRotation = new TransformNode("Rotating about Z Axis", m);
         // Translation
+        
+        // 2nd value - positive - moves it closer to us
+        // 3rd value - positive - moves it up the screen
+
         // used for far wall
         m = Mat4Transform.translate(0f, -(wallSize*0.5f), -(wallSize*0.35f));//x,y,z where z is right and y is to us
         TransformNode farWallTranslation = new TransformNode("Translating about Y and Z axis", m);
         // used for door
-        // 2nd value moves it closer to us
-        // 3rd value moves it up on screen
-        m = Mat4Transform.translate(-(wallSize*0.47f),0.2f,+(wallSize*0.32f));//x,y,z where z is right and y is to us
+        m = Mat4Transform.translate(-(wallSize*0.3f),0.11f,+(wallSize*0.125f));//x,y,z where z is right and y is to us
         TransformNode doorTranslation = new TransformNode("Translating about X axis", m);
         // used for left wall
         m = Mat4Transform.translate(0f, -(wallSize*0.5f), -(wallSize*0.35f));//x,y,z where z is right and y is to us

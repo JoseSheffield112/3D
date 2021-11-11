@@ -37,12 +37,9 @@ public class DirectionalLight extends Light{
         this.setDefaultAmbient(dimness);
     }   
 
-
-    
     public Vec3 getDirection() {
         return direction;
     }
-
 
     // public as i need to call this is the gleventlistener to update the day cycle!
     public void setDefaultAmbient(float dimness){
@@ -52,7 +49,7 @@ public class DirectionalLight extends Light{
 
     public void setDefaultDiffuseSpecular(float dimness){
         Vec3 defaultSpecular = new Vec3(0.8f,0.8f,0.8f);
-        this.getMaterial().setAmbient(Vec3.multiply(defaultSpecular, dimness));
-        this.getMaterial().setDiffuse(defaultSpecular);
+        this.getMaterial().setDiffuse(Vec3.multiply(defaultSpecular, dimness));
+        this.getMaterial().setSpecular(defaultSpecular);
     }
 }
