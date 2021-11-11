@@ -28,6 +28,7 @@ public class Museum_GLEventListener implements GLEventListener {
   private Robot myRobot;
   private Room theRoom;
   private SGNode roomScene = new NameNode("Museum - Root node");
+  private SGNode roomChild = new NameNode("Museum - child node");
 
   // dimness setting for lights
   // Ceiling lights
@@ -35,7 +36,7 @@ public class Museum_GLEventListener implements GLEventListener {
   private static int currentDimness = 1; // dimness used for the museum lights - they're fancy but expensive!
   // sunLight
   private static float dayLight[] = {0.1f, 0.6f};
-  private static int currentCycle = 1;
+  private static int currentCycle, oldCycle;
   // 3D positions for robot render
   private float xPosition = 0;
   private float yPosition = 0;
@@ -140,16 +141,8 @@ public class Museum_GLEventListener implements GLEventListener {
   
   private void initialise(GL3 gl) {
     createRandomNumbers();
-	// loading textures
-    int[] textureId0 = TextureLibrary.loadTexture(gl, "textures/Floor.jpg");
-    int[] textureId1 = TextureLibrary.loadTexture(gl, "textures/jade.jpg");
-    int[] textureId2 = TextureLibrary.loadTexture(gl, "textures/jade_specular.jpg");
-    int[] textureId3 = TextureLibrary.loadTexture(gl, "textures/container2.jpg");
-    int[] textureId4 = TextureLibrary.loadTexture(gl, "textures/container2_specular.jpg");
-    int[] textureId5 = TextureLibrary.loadTexture(gl, "textures/wattBook.jpg");
-    int[] textureId6 = TextureLibrary.loadTexture(gl, "textures/wattBook_specular.jpg");
-    int[] textureId7 = TextureLibrary.loadTexture(gl, "textures/brickWall.jpg");
-    int[] textureId8 = TextureLibrary.loadTexture(gl, "textures/door.jpg");
+    currentCycle = oldCycle = 1;// Has there been a change?
+
     
     /**
      * Initialising all my lights!
@@ -181,22 +174,22 @@ public class Museum_GLEventListener implements GLEventListener {
     ceilingLights.add(lightBulb5);
     ceilingLights.add(lightBulb6);
 
-    // resetting values
-    currentCycle=0;
-    currentDimness+=1;
-
     //Loading up scene graphs!
     theRoom = new Room(gl, camera, sunLight, ceilingLights, lampLight);
     myRobot = new Robot(gl,camera, sunLight, ceilingLights, lampLight,  xPosition, yPosition, zPosition);
 
+
     // Constructing scene graph
-    SGNode roomChild = theRoom.getSceneGraph();
+    roomChild = theRoom.getSceneGraph();
 
     roomScene.addChild(roomChild);
-      roomChild.addChild(myRobot.getSceneGraph());
+      roomChild.addChild(myRobot.getSceneGraph());// think you should put robot outside of this?
     roomScene.update();
     //roomScene.print(0, false);
     //System.exit(0);      
+    
+    // resetting values
+    currentDimness+=1;
   }
  
   private void render(GL3 gl) {
@@ -220,6 +213,11 @@ public class Museum_GLEventListener implements GLEventListener {
     updateLightColour();
     lampLight.setPosition(new Vec3(6f,5.5f,-2f));
     lampLight.render(gl);
+    if(oldCycle!=currentCycle){
+      roomScene = theRoom.updateView(gl, currentCycle);
+      roomScene.update();
+      oldCycle=currentCycle;
+    }
     roomScene.draw(gl);
   }
   /*
@@ -241,16 +239,15 @@ public class Museum_GLEventListener implements GLEventListener {
     }
     currentDimness = (currentDimness==3) ? 0 : (currentDimness+1);
   }
-
   /**
    * Updating day/night light
    */
   
    public void toggleSunLight(){
+     currentCycle=(currentCycle==1) ? 0 : 1;
      float newCycleLight = dayLight[currentCycle];
      sunLight.setDefaultAmbient(newCycleLight);
      sunLight.setDefaultDiffuseSpecular(newCycleLight);
-     currentCycle=(currentCycle==1) ? 0 : 1;
    }
   
   /**

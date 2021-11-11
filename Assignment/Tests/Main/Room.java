@@ -20,7 +20,7 @@ public class Room{
     private SGNode museumRoot;
 
     // Declaring models variables
-    private Model floor, wall, door;
+    private Model floor, wall, door, window, window2;
 
     //Transform node stuff
     private TransformNode enlargen;
@@ -30,6 +30,7 @@ public class Room{
     private static ArrayList<PointLight> ceilingLights = new ArrayList<PointLight>();
     private SpotLight lampLight;
     private Camera camera;
+    private int dayCycle = 1;
   
     //Setting Values
     private float wallSize = 16f;
@@ -50,11 +51,7 @@ public class Room{
         int[] textureId0 = TextureLibrary.loadTexture(gl, "textures/Floor.jpg");
         int[] textureId7 = TextureLibrary.loadTexture(gl, "textures/brickWall.jpg");
         int[] textureId8 = TextureLibrary.loadTexture(gl, "textures/door.jpg");
-
-        // Variables for room construction
-        // loading models
-        Vec3 whiteLight = new Vec3(1.0f, 1.0f, 1.0f);
-        float wallSize = 16f;
+        int[] textureId9 = TextureLibrary.loadTexture(gl, "textures/istockphoto-680743766-612x612.png");
 
         //Shapes models
         //Floor model
@@ -71,11 +68,18 @@ public class Room{
         wall = new Model(gl, camera, sunLight, ceilingLights, lampLight, shader, material, modelMatrix, mesh, textureId7);
         
         //Door
-        //
         mesh = new Mesh(gl, TwoTriangles.vertices.clone(), TwoTriangles.indices.clone());
         shader = new Shader(gl, "vs_tt.txt", "fs_tt.txt");
         material = new Material(whiteLight, whiteLight, new Vec3(0.3f, 0.3f, 0.3f), 32.0f);
         door = new Model(gl, camera, sunLight, ceilingLights, lampLight, shader, material, modelMatrix, mesh, textureId8);
+
+        //Handling Window wall
+        mesh = new Mesh(gl, TwoTriangles.vertices.clone(), TwoTriangles.indices.clone());
+        shader = new Shader(gl, "vs_tt.txt", "fs_tt.txt");
+        material = new Material(whiteLight, whiteLight, new Vec3(0.3f, 0.3f, 0.3f), 32.0f);
+        window = new Model(gl, camera, sunLight, ceilingLights, lampLight, shader, material, modelMatrix, mesh, textureId9);
+        window2 = new Model(gl, camera, sunLight, ceilingLights, lampLight, shader, material, modelMatrix, mesh, textureId7);
+
 
         //Scene graph
         //Root
@@ -126,8 +130,12 @@ public class Room{
         NameNode doorNode = new NameNode("Door");  
             ModelNode doorTexture = new ModelNode("Door", door);
         // Texturing the left wall
-        NameNode leftWall = new NameNode("left wall");    
-            ModelNode leftWallTexture = new ModelNode("left wall view", wall);
+        NameNode windowWall = new NameNode("Window wall");    
+            ModelNode windowWallTexture = new ModelNode("left wall view", window);
+
+        if(dayCycle!=1){
+            windowWallTexture = new ModelNode("left wall VIEW CHANGED HAHA", window2);
+        }
 
         
         // Constructing scene graph
@@ -149,11 +157,18 @@ public class Room{
                         zAxisRotation.addChild(YPlane);
                             YPlane.addChild(leftWallTranslation);
                                 leftWallTranslation.addChild(enlargenWallX2);
-                                    enlargenWallX2.addChild(leftWall);
-                                        leftWall.addChild(leftWallTexture);
+                                    enlargenWallX2.addChild(windowWall);
+                                        windowWall.addChild(windowWallTexture);
         museumRoot.update();  // IMPORTANT - don't forget this
         // museumRoot.print(0, false);
         // System.exit(0);        
+    }
+
+    public SGNode updateView(GL3 gl, int cycle){
+        this.dayCycle=cycle;
+        sceneGraph(gl);
+        museumRoot.update();
+        return museumRoot;
     }
 
     public SGNode getSceneGraph(){
