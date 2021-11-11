@@ -51,8 +51,9 @@ public class Room{
         int[] textureId0 = TextureLibrary.loadTexture(gl, "textures/Floor.jpg");
         int[] textureId7 = TextureLibrary.loadTexture(gl, "textures/brickWall.jpg");
         int[] textureId8 = TextureLibrary.loadTexture(gl, "textures/door.jpg");
-        int[] textureId9 = TextureLibrary.loadTexture(gl, "textures/istockphoto-680743766-612x612.png");
-
+        int[] textureId9 = TextureLibrary.loadTexture(gl, "textures/stockPhotos/dimitry-anikin-nSZlic4jLeo-unsplash_512.jpg");
+        int[] textureId10 = TextureLibrary.loadTexture(gl, "textures/stockPhotos/dimitry-anikin-WnAYMHMcmYM-unsplash_2_512.jpg");
+        
         //Shapes models
         //Floor model
         Mesh mesh = new Mesh(gl, TwoTriangles.vertices.clone(), TwoTriangles.indices.clone());
@@ -78,7 +79,7 @@ public class Room{
         shader = new Shader(gl, "vs_tt.txt", "fs_tt.txt");
         material = new Material(whiteLight, whiteLight, new Vec3(0.3f, 0.3f, 0.3f), 32.0f);
         window = new Model(gl, camera, sunLight, ceilingLights, lampLight, shader, material, modelMatrix, mesh, textureId9);
-        window2 = new Model(gl, camera, sunLight, ceilingLights, lampLight, shader, material, modelMatrix, mesh, textureId7);
+        window2 = new Model(gl, camera, sunLight, ceilingLights, lampLight, shader, material, modelMatrix, mesh, textureId10);
 
 
         //Scene graph

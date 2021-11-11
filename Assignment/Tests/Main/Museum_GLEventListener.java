@@ -178,7 +178,6 @@ public class Museum_GLEventListener implements GLEventListener {
     theRoom = new Room(gl, camera, sunLight, ceilingLights, lampLight);
     myRobot = new Robot(gl,camera, sunLight, ceilingLights, lampLight,  xPosition, yPosition, zPosition);
     
-
     drawRoomScene(gl);
 
     // resetting values
@@ -247,9 +246,8 @@ public class Museum_GLEventListener implements GLEventListener {
   
    public void toggleSunLight(){
      currentCycle=(currentCycle==1) ? 0 : 1;
-     float newCycleLight = dayLight[currentCycle];
-     sunLight.setDefaultAmbient(newCycleLight);
-     sunLight.setDefaultDiffuseSpecular(newCycleLight);
+     sunLight.setDefaultAmbient(dayLight[currentCycle]);
+     sunLight.setDefaultDiffuseSpecular(dayLight[currentCycle]);
    }
   
   /**
