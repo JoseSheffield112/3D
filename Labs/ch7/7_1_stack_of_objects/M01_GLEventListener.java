@@ -103,7 +103,7 @@ public class M01_GLEventListener implements GLEventListener {
     cube = new Model(gl, camera, light, shader, material, modelMatrix, m, textureId1, textureId2);
 
     m = new Mesh(gl, Sphere.vertices.clone(), Sphere.indices.clone());
-    shader = new Shader(gl, "vs_sphere_04.txt", "fs_sphere_04.txt");
+    shader = new Shader(gl, "vs_sphere_04.txt", "fs_sphere_04_notex.txt");
     
     // no texture version
     // shader = new Shader(gl, "vs_sphere_04.txt", "fs_sphere_04_notex.txt");
