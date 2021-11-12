@@ -19,10 +19,10 @@ public class Exhibition{
     /*
     variables used in class
     */
-    private SGNode roomRoot;
+    private SGNode exhibitionRoot;
 
     // Declaring models variables
-    private Model floor, wall;
+    private Model cube;
 
     //Transform node stuff
     private TransformNode enlargen;
@@ -32,12 +32,8 @@ public class Exhibition{
     private static ArrayList<PointLight> ceilingLights = new ArrayList<PointLight>();
     private SpotLight lampLight;
     private Camera camera;
-  
-    //Setting Values
-    private float wallSize = 16f;
-    private float doorSize = wallSize*0.35f;
-    private float doorPositioning = 0.75f;
-    private Vec3 whiteLight = new Vec3(1.0f, 1.0f, 1.0f);
+    //
+    private float cubeSize = 4.0f;
 
     public Exhibition(GL3 gl,Camera camera, DirectionalLight sunLight, ArrayList<PointLight> ceilingLights, SpotLight lampLight){
         this.camera=camera;
@@ -49,35 +45,44 @@ public class Exhibition{
 
     private void sceneGraph(GL3 gl){
         //Texture
-        int[] textureId0 = TextureLibrary.loadTexture(gl, "textures/Floor.jpg");
+        int[] textureId1 = TextureLibrary.loadTexture(gl, "textures/container2.jpg");
+        int[] textureId2 = TextureLibrary.loadTexture(gl, "textures/container2_specular.jpg");
 
-        //Shapes models
-        //Floor model
-        Mesh mesh = new Mesh(gl, TwoTriangles.vertices.clone(), TwoTriangles.indices.clone());
-        Shader shader = new Shader(gl, "vs_tt.txt", "fs_tt.txt");
-        Material material = new Material(whiteLight, whiteLight, new Vec3(0.3f, 0.3f, 0.3f), 32.0f);
+        //Models
+        //Setting up model for the cube used in the scene!
+        Mesh mesh = new Mesh(gl, Cube.vertices.clone(), Cube.indices.clone());
+        Shader shader = new Shader(gl, "vs_cube.txt", "fs_cube.txt");
+        Material material = new Material(new Vec3(1.0f, 0.5f, 0.31f), new Vec3(1.0f, 0.5f, 0.31f), new Vec3(0.5f, 0.5f, 0.5f), 32.0f);
         Mat4 modelMatrix = Mat4Transform.scale(1f,1f,1f);
-        floor = new Model(gl, camera, sunLight, ceilingLights, lampLight, shader, material, modelMatrix, mesh, textureId0);
+        cube = new Model(gl, camera, sunLight, ceilingLights, lampLight, shader, material, modelMatrix, mesh, textureId1, textureId2);
 
-        //Scene graph
-        //Root
-        roomRoot = new NameNode("Room");
-        //Building the fllor
-        NameNode flooring = new NameNode("floor");      
-            Mat4 m = Mat4Transform.scale(wallSize,1f,wallSize);
-            TransformNode enlargen = new TransformNode("Enlargen the flooring", m);
-            ModelNode flooringType = new ModelNode("Flooring", floor);
+        //Graph
+        // Making graph stuff
+        exhibitionRoot = new NameNode("Exhibition root node");
 
+        //cube
+        NameNode addingCube = new NameNode("Adding Cube");
+        Mat4 m = Mat4Transform.scale(cubeSize,cubeSize,cubeSize);
+        TransformNode enlargenCube = new TransformNode("Enlargening cube by ", m);
+        m = Mat4Transform.translate(cubeSize, cubeSize, 0f);//x,y,z where z is right and y is to us
+        TransformNode movingCube = new TransformNode("Translating about X and Y axis", m);
+
+        // Texturing the the cube
+        NameNode theCube = new NameNode("cube");      
+        ModelNode cubeTexture = new ModelNode("Cube texture", cube);
+        
         //Constructing scene graph
-        roomRoot.addChild(enlargen);
-            enlargen.addChild(flooring);
-                flooring.addChild(flooringType);
-        roomRoot.update();  // IMPORTANT - don't forget this
-        //roomRoot.print(0, false);
+        exhibitionRoot.addChild(addingCube);
+            addingCube.addChild(theCube);
+                theCube.addChild(movingCube);
+                    movingCube.addChild(enlargenCube);
+                        enlargenCube.addChild(cubeTexture);
+        exhibitionRoot.update();  // IMPORTANT - don't forget this
+        //exhibitionRoot.print(0, false);
         //System.exit(0);        
     }
 
     public SGNode getSceneGraph(){
-        return roomRoot;
+        return exhibitionRoot;
     }
 }

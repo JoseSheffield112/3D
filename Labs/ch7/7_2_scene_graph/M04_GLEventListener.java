@@ -262,8 +262,8 @@ public class M04_GLEventListener implements GLEventListener {
             rightlegTransform.addChild(rightLegShape);
     
     robotRoot.update();  // IMPORTANT - don't forget this
-    robotRoot.print(0, false);
-    System.exit(0);
+    //robotRoot.print(0, false);
+    //System.exit(0);
   }
  
   private void render(GL3 gl) {
