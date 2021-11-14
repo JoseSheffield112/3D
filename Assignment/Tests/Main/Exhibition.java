@@ -49,13 +49,18 @@ public class Exhibition{
 
         //Sizes
         // plinth variables
-        final float width, depth, height;
-        width = 3.4f;
-        depth = 1.4f;
-        height = 0.8f;
+        final float plinthWidth, plinthHeight, plinthDepth;
+        plinthWidth = 4f;
+        plinthHeight = 2f;
+        plinthDepth = 1f;
+        // phone
+        final float phoneWidth, phoneHeight, phoneDepth;
+        phoneWidth = 3f;
+        phoneHeight = 6f;
+        phoneDepth = 0.8f;
         // Egg + Platform variables
-        final float size = 3f;
-        final float radius = 2.2f;
+        final float platformSize = 2f;
+        final float eggRadius = 2f;
 
         //Models
         //Setting up model for the cube used in the scene!
@@ -76,31 +81,38 @@ public class Exhibition{
 
         // Nodes(objects)
         NameNode attractions = new NameNode("Building attractions");
+
         // First Build
         // Plinth
         NameNode plinthPhone = new NameNode("Plinth, then phone");
-        Mat4 m = Mat4Transform.scale(width, height, depth);
-        m = Mat4.multiply(m, Mat4Transform.translate(1f, 0.5f, -4f));
-        TransformNode renderingPlinth = new TransformNode("Scaled, then translated", m);
+        // Centering the phone attraction
+        Mat4 m = Mat4Transform.translate(4f, (plinthHeight*0.5f), -6f);
+        TransformNode centeringPlinth = new TransformNode("Centering plinth & Phone", m);
+        // Dealing with plinth
+        m = Mat4Transform.scale(plinthWidth, plinthHeight, plinthDepth);
+        TransformNode renderingPlinth = new TransformNode("Scaled", m);
         // Phone
-        m = Mat4Transform.scale((width*0.8f), (height*7f), (depth*0.6f));
-        m = Mat4.multiply(m, Mat4Transform.translate((width*0.37f), (height*0.8f), -(depth*4.75f)));
+        m = Mat4Transform.translate(0f, ((phoneHeight*0.5f)+(plinthHeight*0.5f)), 0f); // Gotta place the phone ON TOP of the plinth
+        m = Mat4.multiply(m, Mat4Transform.scale(phoneWidth, phoneHeight, phoneDepth));
         TransformNode renderingPhone = new TransformNode("Scaled, then translated", m);
 
         // Second build
         // Platform
         NameNode platformEgg = new NameNode("Platform, then Egg");
-        m = Mat4Transform.scale(size, (size/3f), size);
-        m = Mat4.multiply(m, Mat4Transform.translate(-0.5f, 0.5f, 1f));
-        TransformNode renderingPlatform = new TransformNode("Scaled, then translated", m);
+        // Centering the egg attraction
+        m = Mat4Transform.translate(-2f, (platformSize*0.25f), 2f);
+        TransformNode centeringPlatform = new TransformNode("Centering Platform & Egg", m);
+        // Dealing with platform
+        m = Mat4Transform.scale(platformSize, (platformSize*0.5f), platformSize);
+        TransformNode renderingPlatform = new TransformNode("Scaled", m);
         // Egg!
-        m = Mat4Transform.scale(radius, (radius*2.5f), radius);
-        m = Mat4.multiply(m, Mat4Transform.translate(-(radius*0.32f), 0.68f, (radius*0.6f)));
+        m = Mat4Transform.translate(0f, ((platformSize*0.25f)+(eggRadius*1.25f)), 0f); // Gotta place the phone ON TOP of the plinth
+        m = Mat4.multiply(m, Mat4Transform.scale(eggRadius, (eggRadius*2.5f), eggRadius));
         TransformNode renderingEgg = new TransformNode("Scaled, then translated", m);
 
 
         // Textures
-        // Texturing the the plith 
+        // Texturing the the plinth 
         ModelNode plinthTexture = new ModelNode("Plinth texture", cube);
         // Texturing the the Phone 
         ModelNode phoneTexture = new ModelNode("Phone texture", cube);
@@ -114,15 +126,17 @@ public class Exhibition{
         //Constructing scene graph
         exhibitionRoot.addChild(attractions);
             attractions.addChild(plinthPhone);
-                plinthPhone.addChild(renderingPlinth);
-                    renderingPlinth.addChild(plinthTexture);
-                plinthPhone.addChild(renderingPhone);
-                    renderingPhone.addChild(phoneTexture);
+                plinthPhone.addChild(centeringPlinth);
+                    centeringPlinth.addChild(renderingPlinth);
+                        renderingPlinth.addChild(plinthTexture);
+                    centeringPlinth.addChild(renderingPhone);
+                        renderingPhone.addChild(phoneTexture);
             attractions.addChild(platformEgg);
-                platformEgg.addChild(renderingPlatform);
-                    renderingPlatform.addChild(platformTexture);
-                platformEgg.addChild(renderingEgg);
-                    renderingEgg.addChild(eggTexture);
+                platformEgg.addChild(centeringPlatform);
+                    centeringPlatform.addChild(renderingPlatform);
+                        renderingPlatform.addChild(platformTexture);
+                    centeringPlatform.addChild(renderingEgg);
+                        renderingEgg.addChild(eggTexture);
         exhibitionRoot.update();  // IMPORTANT - don't forget this
         //exhibitionRoot.print(0, false);
         //System.exit(0);        

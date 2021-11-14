@@ -28,6 +28,7 @@ public class Museum_GLEventListener implements GLEventListener {
   private Robot myRobot;
   private Room theRoom;
   private Exhibition theExhibition;
+  private Lamp theLamp;
   private SGNode roomScene = new NameNode("Museum - Root node");
   private SGNode roomChild = new NameNode("Museum - child node");
 
@@ -179,6 +180,7 @@ public class Museum_GLEventListener implements GLEventListener {
     theRoom = new Room(gl, camera, sunLight, ceilingLights, lampLight);
     myRobot = new Robot(gl,camera, sunLight, ceilingLights, lampLight,  xPosition, yPosition, zPosition);
     theExhibition = new Exhibition(gl,camera, sunLight, ceilingLights, lampLight);
+    theLamp = new Lamp(gl,camera, sunLight, ceilingLights, lampLight, xPosition, yPosition, zPosition);
    
     drawRoomScene(gl);
 
@@ -192,6 +194,7 @@ public class Museum_GLEventListener implements GLEventListener {
     roomScene.addChild(roomChild);
       roomChild.addChild(myRobot.getSceneGraph());// think you should put robot outside of this?
       roomChild.addChild(theExhibition.getSceneGraph());
+      roomChild.addChild(theLamp.getSceneGraph());  
     roomScene.update();
     //roomScene.print(0, false);
     //System.exit(0);   
