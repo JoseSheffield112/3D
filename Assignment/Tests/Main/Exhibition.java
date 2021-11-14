@@ -4,8 +4,10 @@
  * Unlike previous files, I am using code from various sources to build these objects.. Each model will identify it's source 
  * 
  * *********************TO-DO*********************
- * - Identify methods you've introduced
- * IDENTIFY EACH MODELS SOURCE :P
+ * - Build the lamp
+ * - swing the lamp about
+ * - build the robot
+ * - add 5 distinct poses
 */
 import gmaths.*;
 import java.nio.*;
@@ -93,7 +95,7 @@ public class Exhibition{
         TransformNode renderingPlatform = new TransformNode("Scaled, then translated", m);
         // Egg!
         m = Mat4Transform.scale(radius, (radius*2.5f), radius);
-        m = Mat4.multiply(m, Mat4Transform.translate(-0.5f, 0.68f, 1f));
+        m = Mat4.multiply(m, Mat4Transform.translate(-(radius*0.32f), 0.68f, (radius*0.6f)));
         TransformNode renderingEgg = new TransformNode("Scaled, then translated", m);
 
 

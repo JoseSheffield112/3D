@@ -188,7 +188,7 @@ public class Museum_GLEventListener implements GLEventListener {
 
   private void drawRoomScene(GL3 gl){
     // Constructing scene graph
-    roomScene = theRoom.updateView(gl, currentCycle);
+    roomChild = theRoom.updateView(gl, currentCycle);
     roomScene.addChild(roomChild);
       roomChild.addChild(myRobot.getSceneGraph());// think you should put robot outside of this?
       roomChild.addChild(theExhibition.getSceneGraph());
