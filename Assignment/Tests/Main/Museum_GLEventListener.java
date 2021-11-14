@@ -43,7 +43,12 @@ public class Museum_GLEventListener implements GLEventListener {
   private float xPosition = -5f;
   private float yPosition = 0f;
   private float zPosition = -6f;
-    
+  // 3D positions for lamp!
+  private float defaultLampX = 4.6f;
+  private float defaultLampY = 8.3f;  // There's a difference of 0.2f between both the lamp and lamp cover. 8.2f lamp flush with cover; 8.3f = lamp has 0.1f overlap with cover
+  private float defaultLampZ = 0f;
+  
+  
   public Museum_GLEventListener(Camera camera) {
     this.camera = camera;
     this.camera.setPosition(new Vec3(4f,12f,18f));
@@ -219,7 +224,7 @@ public class Museum_GLEventListener implements GLEventListener {
     lightBulb6.setPosition(new Vec3(6f,11f,4f));
     lightBulb6.render(gl);
     updateLightColour();
-    lampLight.setPosition(new Vec3(4.6f,8.3f,0f));
+    lampLight.setPosition(new Vec3(defaultLampX,defaultLampY,defaultLampZ));
     lampLight.render(gl);
     if(oldCycle!=currentCycle){
       drawRoomScene(gl);
@@ -270,6 +275,11 @@ public class Museum_GLEventListener implements GLEventListener {
     m.setAmbient(Vec3.multiply(m.getDiffuse(),0.2f));
     lampLight.setMaterial(m);
   }
+
+  private void updateLampPosition(){
+    System.out.println("Under construction M8");
+  }
+
 /*
   private void updateRightArm() {
     double elapsedTime = getSeconds()-startTime;
