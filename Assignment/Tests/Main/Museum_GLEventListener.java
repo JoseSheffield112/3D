@@ -39,9 +39,9 @@ public class Museum_GLEventListener implements GLEventListener {
   private static float dayLight[] = {0.1f, 0.6f};
   private static int currentCycle, oldCycle;
   // 3D positions for robot render
-  private float xPosition = 0;
-  private float yPosition = 0;
-  private float zPosition = 0;
+  private float xPosition = -5f;
+  private float yPosition = 0f;
+  private float zPosition = -6f;
     
   public Museum_GLEventListener(Camera camera) {
     this.camera = camera;

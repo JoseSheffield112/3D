@@ -32,8 +32,6 @@ public class Exhibition{
     private static ArrayList<PointLight> ceilingLights = new ArrayList<PointLight>();
     private SpotLight lampLight;
     private Camera camera;
-    //
-    private float cubeSize = 4.0f;
 
     public Exhibition(GL3 gl,Camera camera, DirectionalLight sunLight, ArrayList<PointLight> ceilingLights, SpotLight lampLight){
         this.camera=camera;
@@ -48,6 +46,12 @@ public class Exhibition{
         int[] textureId1 = TextureLibrary.loadTexture(gl, "textures/container2.jpg");
         int[] textureId2 = TextureLibrary.loadTexture(gl, "textures/container2_specular.jpg");
 
+        //Sizes
+        final float width, depth, height;
+        width = 3.4f;
+        depth = 1.4f;
+        height = 0.8f;
+
         //Models
         //Setting up model for the cube used in the scene!
         Mesh mesh = new Mesh(gl, Cube.vertices.clone(), Cube.indices.clone());
@@ -60,23 +64,32 @@ public class Exhibition{
         // Making graph stuff
         exhibitionRoot = new NameNode("Exhibition root node");
 
-        //cube
-        NameNode addingCube = new NameNode("Adding Cube");
-        Mat4 m = Mat4Transform.scale(cubeSize,cubeSize,cubeSize);
-        TransformNode enlargenCube = new TransformNode("Enlargening cube by ", m);
-        m = Mat4Transform.translate(cubeSize, cubeSize, 0f);//x,y,z where z is right and y is to us
-        TransformNode movingCube = new TransformNode("Translating about X and Y axis", m);
+        // Nodes(objects)
+        // plinth
+        NameNode plinth = new NameNode("Plinth");
+        Mat4 m = Mat4Transform.scale(width, height, depth);
+        m = Mat4.multiply(m, Mat4Transform.translate(1f, 0.5f, -3.5f));
+        TransformNode renderingPlinth = new TransformNode("Scaled, then translated", m);
+        // Phone
+        NameNode phone = new NameNode("Phone");
+        m = Mat4Transform.scale((width*0.8f), (height*7f), (depth*0.6f));
+        System.out.println("H "+height+".");
+        m = Mat4.multiply(m, Mat4Transform.translate((width*0.37f), (height*0.8f), -(depth*4.25f)));
+        TransformNode renderingPhone = new TransformNode("Scaled, then translated", m);
 
-        // Texturing the the cube
-        NameNode theCube = new NameNode("cube");      
-        ModelNode cubeTexture = new ModelNode("Cube texture", cube);
+
+        // Textures
+        // Texturing the the plith      
+        ModelNode plinthTexture = new ModelNode("Cube texture", cube);
+        ModelNode phoneTexture = new ModelNode("Phone texture", cube);
         
         //Constructing scene graph
-        exhibitionRoot.addChild(addingCube);
-            addingCube.addChild(theCube);
-                theCube.addChild(movingCube);
-                    movingCube.addChild(enlargenCube);
-                        enlargenCube.addChild(cubeTexture);
+        exhibitionRoot.addChild(plinth);
+            plinth.addChild(renderingPlinth);
+                renderingPlinth.addChild(plinthTexture);
+            plinth.addChild(phone);
+                phone.addChild(renderingPhone);
+                    renderingPhone.addChild(phoneTexture);
         exhibitionRoot.update();  // IMPORTANT - don't forget this
         //exhibitionRoot.print(0, false);
         //System.exit(0);        

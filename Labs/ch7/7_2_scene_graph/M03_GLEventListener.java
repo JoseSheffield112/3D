@@ -165,10 +165,10 @@ public class M03_GLEventListener implements GLEventListener {
               rotateUpper.addChild(upperBranchPositive);
                 upperBranchPositive.addChild(makeUpperBranchPositive);
                   makeUpperBranchPositive.addChild(cube1Node);
-			translateToTop.addChild(rotateUpper2);
-			  rotateUpper2.addChild(upperBranchNegative);
-                upperBranchNegative.addChild(makeUpperBranchNegative);
-                  makeUpperBranchNegative.addChild(cube2Node);
+						translateToTop.addChild(rotateUpper2);
+							rotateUpper2.addChild(upperBranchNegative);
+											upperBranchNegative.addChild(makeUpperBranchNegative);
+												makeUpperBranchNegative.addChild(cube2Node);
     twoBranchRoot.update();  // IMPORTANT – must be done every time any part of the scene graph changes
     //twoBranchRoot.print(0, false);
     //System.exit(0);
