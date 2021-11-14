@@ -94,7 +94,7 @@ public class Exhibition{
         // Phone
         m = Mat4Transform.translate(0f, ((phoneHeight*0.5f)+(plinthHeight*0.5f)), 0f); // Gotta place the phone ON TOP of the plinth
         m = Mat4.multiply(m, Mat4Transform.scale(phoneWidth, phoneHeight, phoneDepth));
-        TransformNode renderingPhone = new TransformNode("Scaled, then translated", m);
+        TransformNode renderingPhone = new TransformNode("Translated, then Scaled", m);
 
         // Second build
         // Platform
@@ -108,7 +108,7 @@ public class Exhibition{
         // Egg!
         m = Mat4Transform.translate(0f, ((platformSize*0.25f)+(eggRadius*1.25f)), 0f); // Gotta place the phone ON TOP of the plinth
         m = Mat4.multiply(m, Mat4Transform.scale(eggRadius, (eggRadius*2.5f), eggRadius));
-        TransformNode renderingEgg = new TransformNode("Scaled, then translated", m);
+        TransformNode renderingEgg = new TransformNode("Translated, then Scaled", m);
 
 
         // Textures
