@@ -74,7 +74,7 @@ public class Robot{
 
         //Sphere model
         mesh = new Mesh(gl, Sphere.vertices.clone(), Sphere.indices.clone());
-        shader = new Shader(gl, "vs_cube.txt", "fs_cube.txt");
+        shader = new Shader(gl, "vs_sphere.txt", "fs_sphere.txt");
         material = new Material(new Vec3(1.0f, 0.5f, 0.31f), new Vec3(1.0f, 0.5f, 0.31f), new Vec3(0.5f, 0.5f, 0.5f), 32.0f);
         modelMatrix = Mat4.multiply(Mat4Transform.scale(4,4,4), Mat4Transform.translate(0,0.5f,0));
         sphere = new Model(gl, camera, sunLight, ceilingLights, lampLight, shader, material, modelMatrix, mesh, textureId1, textureId2);

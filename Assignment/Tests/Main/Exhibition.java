@@ -22,10 +22,7 @@ public class Exhibition{
     private SGNode exhibitionRoot;
 
     // Declaring models variables
-    private Model cube;
-
-    //Transform node stuff
-    private TransformNode enlargen;
+    private Model cube, sphere;
 
     //TEMP
     private DirectionalLight sunLight;
@@ -45,12 +42,18 @@ public class Exhibition{
         //Texture
         int[] textureId1 = TextureLibrary.loadTexture(gl, "textures/container2.jpg");
         int[] textureId2 = TextureLibrary.loadTexture(gl, "textures/container2_specular.jpg");
+        int[] textureId3 = TextureLibrary.loadTexture(gl, "textures/jade.jpg");
+        int[] textureId4 = TextureLibrary.loadTexture(gl, "textures/jade_specular.jpg");
 
         //Sizes
+        // plinth variables
         final float width, depth, height;
         width = 3.4f;
         depth = 1.4f;
         height = 0.8f;
+        // Egg + Platform variables
+        final float size = 3f;
+        final float radius = 2.2f;
 
         //Models
         //Setting up model for the cube used in the scene!
@@ -59,37 +62,65 @@ public class Exhibition{
         Material material = new Material(new Vec3(1.0f, 0.5f, 0.31f), new Vec3(1.0f, 0.5f, 0.31f), new Vec3(0.5f, 0.5f, 0.5f), 32.0f);
         Mat4 modelMatrix = Mat4Transform.scale(1f,1f,1f);
         cube = new Model(gl, camera, sunLight, ceilingLights, lampLight, shader, material, modelMatrix, mesh, textureId1, textureId2);
+        //Setting up model for the sphere used in the scenes
+        mesh = new Mesh(gl, Sphere.vertices.clone(), Sphere.indices.clone());
+        shader = new Shader(gl, "vs_sphere.txt", "fs_sphere.txt");
+        material = new Material(new Vec3(1.0f, 0.5f, 0.31f), new Vec3(1.0f, 0.5f, 0.31f), new Vec3(0.5f, 0.5f, 0.5f), 32.0f);
+        sphere = new Model(gl, camera, sunLight, ceilingLights, lampLight, shader, material, modelMatrix, mesh, textureId3, textureId4);
 
         //Graph
         // Making graph stuff
         exhibitionRoot = new NameNode("Exhibition root node");
 
         // Nodes(objects)
-        // plinth
-        NameNode plinth = new NameNode("Plinth");
+        NameNode attractions = new NameNode("Building attractions");
+        // First Build
+        // Plinth
+        NameNode plinthPhone = new NameNode("Plinth, then phone");
         Mat4 m = Mat4Transform.scale(width, height, depth);
-        m = Mat4.multiply(m, Mat4Transform.translate(1f, 0.5f, -3.5f));
+        m = Mat4.multiply(m, Mat4Transform.translate(1f, 0.5f, -4f));
         TransformNode renderingPlinth = new TransformNode("Scaled, then translated", m);
         // Phone
-        NameNode phone = new NameNode("Phone");
         m = Mat4Transform.scale((width*0.8f), (height*7f), (depth*0.6f));
-        System.out.println("H "+height+".");
-        m = Mat4.multiply(m, Mat4Transform.translate((width*0.37f), (height*0.8f), -(depth*4.25f)));
+        m = Mat4.multiply(m, Mat4Transform.translate((width*0.37f), (height*0.8f), -(depth*4.75f)));
         TransformNode renderingPhone = new TransformNode("Scaled, then translated", m);
+
+        // Second build
+        // Platform
+        NameNode platformEgg = new NameNode("Platform, then Egg");
+        m = Mat4Transform.scale(size, (size/3f), size);
+        m = Mat4.multiply(m, Mat4Transform.translate(-0.5f, 0.5f, 1f));
+        TransformNode renderingPlatform = new TransformNode("Scaled, then translated", m);
+        // Egg!
+        m = Mat4Transform.scale(radius, (radius*2.5f), radius);
+        m = Mat4.multiply(m, Mat4Transform.translate(-0.5f, 0.68f, 1f));
+        TransformNode renderingEgg = new TransformNode("Scaled, then translated", m);
 
 
         // Textures
-        // Texturing the the plith      
-        ModelNode plinthTexture = new ModelNode("Cube texture", cube);
+        // Texturing the the plith 
+        ModelNode plinthTexture = new ModelNode("Plinth texture", cube);
+        // Texturing the the Phone 
         ModelNode phoneTexture = new ModelNode("Phone texture", cube);
+
+        // Texturing the the platform
+        ModelNode platformTexture = new ModelNode("Platform texture", cube);
+        // Texturing the egg!
+        ModelNode eggTexture = new ModelNode("Egg texture", sphere);
+
         
         //Constructing scene graph
-        exhibitionRoot.addChild(plinth);
-            plinth.addChild(renderingPlinth);
-                renderingPlinth.addChild(plinthTexture);
-            plinth.addChild(phone);
-                phone.addChild(renderingPhone);
+        exhibitionRoot.addChild(attractions);
+            attractions.addChild(plinthPhone);
+                plinthPhone.addChild(renderingPlinth);
+                    renderingPlinth.addChild(plinthTexture);
+                plinthPhone.addChild(renderingPhone);
                     renderingPhone.addChild(phoneTexture);
+            attractions.addChild(platformEgg);
+                platformEgg.addChild(renderingPlatform);
+                    renderingPlatform.addChild(platformTexture);
+                platformEgg.addChild(renderingEgg);
+                    renderingEgg.addChild(eggTexture);
         exhibitionRoot.update();  // IMPORTANT - don't forget this
         //exhibitionRoot.print(0, false);
         //System.exit(0);        
