@@ -219,7 +219,7 @@ public class Museum_GLEventListener implements GLEventListener {
     lightBulb6.setPosition(new Vec3(6f,11f,4f));
     lightBulb6.render(gl);
     updateLightColour();
-    lampLight.setPosition(new Vec3(6f,5.5f,-2f));
+    lampLight.setPosition(new Vec3(4.6f,8.3f,0f));
     lampLight.render(gl);
     if(oldCycle!=currentCycle){
       drawRoomScene(gl);

@@ -56,6 +56,7 @@ public class Lamp{
         poleGirth = 0.5f;
         poleHeight = 8f;
         final float topWidth = 3f;
+        final float lampSize = 0.5f;
 
 
         //Models
@@ -90,6 +91,11 @@ public class Lamp{
         m = Mat4.multiply(m, Mat4Transform.scale(topWidth, (size*0.5f), size));
         TransformNode renderingTop = new TransformNode("Translated, then scaled", m);
         //lamp
+        NameNode lampCover = new NameNode("Lamp - top");
+        m = Mat4Transform.translate(-(topWidth*0.8f), (poleHeight*0.45f), 0f);//Here is where we'll change the rotation values!
+        m = Mat4.multiply(m, Mat4Transform.scale(lampSize, lampSize, lampSize));
+        TransformNode renderingCover = new TransformNode("Translated, then scaled", m);
+
 
 
         // Textures
@@ -99,6 +105,8 @@ public class Lamp{
         ModelNode poleTexture = new ModelNode("Pole texture", cube);
         // Texturing the top
         ModelNode topTexture = new ModelNode("Top texture", cube);
+        // Texturing the lamp Cover
+        ModelNode coverTexture = new ModelNode("Cover texture", cube);
 
         
         //Constructing scene graph
@@ -113,9 +121,12 @@ public class Lamp{
                             translatingPole.addChild(lampTop);
                                 lampTop.addChild(renderingTop);
                                     renderingTop.addChild(topTexture);
+                                lampTop.addChild(lampCover);
+                                    lampCover.addChild(renderingCover);
+                                        renderingCover.addChild(coverTexture);
         lampRoot.update();  // IMPORTANT - don't forget this
-        //exhibitionRoot.print(0, false);
-        //System.exit(0);        
+        // lampRoot.print(0, false);
+        // System.exit(0);        
     }
 
     public SGNode getSceneGraph(){
