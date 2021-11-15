@@ -227,6 +227,7 @@ public class Museum_GLEventListener implements GLEventListener {
     lightBulb6.setPosition(new Vec3(6f,11f,4f));
     lightBulb6.render(gl);
     updateLampPosition();
+    lampLight.render(gl);
     if(oldCycle!=currentCycle){
       drawRoomScene(gl);
       oldCycle=currentCycle;
@@ -285,7 +286,6 @@ public class Museum_GLEventListener implements GLEventListener {
     Mat4 rotationMatrix = theLamp.getRotationMatrix(newAngle);
     // Getting new Vec3 postion & setting it
     Vec3 newPosition = lampLight.calculateXRotation(rotationMatrix, defaultLampX, defaultLampY, defaultLampZ);
-    System.out.println(newPosition);
     lampLight.setPosition(newPosition);
     // rotating lamp scene graph
     theLamp.updateAngle(rotationMatrix);

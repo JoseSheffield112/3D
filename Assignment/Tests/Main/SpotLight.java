@@ -36,16 +36,13 @@ public class SpotLight extends Light{
      * with a Mat4 input
      * as we're calculating X rotation, we only need to deal with diagonals + [1][2] & [2][1]
      */
-    public Vec3 calculateXRotation(Mat4 rotation, float x, float y, float z){
-        float[] oldPositions = {x, y, z, 1};
-        float[] newPosition = new float[4];
-        for(int i=0; i<4; i++){
-            for(int j=0; j<4; j++){
-                newPosition[i]+=rotation.getValue(i,j)*oldPositions[j];
-            }
-        }
-        // Added these weights to Y & Z position as we increased the angle by 180 so it gives different weights
-        return(new Vec3(newPosition[0], (newPosition[1]+9f), (newPosition[2]*0.5f)));
+    public Vec3 calculateXRotation(Mat4 rotation , float x, float y, float z){
+        float[] MValues = rotation.toFloatArrayForGLSL();
+        // Dealing with x coords
+        float newX = (x*MValues[0]);
+        float newY = (y*MValues[5]) + (z*MValues[9]) + y;
+        float newZ = (y*MValues[6]) + (z*MValues[10]);
+        return(new Vec3(newX, (newY+8.2f), (newZ*0.5f)));
     }
 
     /**
