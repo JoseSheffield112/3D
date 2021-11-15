@@ -31,16 +31,18 @@ public class Lamp{
     private static ArrayList<PointLight> ceilingLights = new ArrayList<PointLight>();
     private SpotLight lampLight;
     private Camera camera;
-    private float xPosition, yPosition, zPosition;
+    private float rotationAngle;
 
-    public Lamp(GL3 gl,Camera camera, DirectionalLight sunLight, ArrayList<PointLight> ceilingLights, SpotLight lampLight, float xPosition, float yPosition, float zPosition){
+    //angle
+    private TransformNode rotateTop;
+    private Mat4 translateToTop;
+
+    public Lamp(GL3 gl,Camera camera, DirectionalLight sunLight, ArrayList<PointLight> ceilingLights, SpotLight lampLight, float startAngle){
         this.camera=camera;
         this.sunLight = sunLight;
         this.ceilingLights = ceilingLights;
         this.lampLight = lampLight;
-        this.xPosition = xPosition;
-        this.yPosition = yPosition;
-        this.zPosition = zPosition;
+        this.rotationAngle = startAngle;
         sceneGraph(gl);
     }
 
@@ -92,11 +94,13 @@ public class Lamp{
         TransformNode renderingTop = new TransformNode("Translated, then scaled", m);
         //lamp
         NameNode lampCover = new NameNode("Lamp - top");
-        m = Mat4Transform.translate(-(topWidth*0.8f), (poleHeight*0.45f), 0f);//Here is where we'll change the rotation values!
+        rotateTop = new TransformNode("rotateAroundX("+rotationAngle+")", (Mat4.inverse(Mat4Transform.rotateAroundX(rotationAngle))));
+        m = Mat4Transform.translate(-(topWidth*0.8f), (poleHeight*0.49f), 0f);//Here is where we'll change the rotation values!
         m = Mat4.multiply(m, Mat4Transform.scale(lampSize, lampSize, lampSize));
         TransformNode renderingCover = new TransformNode("Translated, then scaled", m);
 
-
+        //Translating a point to top
+        translateToTop = Mat4Transform.translate(0f, ((poleHeight*0.93f)), 0f);
 
         // Textures
         // Texturing the the base
@@ -121,12 +125,22 @@ public class Lamp{
                             translatingPole.addChild(lampTop);
                                 lampTop.addChild(renderingTop);
                                     renderingTop.addChild(topTexture);
-                                lampTop.addChild(lampCover);
-                                    lampCover.addChild(renderingCover);
-                                        renderingCover.addChild(coverTexture);
+                                lampTop.addChild(rotateTop);
+                                    rotateTop.addChild(lampCover);
+                                        lampCover.addChild(renderingCover);
+                                            renderingCover.addChild(coverTexture);
         lampRoot.update();  // IMPORTANT - don't forget this
         // lampRoot.print(0, false);
         // System.exit(0);        
+    }
+
+    public void updateAngle(float newAngle){
+        this.rotationAngle=newAngle;
+        // Mat4 identity = new Mat4(1);
+        // identity.set(1,1,-1f);
+        // rotateTop.setTransform(Mat4.multiply(Mat4Transform.rotateAroundX(rotationAngle), identity));
+        rotateTop.setTransform(Mat4.multiply(translateToTop, Mat4Transform.rotateAroundX((rotationAngle+180))));
+        lampRoot.update();
     }
 
     public SGNode getSceneGraph(){

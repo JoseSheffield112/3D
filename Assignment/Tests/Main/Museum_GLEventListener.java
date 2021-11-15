@@ -47,6 +47,9 @@ public class Museum_GLEventListener implements GLEventListener {
   private float defaultLampX = 4.6f;
   private float defaultLampY = 8.3f;  // There's a difference of 0.2f between both the lamp and lamp cover. 8.2f lamp flush with cover; 8.3f = lamp has 0.1f overlap with cover
   private float defaultLampZ = 0f;
+  private float startAngle = 6, currentAngle=startAngle;
+  // toggling lamp swinging speed
+  private float speedToggle = 0.4f;
   
   
   public Museum_GLEventListener(Camera camera) {
@@ -185,7 +188,7 @@ public class Museum_GLEventListener implements GLEventListener {
     theRoom = new Room(gl, camera, sunLight, ceilingLights, lampLight);
     myRobot = new Robot(gl,camera, sunLight, ceilingLights, lampLight,  xPosition, yPosition, zPosition);
     theExhibition = new Exhibition(gl,camera, sunLight, ceilingLights, lampLight);
-    theLamp = new Lamp(gl,camera, sunLight, ceilingLights, lampLight, xPosition, yPosition, zPosition);
+    theLamp = new Lamp(gl,camera, sunLight, ceilingLights, lampLight, startAngle);
    
     drawRoomScene(gl);
 
@@ -224,6 +227,7 @@ public class Museum_GLEventListener implements GLEventListener {
     lightBulb6.setPosition(new Vec3(6f,11f,4f));
     lightBulb6.render(gl);
     updateLightColour();
+    updateLampPosition();
     lampLight.setPosition(new Vec3(defaultLampX,defaultLampY,defaultLampZ));
     lampLight.render(gl);
     if(oldCycle!=currentCycle){
@@ -277,7 +281,10 @@ public class Museum_GLEventListener implements GLEventListener {
   }
 
   private void updateLampPosition(){
-    System.out.println("Under construction M8");
+    double elapsedTime = getSeconds()-startTime;
+    float currentAngle = startAngle*(float)Math.sin(elapsedTime*speedToggle);
+    theLamp.updateAngle(currentAngle);
+    roomScene.update();
   }
 
 /*
