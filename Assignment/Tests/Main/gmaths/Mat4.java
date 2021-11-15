@@ -115,6 +115,13 @@ public class Mat4 {   // row column formulation
     return b; 
   }
   
+  /**
+   * Get a matrix float
+   */
+  public float getValue(int i, int j){
+    return(values[i][j]);
+  }
+
   public float[] toFloatArrayForGLSL() {  // col by row
     float[] f = new float[16];
     for (int j=0; j<4; ++j) {
