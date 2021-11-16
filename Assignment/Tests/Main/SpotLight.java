@@ -29,7 +29,6 @@ public class SpotLight extends Light{
         this.outerCutOff = 17.5f;
     }
 
-
     /**
      * 
      * Setting spotlight position
@@ -42,9 +41,8 @@ public class SpotLight extends Light{
         float newX = (x*MValues[0]);
         float newY = (y*MValues[5]) + (z*MValues[9]) + y;
         float newZ = (y*MValues[6]) + (z*MValues[10]);
-        return(new Vec3(newX, (newY+8.2f), (newZ*0.5f)));
+        return(new Vec3(newX, (newY-8f), (newZ*0.5f)));
     }
-
     /**
      * Setting spotlight direction
      */
@@ -59,11 +57,9 @@ public class SpotLight extends Light{
         direction.y = y;
         direction.z = z;
     }
-
     /**
      * Setting spotlight floats
      */
-
     public void setConstant(float constant){
         constant = constant;
     }
@@ -79,7 +75,6 @@ public class SpotLight extends Light{
     public void setOuterCuttOff(float outerCuttOff){
         outerCuttOff = outerCuttOff;
     }
-
     /**
      * Getting spotlight direction
      */
@@ -87,11 +82,9 @@ public class SpotLight extends Light{
     public Vec3 getDirection() {
         return direction;
     }
-
     /**
      * Getting spotlight floats
      */
-
     public float getConstant(){
         return(constant);
     }

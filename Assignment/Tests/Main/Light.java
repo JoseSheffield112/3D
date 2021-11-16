@@ -15,7 +15,7 @@ public class Light {
   
   private Material material;
   private Vec3 position;
-  private Mat4 model;
+  private Mat4 model, model2;
   private Shader shader;
   private Camera camera;
   //
@@ -44,6 +44,10 @@ public class Light {
     position.y = y;
     position.z = z;
   }
+
+  public void setModel2(Mat4 givenModel){
+    model2 = givenModel;
+  }
   
   public Vec3 getPosition() {
     return position;
@@ -63,9 +67,13 @@ public class Light {
   
   public void render(GL3 gl) {
     Mat4 model = new Mat4(1);
-    model = Mat4.multiply(Mat4Transform.scale(0.3f,0.3f,0.3f), model);
-    model = Mat4.multiply(Mat4Transform.translate(position), model);
-    
+    if(model2!=null){
+      model = Mat4.multiply(model2, model);
+      model = Mat4.multiply(model, Mat4Transform.scale(0.3f, 0.3f, 0.3f));
+    }else{
+      model = Mat4.multiply(Mat4Transform.scale(0.3f,0.3f,0.3f), model);
+      model = Mat4.multiply(Mat4Transform.translate(position), model);
+    }
     Mat4 mvpMatrix = Mat4.multiply(camera.getPerspectiveMatrix(), Mat4.multiply(camera.getViewMatrix(), model));
     
     shader.use(gl);

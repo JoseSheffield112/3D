@@ -46,7 +46,7 @@ public class Museum_GLEventListener implements GLEventListener {
   // 3D positions for lamp!
   private float defaultLampX = 4.6f;
   private float defaultLampY = 8.1f;  // There's a difference of 0.2f between both the lamp and lamp cover. 8.2f lamp flush with cover; 8.3f = lamp has 0.1f overlap with cover
-  private float defaultLampZ = 0f;
+  private float defaultLampZ = 1f;
   private float startAngle = 16, currentAngle=startAngle;
   // toggling lamp swinging speed
   private float speedToggle = 0.6f;
@@ -281,14 +281,15 @@ public class Museum_GLEventListener implements GLEventListener {
   private void updateLampPosition(){
     // calculating angle
     double elapsedTime = getSeconds()-startTime;
-    float newAngle = (startAngle*(float)Math.sin(elapsedTime*speedToggle))+180;
+    float newAngle = (startAngle*(float)Math.sin(elapsedTime))+180;
     // Fetching rotation matrix
     Mat4 rotationMatrix = theLamp.getRotationMatrix(newAngle);
     // Getting new Vec3 postion & setting it
-    Vec3 newPosition = lampLight.calculateXRotation(rotationMatrix, defaultLampX, defaultLampY, defaultLampZ);
-    lampLight.setPosition(newPosition);
+    //Vec3 newPosition = lampLight.calculateXRotation(newRotation, defaultLampX, defaultLampY, defaultLampZ);
+    lampLight.setPosition(lampLight.calculateXRotation(rotationMatrix, defaultLampX, defaultLampY, defaultLampZ));
     // rotating lamp scene graph
     theLamp.updateAngle(rotationMatrix);
+    lampLight.setModel2(rotationMatrix);
     roomScene.update();
   }
 
