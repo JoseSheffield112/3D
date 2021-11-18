@@ -43,7 +43,7 @@ public class Museum_GLEventListener implements GLEventListener {
   private float xPosition = -5f;
   private float yPosition = 0f;
   private float zPosition = -6f;
-  //
+  // setting speed of lamp swing
   private float startAngle = 8, currentAngle=startAngle;
   // toggling lamp swinging speed
   private float speedToggle = 0.6f;
@@ -197,8 +197,9 @@ public class Museum_GLEventListener implements GLEventListener {
   }
 
   private void drawRoomScene(GL3 gl){
-    // Constructing scene graph
-    roomChild = theRoom.updateView(gl, currentCycle);
+    // updating window wall 
+    roomScene = theRoom.updateView(gl, currentCycle);
+    // Constructing scene graph of whole museum
     roomScene.addChild(roomChild);
       roomChild.addChild(myRobot.getSceneGraph());// think you should put robot outside of this?
       roomChild.addChild(theExhibition.getSceneGraph());
@@ -215,20 +216,14 @@ public class Museum_GLEventListener implements GLEventListener {
     sunLight.render(gl);
     /* Setting ceiling lights*/
     lightBulb.setPosition(new Vec3(-6f,11f,-6f));
-    lightBulb.render(gl);
     lightBulb2.setPosition(new Vec3(0f,11f,-6f));
-    lightBulb2.render(gl);
     lightBulb3.setPosition(new Vec3(6f,11f,-6f));
-    lightBulb3.render(gl);
     lightBulb4.setPosition(new Vec3(-6f,11f,4f));
-    lightBulb4.render(gl);
     lightBulb5.setPosition(new Vec3(0f,11f,4f));
-    lightBulb5.render(gl);
     lightBulb6.setPosition(new Vec3(6f,11f,4f));
-    lightBulb6.render(gl);
     updateLampPosition();
     lampLight.render(gl);
-    if(oldCycle!=currentCycle){
+    if(oldCycle!=currentCycle){ // day changed?
       drawRoomScene(gl);
       oldCycle=currentCycle;
     }
@@ -262,21 +257,6 @@ public class Museum_GLEventListener implements GLEventListener {
      sunLight.setDefaultAmbient(dayLight[currentCycle]);
      sunLight.setDefaultDiffuseSpecular(dayLight[currentCycle]);
    }
-  
-  /**
-   * For now a method to make it easier to notice lights!
-   */
-  private void updateLightColour() {
-    double elapsedTime = getSeconds()-startTime;
-    Vec3 lightColour = new Vec3();
-    lightColour.x = (float)Math.sin(elapsedTime * 2.0f);
-    lightColour.y = (float)Math.sin(elapsedTime * 0.7f);
-    lightColour.z = (float)Math.sin(elapsedTime * 1.3f);
-    Material m = lampLight.getMaterial();
-    m.setDiffuse(Vec3.multiply(lightColour,0.5f));
-    m.setAmbient(Vec3.multiply(m.getDiffuse(),0.2f));
-    lampLight.setMaterial(m);
-  }
 
   private void updateLampPosition(){
     // calculating angle

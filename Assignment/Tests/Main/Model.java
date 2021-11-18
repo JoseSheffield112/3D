@@ -72,7 +72,7 @@ public class Model {
     shader.setVec3(gl, "dirLight.specular", sunLight.getMaterial().getSpecular());
 
     // point light - ceiling lights
-    // Iterating over the different lights I added
+    // Iterating over the different point lights I added
     for(int index=0; index<(ceilingLights.size()); index++){
       shader.setVec3(gl, "pointLight["+index+"].position", ceilingLights.get(index).getPosition());
       shader.setVec3(gl, "pointLight["+index+"].ambient", ceilingLights.get(index).getMaterial().getAmbient());

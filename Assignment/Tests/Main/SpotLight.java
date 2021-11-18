@@ -23,31 +23,27 @@ public class SpotLight extends Light{
         super(gl, dimness);
         this.direction = new Vec3(0f,-1f,0f); //Has to be negative in order to point down!
         this.constant = 1.0f;
-        this.linear = 0.09f;
-        this.quadratic = 0.032f;
-        this.cutOff = 12.5f;
-        this.outerCutOff = 17.5f;
-    }
+        this.linear = 0.22f;
+        this.quadratic = 0.20f;
+        this.cutOff = 42f;
+        this.outerCutOff = 68.6f;
+    }    
 
     /**
      * 
      * Setting spotlight position
-     * with a Mat4 input
-     * as we're calculating X rotation, we only need to deal with diagonals + [1][2] & [2][1]
+     * with Mat4 inputs of the current world point (base of scene graph) & rotation matrix applied to lamp cover
+     * as we're calculating only X rotation, we only need to deal with diagonals + [1][2] & [2][1] (and [2][2] due to translation)
+     *  this method is indeed not generalizable as I only needed it for this specific reason
      */
     public Vec3 calculateXRotation(Mat4 originalPoints, Mat4 rotationMatrix){
         float[] worldPoints = originalPoints.toFloatArrayForGLSL();
         float[] worldMatrix = rotationMatrix.toFloatArrayForGLSL();
-        //System.out.println(rotationMatrix);
-        //System.out.println(originalPoints);
-        // System.out.println("X : "+MValues[12] +", Y : "+MValues[13]);
-        // Dealing with x coords
-        Vec3 coords = this.getPosition();
-        worldPoints[13]=worldPoints[13]+0.2f;
-        float newX = (worldPoints[12]*worldMatrix[0]) - 2.40f;
+        worldPoints[13]=worldPoints[13]+0.2f; // lowering the lamp by difference between lamp size & lamp cover size
+        float newX = (worldPoints[12]*worldMatrix[0]) - 2.40f; // decreasing x point by lamptop 
         float newY = (worldPoints[13]*worldMatrix[5]) + (worldPoints[14]*worldMatrix[9]) + (worldMatrix[13]-1.5f);
         float newZ = ((worldPoints[13]*0.8f)*worldMatrix[6]) + (worldPoints[14]*worldMatrix[10]);
-        return(new Vec3(newX, (newY), (newZ)));
+        return(new Vec3(newX, newY, newZ));
     }
     /**
      * Setting spotlight direction

@@ -121,15 +121,14 @@ public class Lamp{
                     renderingBase.addChild(lampPole);
                         lampPole.addChild(translatingPole);
                             translatingPole.addChild(scalingPole);
-                                // scalingPole.addChild(poleTexture);
+                                scalingPole.addChild(poleTexture);
                             translatingPole.addChild(lampTop);
                                 lampTop.addChild(renderingTop);
-                                    // renderingTop.addChild(topTexture);
+                                    renderingTop.addChild(topTexture);
                                 lampTop.addChild(rotateTop);
                                     rotateTop.addChild(lampCover);
                                         lampCover.addChild(renderingCover);
                                             renderingCover.addChild(coverTexture);
-                                            renderingCover.print(0, true);
         lampRoot.update();  // IMPORTANT - don't forget this
         // lampRoot.print(0, false);
         // System.exit(0);        
@@ -142,13 +141,10 @@ public class Lamp{
         lampRoot.update();
         return(rotateTop);
     }
+    
     public TransformNode getTopPoints(){
         return(renderingTop);
     }
-
-    // public void updateAngle(){
-    //     lampRoot.update();
-    // }
 
     public SGNode getSceneGraph(){
         return lampRoot;

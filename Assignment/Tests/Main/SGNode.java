@@ -48,6 +48,7 @@ public class SGNode {
     }
   }
 
+  // Made this method to get world points of current scene graph
   public Mat4 getTransformPoints(){
     return(worldTransform);
   }

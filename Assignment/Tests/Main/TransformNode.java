@@ -22,6 +22,8 @@ public class TransformNode extends SGNode {
     }   
   }
   
+  // Made this method so I can get transformation matrix
+  // most specifically used with top of the lamp rotation, so I can also update render of spot light
   public Mat4 getTransformMatrix(){
     return(transform);
   }
