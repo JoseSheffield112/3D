@@ -35,13 +35,19 @@ public class SpotLight extends Light{
      * with a Mat4 input
      * as we're calculating X rotation, we only need to deal with diagonals + [1][2] & [2][1]
      */
-    public Vec3 calculateXRotation(Mat4 rotation , float x, float y, float z){
-        float[] MValues = rotation.toFloatArrayForGLSL();
+    public Vec3 calculateXRotation(Mat4 originalPoints, Mat4 rotationMatrix){
+        float[] worldPoints = originalPoints.toFloatArrayForGLSL();
+        float[] worldMatrix = rotationMatrix.toFloatArrayForGLSL();
+        //System.out.println(rotationMatrix);
+        //System.out.println(originalPoints);
+        // System.out.println("X : "+MValues[12] +", Y : "+MValues[13]);
         // Dealing with x coords
-        float newX = (x*MValues[0]);
-        float newY = (y*MValues[5]) + (z*MValues[9]) + y;
-        float newZ = (y*MValues[6]) + (z*MValues[10]);
-        return(new Vec3(newX, (newY-8f), (newZ*0.5f)));
+        Vec3 coords = this.getPosition();
+        worldPoints[13]=worldPoints[13]+0.2f;
+        float newX = (worldPoints[12]*worldMatrix[0]) - 2.40f;
+        float newY = (worldPoints[13]*worldMatrix[5]) + (worldPoints[14]*worldMatrix[9]) + (worldMatrix[13]-1.5f);
+        float newZ = ((worldPoints[13]*0.8f)*worldMatrix[6]) + (worldPoints[14]*worldMatrix[10]);
+        return(new Vec3(newX, (newY), (newZ)));
     }
     /**
      * Setting spotlight direction

@@ -47,6 +47,10 @@ public class SGNode {
       children.get(i).print(indent+1, inFull);
     }
   }
+
+  public Mat4 getTransformPoints(){
+    return(worldTransform);
+  }
   
   public void draw(GL3 gl) {
     for (int i=0; i<children.size(); i++) {

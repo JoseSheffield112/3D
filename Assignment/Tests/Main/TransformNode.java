@@ -21,6 +21,10 @@ public class TransformNode extends SGNode {
       children.get(i).update(t);
     }   
   }
+  
+  public Mat4 getTransformMatrix(){
+    return(transform);
+  }
 
   public void print(int indent, boolean inFull) {
     System.out.println(getIndentString(indent)+"Name: "+name);

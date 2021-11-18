@@ -43,13 +43,13 @@ public class Museum_GLEventListener implements GLEventListener {
   private float xPosition = -5f;
   private float yPosition = 0f;
   private float zPosition = -6f;
-  // 3D positions for lamp!
-  private float defaultLampX = 4.6f;
-  private float defaultLampY = 8.1f;  // There's a difference of 0.2f between both the lamp and lamp cover. 8.2f lamp flush with cover; 8.3f = lamp has 0.1f overlap with cover
-  private float defaultLampZ = 1f;
-  private float startAngle = 16, currentAngle=startAngle;
+  //
+  private float startAngle = 8, currentAngle=startAngle;
   // toggling lamp swinging speed
   private float speedToggle = 0.6f;
+
+  //TransformNode lampTopRotation
+  TransformNode lampTopRotation, lampTopPoints;
   
   
   public Museum_GLEventListener(Camera camera) {
@@ -283,31 +283,15 @@ public class Museum_GLEventListener implements GLEventListener {
     double elapsedTime = getSeconds()-startTime;
     float newAngle = (startAngle*(float)Math.sin(elapsedTime))+180;
     // Fetching rotation matrix
-    Mat4 rotationMatrix = theLamp.getRotationMatrix(newAngle);
+    lampTopRotation = theLamp.getRotationMatrix(newAngle);
+    lampTopPoints = theLamp.getTopPoints();
     // Getting new Vec3 postion & setting it
-    //Vec3 newPosition = lampLight.calculateXRotation(newRotation, defaultLampX, defaultLampY, defaultLampZ);
-    lampLight.setPosition(lampLight.calculateXRotation(rotationMatrix, defaultLampX, defaultLampY, defaultLampZ));
+    lampLight.setPosition(lampLight.calculateXRotation(lampTopPoints.getTransformPoints(), lampTopRotation.getTransformMatrix()));
     // rotating lamp scene graph
-    theLamp.updateAngle(rotationMatrix);
-    lampLight.setModel2(rotationMatrix);
+    lampLight.setModel2(lampTopRotation.getTransformMatrix());
     roomScene.update();
   }
 
-/*
-  private void updateRightArm() {
-    double elapsedTime = getSeconds()-startTime;
-    float rotateAngle = 180f+90f*(-(float)Math.sin(elapsedTime));
-    rightArmRotate.setTransform(Mat4Transform.rotateAroundX(rotateAngle));
-    rightArmRotate.update();
-  }
-  
-  private void updateLeftArm() {
-    double elapsedTime = getSeconds()-startTime;
-    float rotateAngle = 180f+90f*(float)Math.sin(elapsedTime);
-    leftArmRotate.setTransform(Mat4Transform.rotateAroundX(rotateAngle));
-    leftArmRotate.update();
-  }
-*/
   // The light's postion is continually being changed, so needs to be calculated for each frame.
   private Vec3 getLightPosition() {
     double elapsedTime = getSeconds()-startTime;

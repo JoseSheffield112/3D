@@ -68,8 +68,10 @@ public class Light {
   public void render(GL3 gl) {
     Mat4 model = new Mat4(1);
     if(model2!=null){
-      model = Mat4.multiply(model2, model);
+      model = Mat4.multiply(model, Mat4Transform.translate(position));
+      model = Mat4.multiply(model, model2);
       model = Mat4.multiply(model, Mat4Transform.scale(0.3f, 0.3f, 0.3f));
+      // shader.setFloatArray(gl, "model", model.toFloatArrayForGLSL());
     }else{
       model = Mat4.multiply(Mat4Transform.scale(0.3f,0.3f,0.3f), model);
       model = Mat4.multiply(Mat4Transform.translate(position), model);
