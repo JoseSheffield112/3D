@@ -49,22 +49,19 @@ public class M04 extends JFrame implements ActionListener {
       b = new JButton("camera Z");
       b.addActionListener(this);
       p.add(b);
-      b = new JButton("start");
+      b = new JButton("Pose 1");
       b.addActionListener(this);
       p.add(b);
-      b = new JButton("stop");
+      b = new JButton("Pose 2");
       b.addActionListener(this);
       p.add(b);
-      b = new JButton("increase X position");
+      b = new JButton("Pose 3");
       b.addActionListener(this);
       p.add(b);
-      b = new JButton("decrease X position");
+      b = new JButton("Pose 4");
       b.addActionListener(this);
       p.add(b);
-      b = new JButton("lowered arms");
-      b.addActionListener(this);
-      p.add(b);
-      b = new JButton("raised arms");
+      b = new JButton("Pose 5");
       b.addActionListener(this);
       p.add(b);
     this.add(p, BorderLayout.SOUTH);
@@ -90,23 +87,20 @@ public class M04 extends JFrame implements ActionListener {
       camera.setCamera(Camera.CameraType.Z);
       canvas.requestFocusInWindow();
     }
-    else if (e.getActionCommand().equalsIgnoreCase("start")) {
-      glEventListener.startAnimation();
+    else if (e.getActionCommand().equalsIgnoreCase("Pose 1")) {
+      glEventListener.poseOne();
     }
-    else if (e.getActionCommand().equalsIgnoreCase("stop")) {
-      glEventListener.stopAnimation();
+    else if (e.getActionCommand().equalsIgnoreCase("Pose 2")) {
+      glEventListener.poseTwo();
     }
-    else if (e.getActionCommand().equalsIgnoreCase("increase X position")) {
-      glEventListener.incXPosition();
+    else if (e.getActionCommand().equalsIgnoreCase("Pose 3")) {
+      glEventListener.poseThree();
     }
-    else if (e.getActionCommand().equalsIgnoreCase("decrease X position")) {
-      glEventListener.decXPosition();
+    else if (e.getActionCommand().equalsIgnoreCase("Pose 4")) {
+      glEventListener.poseFour();
     }
-    else if (e.getActionCommand().equalsIgnoreCase("lowered arms")) {
-      glEventListener.loweredArms();
-    }
-    else if (e.getActionCommand().equalsIgnoreCase("raised arms")) {
-      glEventListener.raisedArms();
+    else if (e.getActionCommand().equalsIgnoreCase("Pose 5")) {
+      glEventListener.poseFive();
     }
     else if(e.getActionCommand().equalsIgnoreCase("quit"))
       System.exit(0);
