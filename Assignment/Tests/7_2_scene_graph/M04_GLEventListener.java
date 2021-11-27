@@ -85,36 +85,96 @@ public class M04_GLEventListener implements GLEventListener {
     xPosition = 0f;
     zPosition = 0f;
     updateMove();
-    torsoRotate.setTransform(Mat4Transform.rotateAroundX(0));
-    torsoRotate.update();
+    torsoRotateX.setTransform(Mat4Transform.rotateAroundX(0));
+    torsoRotateX.update();
+    torsoRotateZ.setTransform(Mat4Transform.rotateAroundZ(0));
+    torsoRotateZ.update();
+    headRotate.setTransform(Mat4Transform.rotateAroundX(0));
+    headRotate.update();
+    rightArmRotateX.setTransform(Mat4Transform.rotateAroundX(180));
+    rightArmRotateX.update();
+    rightArmRotateY.setTransform(Mat4Transform.rotateAroundY(0));
+    rightArmRotateY.update();
+    leftArmRotateX.setTransform(Mat4Transform.rotateAroundX(180));
+    leftArmRotateX.update();
+    leftArmRotateY.setTransform(Mat4Transform.rotateAroundY(0));
+    leftArmRotateY.update();
   }
 
   public void poseTwo() {
     xPosition = -8f;
     zPosition = -8f;
     updateMove();
-    torsoRotate.setTransform(Mat4Transform.rotateAroundX(45));
-    torsoRotate.update();
+    torsoRotateX.setTransform(Mat4Transform.rotateAroundX(45));
+    torsoRotateX.update();
+    torsoRotateZ.setTransform(Mat4Transform.rotateAroundZ(0));
+    torsoRotateZ.update();
+    headRotate.setTransform(Mat4Transform.rotateAroundX(20));
+    headRotate.update();
+    rightArmRotateX.setTransform(Mat4Transform.rotateAroundX(60));
+    rightArmRotateX.update();
+    rightArmRotateY.setTransform(Mat4Transform.rotateAroundY(0));
+    rightArmRotateY.update();
+    leftArmRotateX.setTransform(Mat4Transform.rotateAroundX(60));
+    leftArmRotateX.update();
+    leftArmRotateY.setTransform(Mat4Transform.rotateAroundY(0));
+    leftArmRotateY.update();
   }
     
   public void poseThree() {
     xPosition = -8f;
     zPosition = 8f;
     updateMove();
-    torsoRotate.setTransform(Mat4Transform.rotateAroundX(-45));
-    torsoRotate.update();
+    torsoRotateX.setTransform(Mat4Transform.rotateAroundX(-45));
+    torsoRotateX.update();
+    torsoRotateZ.setTransform(Mat4Transform.rotateAroundZ(0));
+    torsoRotateZ.update();
+    headRotate.setTransform(Mat4Transform.rotateAroundX(-20));
+    headRotate.update();
+    rightArmRotateX.setTransform(Mat4Transform.rotateAroundX(45));
+    rightArmRotateX.update();
+    rightArmRotateY.setTransform(Mat4Transform.rotateAroundY(90));
+    rightArmRotateY.update();
+    leftArmRotateX.setTransform(Mat4Transform.rotateAroundX(45));
+    leftArmRotateX.update();
+    leftArmRotateY.setTransform(Mat4Transform.rotateAroundY(90));
+    leftArmRotateY.update();
   }
      
   public void poseFour() {
     xPosition = 8f;
     zPosition = -8f;
     updateMove();
+    torsoRotateX.setTransform(Mat4Transform.rotateAroundX(0));
+    torsoRotateX.update();
+    torsoRotateZ.setTransform(Mat4Transform.rotateAroundZ(-45));
+    torsoRotateZ.update();
+    rightArmRotateX.setTransform(Mat4Transform.rotateAroundX(0));
+    rightArmRotateX.update();
+    rightArmRotateY.setTransform(Mat4Transform.rotateAroundY(90));
+    rightArmRotateY.update();
+    leftArmRotateX.setTransform(Mat4Transform.rotateAroundX(0));
+    leftArmRotateX.update();
+    leftArmRotateY.setTransform(Mat4Transform.rotateAroundY(90));
+    leftArmRotateY.update();
   }
      
   public void poseFive() {
     xPosition = 8f;
     zPosition = 8f;
     updateMove();
+    torsoRotateX.setTransform(Mat4Transform.rotateAroundX(0));
+    torsoRotateX.update();
+    torsoRotateZ.setTransform(Mat4Transform.rotateAroundZ(45));
+    torsoRotateZ.update();
+    rightArmRotateX.setTransform(Mat4Transform.rotateAroundX(45));
+    rightArmRotateX.update();
+    rightArmRotateY.setTransform(Mat4Transform.rotateAroundY(45));
+    rightArmRotateY.update();
+    leftArmRotateX.setTransform(Mat4Transform.rotateAroundX(45));
+    leftArmRotateX.update();
+    leftArmRotateY.setTransform(Mat4Transform.rotateAroundY(45));
+    leftArmRotateY.update();
   }
 
   private void updateMove() {
@@ -152,14 +212,14 @@ public class M04_GLEventListener implements GLEventListener {
   
   private float xPosition = 0;
   private float zPosition = 0;
-  private TransformNode robotMoveTranslate, torsoRotate, headRotate;
+  private TransformNode robotMoveTranslate, torsoRotateX, torsoRotateZ, headRotate, leftArmRotateX, leftArmRotateY, rightArmRotateX, rightArmRotateY;
   
   private void initialise(GL3 gl) {
     createRandomNumbers();
 	// loading textures
     int[] textureId0 = TextureLibrary.loadTexture(gl, "textures/chequerboard.jpg");
-    int[] textureId1 = TextureLibrary.loadTexture(gl, "textures/jade.jpg");
-    int[] textureId2 = TextureLibrary.loadTexture(gl, "textures/jade_specular.jpg");
+    int[] textureId1 = TextureLibrary.loadTexture(gl, "textures/snow.jpg");
+    int[] textureId2 = TextureLibrary.loadTexture(gl, "textures/snow_spec.jpg");
     int[] textureId3 = TextureLibrary.loadTexture(gl, "textures/container2.jpg");
     int[] textureId4 = TextureLibrary.loadTexture(gl, "textures/container2_specular.jpg");
     int[] textureId5 = TextureLibrary.loadTexture(gl, "textures/wattBook.jpg");
@@ -179,7 +239,7 @@ public class M04_GLEventListener implements GLEventListener {
     shader = new Shader(gl, "vs_cube_04.txt", "fs_cube_04.txt");
     material = new Material(new Vec3(1.0f, 0.5f, 0.31f), new Vec3(1.0f, 0.5f, 0.31f), new Vec3(0.5f, 0.5f, 0.5f), 32.0f);
     modelMatrix = Mat4.multiply(Mat4Transform.scale(4,4,4), Mat4Transform.translate(0,0.5f,0));
-    sphere = new Model(gl, camera, light, shader, material, modelMatrix, mesh, textureId1, textureId2);
+    sphere = new Model(gl, camera, light, shader, material, modelMatrix, mesh, textureId1, textureId2); // removed the specular - need to add one!
     
     mesh = new Mesh(gl, Cube.vertices.clone(), Cube.indices.clone());
     shader = new Shader(gl, "vs_cube_04.txt", "fs_cube_04.txt");
@@ -196,6 +256,8 @@ public class M04_GLEventListener implements GLEventListener {
     float torsoRadius = 2f;
     float neckRadius = 0.3f;
     float headRadius = 1.5f;
+    float armScale = 0.1f;
+    float armLength = 1.5f;
     
     robotRoot = new NameNode("root");
 	  // moving whole of robot in x axis & z axis
@@ -215,7 +277,8 @@ public class M04_GLEventListener implements GLEventListener {
     NameNode torso = new NameNode("torso");
       TransformNode torsoTranslate = new TransformNode("torso translation",
                                         Mat4Transform.translate(0,footRadius,0));
-      torsoRotate = new TransformNode("upper body rotate",Mat4Transform.rotateAroundX(0));
+      torsoRotateX = new TransformNode("upper body rotate about X",Mat4Transform.rotateAroundX(0));
+      torsoRotateZ = new TransformNode("upper body rotate about Y",Mat4Transform.rotateAroundY(0));
       m = new Mat4(1);
       //m = Mat4Transform.translate(0,footRadius,0);
       m = Mat4Transform.scale(torsoRadius,torsoRadius,torsoRadius);//Mat4.multiply(m, Mat4Transform.scale(torsoRadius,torsoRadius,torsoRadius));
@@ -223,8 +286,32 @@ public class M04_GLEventListener implements GLEventListener {
       TransformNode torsoTransform = new TransformNode("torso transform", m);
         ModelNode torsoShape = new ModelNode("Sphere(torso)", sphere);
 
+    // left arm
+    NameNode leftarm = new NameNode("left arm");
+      TransformNode leftArmTranslate = new TransformNode("leftarm translate", 
+                                           Mat4Transform.translate((torsoRadius*0.27f),0,0));
+      leftArmRotateX = new TransformNode("leftarm rotate",Mat4Transform.rotateAroundX(180));
+      leftArmRotateY = new TransformNode("leftarm rotate",Mat4Transform.rotateAroundY(0));
+      m = new Mat4(1);
+      m = Mat4.multiply(m, Mat4Transform.scale(armScale,armLength,armScale));
+      m = Mat4.multiply(m, Mat4Transform.translate(0,0.5f,0));
+      TransformNode leftArmScale = new TransformNode("leftarm scale", m);
+        ModelNode leftArmShape = new ModelNode("Cube(left arm)", cube2);
+    // right arm
+    NameNode rightarm = new NameNode("right arm");
+      TransformNode rightArmTranslate = new TransformNode("rightarm translate", 
+                                            Mat4Transform.translate(-(torsoRadius*0.27f),0,0));
+      rightArmRotateX = new TransformNode("rightarm rotate",Mat4Transform.rotateAroundX(180));
+      rightArmRotateY = new TransformNode("rightarm rotate",Mat4Transform.rotateAroundY(0));
+      m = new Mat4(1);
+      m = Mat4.multiply(m, Mat4Transform.scale(armScale,armLength,armScale));
+      m = Mat4.multiply(m, Mat4Transform.translate(0,0.5f,0));
+      TransformNode rightArmScale = new TransformNode("rightarm scale", m);
+        ModelNode rightArmShape = new ModelNode("Cube(right arm)", cube2);
+
     // neck
     NameNode neck = new NameNode("neck");
+      headRotate = new TransformNode("Head rotation", Mat4Transform.rotateAroundX(0));
       m = new Mat4(1);
       m = Mat4.multiply(m, Mat4Transform.scale(neckRadius,neckRadius,neckRadius));
       m = Mat4.multiply(m, Mat4Transform.translate(0,(torsoRadius+(neckRadius*0.5f)),0));//Raising body a further .5 above the legs top!
@@ -247,15 +334,29 @@ public class M04_GLEventListener implements GLEventListener {
             footTransform.addChild(footShape);
           foot.addChild(torso);
             torso.addChild(torsoTranslate);
-              torsoTranslate.addChild(torsoRotate);
-                torsoRotate.addChild(torsoTransform);
-                  torsoTransform.addChild(torsoShape);
-                  torsoTransform.addChild(neck);
-                    neck.addChild(neckTransform);
-                      neckTransform.addChild(neckShape);
-                    neck.addChild(head);
-                      head.addChild(headTransform);
-                        headTransform.addChild(headShape);
+              torsoTranslate.addChild(torsoRotateZ);
+                torsoRotateZ.addChild(torsoRotateX);
+                  torsoRotateX.addChild(torsoTransform);
+                    torsoTransform.addChild(torsoShape);
+                    torsoTransform.addChild(leftarm);
+                      leftarm.addChild(leftArmTranslate);
+                        leftArmTranslate.addChild(leftArmRotateX);
+                          leftArmRotateX.addChild(leftArmRotateY);
+                            leftArmRotateY.addChild(leftArmScale);
+                              leftArmScale.addChild(leftArmShape);
+                    torsoTransform.addChild(rightarm);
+                      rightarm.addChild(rightArmTranslate);
+                        rightArmTranslate.addChild(rightArmRotateX);
+                          rightArmRotateX.addChild(rightArmRotateY);
+                            rightArmRotateY.addChild(rightArmScale);
+                              rightArmScale.addChild(rightArmShape);
+                    torsoTransform.addChild(headRotate);
+                      headRotate.addChild(neck);
+                        neck.addChild(neckTransform);
+                          neckTransform.addChild(neckShape);
+                        neck.addChild(head);
+                          head.addChild(headTransform);
+                            headTransform.addChild(headShape);
     robotRoot.update();  // IMPORTANT - don't forget this
     //robotRoot.print(0, false);
     //System.exit(0);

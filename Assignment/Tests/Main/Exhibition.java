@@ -86,14 +86,19 @@ public class Exhibition{
         // Plinth
         NameNode plinthPhone = new NameNode("Plinth, then phone");
         // Centering the phone attraction
+        // MAKE CHANGES HERE !! MAKE CHANGES HERE !! MAKE CHANGES HERE !! MAKE CHANGES HERE !!
+        // need to first scale the plinth, then translate it!!!
         Mat4 m = Mat4Transform.translate(4f, (plinthHeight*0.5f), -6f);
         TransformNode centeringPlinth = new TransformNode("Centering plinth & Phone", m);
         // Dealing with plinth
         m = Mat4Transform.scale(plinthWidth, plinthHeight, plinthDepth);
         TransformNode renderingPlinth = new TransformNode("Scaled", m);
+        // MAKE CHANGES HERE !! MAKE CHANGES HERE !! MAKE CHANGES HERE !! MAKE CHANGES HERE !!
         // Phone
         m = Mat4Transform.translate(0f, ((phoneHeight*0.5f)+(plinthHeight*0.5f)), 0f); // Gotta place the phone ON TOP of the plinth
         m = Mat4.multiply(m, Mat4Transform.scale(phoneWidth, phoneHeight, phoneDepth));
+        // m = Mat4Transform.scale(phoneWidth, phoneHeight, phoneDepth);
+        // m = Mat4.multiply(m, Mat4Transform.translate(1f, 1f, 0f));
         TransformNode renderingPhone = new TransformNode("Translated, then Scaled", m);
 
         // Second build
