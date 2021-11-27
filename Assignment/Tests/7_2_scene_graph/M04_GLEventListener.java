@@ -82,6 +82,7 @@ public class M04_GLEventListener implements GLEventListener {
   }
    
   public void poseOne() {
+    animation = false;
     xPosition = 0f;
     zPosition = 0f;
     updateMove();
@@ -102,6 +103,7 @@ public class M04_GLEventListener implements GLEventListener {
   }
 
   public void poseTwo() {
+    animation = false;
     xPosition = -8f;
     zPosition = -8f;
     updateMove();
@@ -122,6 +124,7 @@ public class M04_GLEventListener implements GLEventListener {
   }
     
   public void poseThree() {
+    animation = false;
     xPosition = -8f;
     zPosition = 8f;
     updateMove();
@@ -142,6 +145,7 @@ public class M04_GLEventListener implements GLEventListener {
   }
      
   public void poseFour() {
+    animation = false;
     xPosition = 8f;
     zPosition = -8f;
     updateMove();
@@ -160,44 +164,18 @@ public class M04_GLEventListener implements GLEventListener {
   }
      
   public void poseFive() {
+    animation = true;
     xPosition = 8f;
     zPosition = 8f;
     updateMove();
     torsoRotateX.setTransform(Mat4Transform.rotateAroundX(0));
     torsoRotateX.update();
-    torsoRotateZ.setTransform(Mat4Transform.rotateAroundZ(45));
-    torsoRotateZ.update();
-    rightArmRotateX.setTransform(Mat4Transform.rotateAroundX(45));
-    rightArmRotateX.update();
-    rightArmRotateY.setTransform(Mat4Transform.rotateAroundY(45));
-    rightArmRotateY.update();
-    leftArmRotateX.setTransform(Mat4Transform.rotateAroundX(45));
-    leftArmRotateX.update();
-    leftArmRotateY.setTransform(Mat4Transform.rotateAroundY(45));
-    leftArmRotateY.update();
   }
 
   private void updateMove() {
     robotMoveTranslate.setTransform(Mat4Transform.translate(xPosition,0,zPosition));
     robotMoveTranslate.update();
   }
-/*  
-  public void loweredArms() {
-    stopAnimation();
-    leftArmRotate.setTransform(Mat4Transform.rotateAroundX(180));
-    leftArmRotate.update();
-    rightArmRotate.setTransform(Mat4Transform.rotateAroundX(180));
-    rightArmRotate.update();
-  }
-   
-  public void raisedArms() {
-    stopAnimation();
-    leftArmRotate.setTransform(Mat4Transform.rotateAroundX(0));
-    leftArmRotate.update();
-    rightArmRotate.setTransform(Mat4Transform.rotateAroundX(0));
-    rightArmRotate.update();
-  }
- */ 
   // ***************************************************
   /* THE SCENE
    * Now define all the methods to handle the scene.
@@ -213,7 +191,8 @@ public class M04_GLEventListener implements GLEventListener {
   private float xPosition = 0;
   private float zPosition = 0;
   private TransformNode robotMoveTranslate, torsoRotateX, torsoRotateZ, headRotate, leftArmRotateX, leftArmRotateY, rightArmRotateX, rightArmRotateY;
-  
+  private int position;
+
   private void initialise(GL3 gl) {
     createRandomNumbers();
 	// loading textures
@@ -368,6 +347,35 @@ public class M04_GLEventListener implements GLEventListener {
     light.render(gl);
     floor.render(gl); 
     robotRoot.draw(gl);
+    if(animation){ updateRightArm(); updateLeftArm();}
+    while(position==5){
+      double elapsedTime = getSeconds()-startTime;
+      float rotation=45f*(float)(Math.sin(Math.toRadians(elapsedTime*50)));      
+      torsoRotateZ.setTransform(Mat4Transform.rotateAroundZ(rotation));
+      torsoRotateZ.update();
+      rightArmRotateX.setTransform(Mat4Transform.rotateAroundX(rotation));
+      rightArmRotateX.update();
+      rightArmRotateY.setTransform(Mat4Transform.rotateAroundY(rotation));
+      rightArmRotateY.update();
+      leftArmRotateX.setTransform(Mat4Transform.rotateAroundX(rotation));
+      leftArmRotateX.update();
+      leftArmRotateY.setTransform(Mat4Transform.rotateAroundY(rotation));
+      leftArmRotateY.update();
+    }
+  }
+
+  private void updateRightArm() {
+    double elapsedTime = getSeconds()-startTime;
+    float rotateAngle = 45f+45f*((float)Math.sin(elapsedTime));
+    rightArmRotateX.setTransform(Mat4Transform.rotateAroundX(rotateAngle));
+    rightArmRotateX.update();
+  }
+  
+  private void updateLeftArm() {
+    double elapsedTime = getSeconds()-startTime;
+    float rotateAngle = 45+45f*(float)Math.sin(elapsedTime);
+    leftArmRotateX.setTransform(Mat4Transform.rotateAroundX(rotateAngle));
+    leftArmRotateX.update();
   }
   
   // The light's postion is continually being changed, so needs to be calculated for each frame.
