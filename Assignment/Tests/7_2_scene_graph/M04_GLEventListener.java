@@ -347,35 +347,30 @@ public class M04_GLEventListener implements GLEventListener {
     light.render(gl);
     floor.render(gl); 
     robotRoot.draw(gl);
-    if(animation){ updateRightArm(); updateLeftArm();}
-    while(position==5){
-      double elapsedTime = getSeconds()-startTime;
-      float rotation=45f*(float)(Math.sin(Math.toRadians(elapsedTime*50)));      
-      torsoRotateZ.setTransform(Mat4Transform.rotateAroundZ(rotation));
-      torsoRotateZ.update();
-      rightArmRotateX.setTransform(Mat4Transform.rotateAroundX(rotation));
-      rightArmRotateX.update();
-      rightArmRotateY.setTransform(Mat4Transform.rotateAroundY(rotation));
-      rightArmRotateY.update();
-      leftArmRotateX.setTransform(Mat4Transform.rotateAroundX(rotation));
-      leftArmRotateX.update();
-      leftArmRotateY.setTransform(Mat4Transform.rotateAroundY(rotation));
-      leftArmRotateY.update();
-    }
+    // with cos it rotates arms in a circle
+    if(animation){ updateRightArm(); updateLeftArm(); updateTorso();}
   }
 
   private void updateRightArm() {
     double elapsedTime = getSeconds()-startTime;
-    float rotateAngle = 45f+45f*((float)Math.sin(elapsedTime));
+    float rotateAngle = (60f-Math.abs(22.5f*(float)Math.sin(elapsedTime)));
     rightArmRotateX.setTransform(Mat4Transform.rotateAroundX(rotateAngle));
     rightArmRotateX.update();
   }
   
   private void updateLeftArm() {
     double elapsedTime = getSeconds()-startTime;
-    float rotateAngle = 45+45f*(float)Math.sin(elapsedTime);
+    float rotateAngle = (60f-Math.abs(22.5f*(float)Math.sin(elapsedTime)));
+    System.out.println(rotateAngle);
     leftArmRotateX.setTransform(Mat4Transform.rotateAroundX(rotateAngle));
     leftArmRotateX.update();
+  }
+
+  private void updateTorso(){
+    double elapsedTime = getSeconds()-startTime;
+    float rotateAngle = 0f+45f*(float)Math.sin(elapsedTime);    
+    torsoRotateZ.setTransform(Mat4Transform.rotateAroundZ(rotateAngle));
+    torsoRotateZ.update();
   }
   
   // The light's postion is continually being changed, so needs to be calculated for each frame.
