@@ -20,7 +20,7 @@ public class Robot{
     private SGNode robotRoot;
 
     // Declaring models variables
-    private Model sphere, cube, cube2;
+    private Model sphere, eyeball, cube, cube2;
 
     //TEMP
     private DirectionalLight sunLight;
@@ -30,7 +30,7 @@ public class Robot{
     //
     private float xPosition = 0;
     private float zPosition = 0;
-    private TransformNode robotMoveTranslate, robotTranslate, torsoRotateX, torsoRotateY, torsoRotateZ, headRotate, leftArmRotateX, leftArmRotateY, rightArmRotateX, rightArmRotateY;
+    private TransformNode robotMoveTranslate, robotTranslate, torsoRotateX, torsoRotateY, torsoRotateZ, headRotateX, headRotateY, leftArmRotateX, leftArmRotateY, rightArmRotateX, rightArmRotateY, leftEyeTransform, rightEyeTransform, hatRotate, noseRotate;
     private int position;
 
     public Robot(GL3 gl, Camera camera, DirectionalLight sunLight, ArrayList<PointLight> ceilingLights, SpotLight lampLight,float xPosition, float zPosition) {
@@ -86,8 +86,10 @@ public class Robot{
       leftArmRotateY.setTransform(Mat4Transform.rotateAroundY(0));
       leftArmRotateY.update();
       // head rotations
-      headRotate.setTransform(Mat4Transform.rotateAroundX(0));
-      headRotate.update();
+      headRotateX.setTransform(Mat4Transform.rotateAroundX(0));
+      headRotateX.update();
+      headRotateY.setTransform(Mat4Transform.rotateAroundY(0));
+      headRotateY.update();
     }
 
     public void poseOne() {
@@ -106,8 +108,8 @@ public class Robot{
       robotTranslate.update();
       torsoRotateX.setTransform(Mat4Transform.rotateAroundX(-25));
       torsoRotateX.update();
-      headRotate.setTransform(Mat4Transform.rotateAroundX(-20));
-      headRotate.update();
+      headRotateY.setTransform(Mat4Transform.rotateAroundX(-20));
+      headRotateY.update();
       rightArmRotateX.setTransform(Mat4Transform.rotateAroundX(45));
       rightArmRotateX.update();
       rightArmRotateY.setTransform(Mat4Transform.rotateAroundY(90));
@@ -122,8 +124,10 @@ public class Robot{
       xPosition = 6f;
       zPosition = 0f;
       updateMove();
-      headRotate.setTransform(Mat4Transform.rotateAroundX(20));
-      headRotate.update();
+      headRotateY.setTransform(Mat4Transform.rotateAroundY(180));
+      headRotateY.update();
+      headRotateX.setTransform(Mat4Transform.rotateAroundX(20));
+      headRotateX.update();
     }
 
     public void poseFour() {
@@ -156,8 +160,8 @@ public class Robot{
       rightArmRotateX.update();      
       rightArmRotateY.setTransform(Mat4Transform.rotateAroundY(45));
       rightArmRotateY.update();
-      headRotate.setTransform(Mat4Transform.rotateAroundX(-15));
-      headRotate.update();
+      headRotateX.setTransform(Mat4Transform.rotateAroundX(-15));
+      headRotateX.update();
     }
   
     private void updateMove() {
@@ -174,14 +178,17 @@ public class Robot{
         int[] textureId4 = TextureLibrary.loadTexture(gl, "textures/container2_specular.jpg");
         int[] textureId5 = TextureLibrary.loadTexture(gl, "textures/wattBook.jpg");
         int[] textureId6 = TextureLibrary.loadTexture(gl, "textures/wattBook_specular.jpg");
-        
+        int[] textureId7 = TextureLibrary.loadTexture(gl, "textures/jade.jpg");
+        int[] textureId8 = TextureLibrary.loadTexture(gl, "textures/jade_specular.jpg");
+    
         // loading models
         Mesh mesh = new Mesh(gl, Sphere.vertices.clone(), Sphere.indices.clone());
         Shader shader = new Shader(gl, "vs_sphere.txt", "fs_sphere.txt");
         Material material = new Material(new Vec3(1.0f, 0.5f, 0.31f), new Vec3(1.0f, 0.5f, 0.31f), new Vec3(0.5f, 0.5f, 0.5f), 32.0f);
         Mat4 modelMatrix = Mat4.multiply(Mat4Transform.scale(4,4,4), Mat4Transform.translate(0,0.5f,0));
         sphere = new Model(gl, camera, sunLight, ceilingLights, lampLight, shader, material, modelMatrix, mesh, textureId1); // removed the specular - need to add one!
-        
+        eyeball = new Model(gl, camera, sunLight, ceilingLights, lampLight, shader, material, modelMatrix, mesh, textureId7, textureId8); // removed the specular - need to add one!
+    
         mesh = new Mesh(gl, Cube.vertices.clone(), Cube.indices.clone());
         shader = new Shader(gl, "vs_cube.txt", "fs_cube.txt");
         material = new Material(new Vec3(1.0f, 0.5f, 0.31f), new Vec3(1.0f, 0.5f, 0.31f), new Vec3(0.5f, 0.5f, 0.5f), 32.0f);
@@ -199,6 +206,9 @@ public class Robot{
         float headRadius = 1.5f;
         float armScale = 0.1f;
         float armLength = 1.5f;
+        float eyesRadius = 0.2f;
+        float hatSize = 1f;
+        float noseSize = 0.25f;
         
         robotRoot = new NameNode("root");
         // moving whole of robot in x axis & z axis
@@ -253,7 +263,8 @@ public class Robot{
 
         // neck
         NameNode neck = new NameNode("neck");
-        headRotate = new TransformNode("Head rotation", Mat4Transform.rotateAroundX(0));
+        headRotateY = new TransformNode("Head rotation about Y", Mat4Transform.rotateAroundY(0));
+        headRotateX = new TransformNode("Head rotation about X", Mat4Transform.rotateAroundX(0));
         m = new Mat4(1);
         m = Mat4.multiply(m, Mat4Transform.scale(neckRadius,neckRadius,neckRadius));
         m = Mat4.multiply(m, Mat4Transform.translate(0,(torsoRadius+(neckRadius*4f)),0));//Raising body a further .5 above the legs top!
@@ -263,11 +274,60 @@ public class Robot{
         //head
         NameNode head = new NameNode("head");
         m = new Mat4(1);
-        m = Mat4.multiply(m, Mat4Transform.translate(0,neckRadius,0));//Raising body a further .5 above the legs top!
-        m = Mat4Transform.translate(0,((neckRadius*0.8f)+(torsoRadius*0.5f)),0);
-        TransformNode headTransform = new TransformNode("head transform", m);
+        m = Mat4.multiply(m, Mat4Transform.translate(0,((neckRadius*0.8f)+(torsoRadius*0.5f)),0));//Raising body a further .5 above the legs top!
+        TransformNode headTranslate = new TransformNode("head translated", m);
             ModelNode headShape = new ModelNode("Sphere(head)", sphere);
         
+        // Hat
+        // Hat base
+        NameNode hatBase = new NameNode("hat");
+          hatRotate = new TransformNode("Hat stuff", Mat4Transform.rotateAroundX(0));
+          m = new Mat4(1);
+          m = Mat4Transform.translate(0,(headRadius*0.5f),0);
+          m = Mat4.multiply(m, Mat4Transform.scale((hatSize*1.5f),(hatSize*0.5f),hatSize));
+          TransformNode hatTransform = new TransformNode("hat scaled", m);
+          ModelNode hatTexture = new ModelNode("hat (cube)", cube2);
+        // Hat top
+        NameNode hatTop = new NameNode("hat");
+          m = new Mat4(1);
+          m = Mat4Transform.translate(0,1.5f,0);
+          m = Mat4.multiply(m, Mat4Transform.scale(hatSize,(hatSize*1.5f),hatSize));
+          TransformNode hatTopTransform = new TransformNode("hat scaled", m);
+          ModelNode hatTopTexture = new ModelNode("hat (cube)", sphere);
+
+        // Nose
+        NameNode nose = new NameNode("Nose");
+          m = new Mat4(1);
+          m = Mat4Transform.translate(0,(headRadius*0.05f),(headRadius*0.4f));
+          TransformNode noseTranslate = new TransformNode("Nose scaled", m);
+          noseRotate = new TransformNode("Nose rotation", Mat4Transform.rotateAroundX(-90));
+          m = Mat4Transform.scale(noseSize,(noseSize*1.5f),(noseSize*0.5f));
+          TransformNode noseScale = new TransformNode("Nose scaled", m);
+          ModelNode noseTexture = new ModelNode("Nose (sphere)", sphere);
+
+        // Two Eyes - LEFT + RIGHT
+        NameNode eyes = new NameNode("Eyes");
+        // left
+        NameNode leftEye = new NameNode("Left eye");
+          m = new Mat4(1);
+          m = Mat4.multiply(m, Mat4Transform.translate((headRadius*0.15f),(headRadius*0.2f),(headRadius*0.3f)));//Raising body a further .5 above the legs top!
+          TransformNode leftEyeTranslate = new TransformNode("Translating eyes", m);
+          m = new Mat4(1);
+          m = Mat4.multiply(m, Mat4Transform.scale((eyesRadius),(eyesRadius),(eyesRadius*0.6f)));
+          TransformNode leftEyeScale = new TransformNode("Left eye Scale", m);
+          leftEyeTransform = new TransformNode("Left eye transform", Mat4Transform.rotateAroundX(0));
+          ModelNode leftEyeTexture = new ModelNode("Sphere(eye)", eyeball);
+        // right
+        NameNode rightEye = new NameNode("Right eye");
+          m = new Mat4(1);
+          m = Mat4.multiply(m, Mat4Transform.translate(-(headRadius*0.15f),(headRadius*0.2f),(headRadius*0.3f)));//Raising body a further .5 above the legs top!
+          TransformNode rightEyeTranslate = new TransformNode("Translating eyes", m);
+          m = new Mat4(1);
+          m = Mat4.multiply(m, Mat4Transform.scale((eyesRadius),(eyesRadius),(eyesRadius*0.6f)));
+          TransformNode rightEyeScale = new TransformNode("Right eye Scale", m);
+          rightEyeTransform = new TransformNode("Right eye transform", Mat4Transform.rotateAroundX(0));
+          ModelNode rightEyeTexture = new ModelNode("Sphere(eye)", eyeball);
+
         // scene  graph
         robotRoot.addChild(robotMoveTranslate);
           robotMoveTranslate.addChild(robotTranslate);
@@ -292,13 +352,37 @@ public class Robot{
                               rightArmRotateX.addChild(rightArmRotateY);
                                 rightArmRotateY.addChild(rightArmScale);
                                   rightArmScale.addChild(rightArmShape);
-                        torsoTransform.addChild(headRotate);
-                          headRotate.addChild(neck);
-                            neck.addChild(neckTransform);
-                              neckTransform.addChild(neckShape);
-                            neck.addChild(head);
-                              head.addChild(headTransform);
-                                headTransform.addChild(headShape);
+                        torsoTransform.addChild(headRotateX);
+                          headRotateX.addChild(headRotateY);
+                            headRotateY.addChild(neck);
+                              neck.addChild(neckTransform);
+                                neckTransform.addChild(neckShape);
+                              neck.addChild(head);
+                                head.addChild(headTranslate);
+                                  headTranslate.addChild(headShape);
+                                  headTranslate.addChild(nose);
+                                    nose.addChild(noseTranslate);
+                                      noseTranslate.addChild(noseRotate);
+                                        noseRotate.addChild(noseScale);
+                                          noseScale.addChild(noseTexture);
+                                  headTranslate.addChild(hatBase);
+                                    hatBase.addChild(hatRotate);
+                                      hatRotate.addChild(hatTransform);
+                                        hatTransform.addChild(hatTexture);
+                                      hatRotate.addChild(hatTop);
+                                        hatTop.addChild(hatTopTransform);
+                                          hatTopTransform.addChild(hatTopTexture);
+                                  headTranslate.addChild(eyes);
+                                    eyes.addChild(leftEyeTranslate);
+                                      leftEyeTranslate.addChild(leftEye);
+                                          leftEye.addChild(leftEyeScale);
+                                            leftEyeScale.addChild(leftEyeTransform);
+                                              leftEyeTransform.addChild(leftEyeTexture);
+                                    eyes.addChild(rightEyeTranslate);
+                                      rightEyeTranslate.addChild(rightEye);
+                                        rightEye.addChild(rightEyeScale);
+                                          rightEyeScale.addChild(rightEyeTransform);
+                                            rightEyeTransform.addChild(rightEyeTexture);
         robotRoot.update();  // IMPORTANT - don't forget this
         //robotRoot.print(0, false);
         //System.exit(0);
