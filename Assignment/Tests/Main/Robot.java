@@ -106,6 +106,9 @@ public class Robot{
       // nose
       noseRotate.setTransform(Mat4Transform.rotateAroundX(-180));
       noseRotate.update();
+      // hat
+      hatRotate.setTransform(Mat4Transform.rotateAroundX(0));
+      hatRotate.update();
     }
 
     public void poseOne() {
@@ -138,6 +141,8 @@ public class Robot{
       leftEyeTransform.update();
       rightEyeTransform.setTransform(Mat4Transform.rotateAroundX(-45));
       rightEyeTransform.update();
+      hatRotate.setTransform(Mat4Transform.rotateAroundX(-60));
+      hatRotate.update();
     }
     public void poseThree() {
       resetRotations();
@@ -186,6 +191,8 @@ public class Robot{
       rightArmRotateY.update();
       headRotateX.setTransform(Mat4Transform.rotateAroundX(-15));
       headRotateX.update();
+      hatRotate.setTransform(Mat4Transform.rotateAroundX(-30));
+      hatRotate.update();
     }
   
     private void updateMove() {
