@@ -63,15 +63,15 @@ public class Museum extends JFrame implements ActionListener {
       b = new JButton("Pose 2");
       b.addActionListener(this);
       p.add(b);
-      // b = new JButton("Pose 3");
-      // b.addActionListener(this);
-      // p.add(b);
-      // b = new JButton("Pose 4");
-      // b.addActionListener(this);
-      // p.add(b);
-      // b = new JButton("Pose 5");
-      // b.addActionListener(this);
-      // p.add(b);
+      b = new JButton("Pose 3");
+      b.addActionListener(this);
+      p.add(b);
+      b = new JButton("Pose 4");
+      b.addActionListener(this);
+      p.add(b);
+      b = new JButton("Pose 5");
+      b.addActionListener(this);
+      p.add(b);
       b = new JButton("Toggle Ceiling Lights");
       b.addActionListener(this);
       p.add(b);
@@ -113,15 +113,15 @@ public class Museum extends JFrame implements ActionListener {
     else if (e.getActionCommand().equalsIgnoreCase("Pose 2")) {
       glEventListener.poseTwo();
     }
-    // else if (e.getActionCommand().equalsIgnoreCase("Pose 3")) {
-    //   glEventListener.poseThree();
-    // }
-    // else if (e.getActionCommand().equalsIgnoreCase("Pose 4")) {
-    //   glEventListener.poseFour();
-    // }
-    // else if (e.getActionCommand().equalsIgnoreCase("Pose 5")) {
-    //   glEventListener.poseFive();
-    // }
+    else if (e.getActionCommand().equalsIgnoreCase("Pose 3")) {
+      glEventListener.poseThree();
+    }
+    else if (e.getActionCommand().equalsIgnoreCase("Pose 4")) {
+      glEventListener.poseFour();
+    }
+    else if (e.getActionCommand().equalsIgnoreCase("Pose 5")) {
+      glEventListener.poseFive();
+    }
     else if(e.getActionCommand().equalsIgnoreCase("quit"))
       System.exit(0);
   }

@@ -30,7 +30,7 @@ public class Robot{
     //
     private float xPosition = 0;
     private float zPosition = 0;
-    private TransformNode robotMoveTranslate, torsoRotateX, torsoRotateZ, headRotate, leftArmRotateX, leftArmRotateY, rightArmRotateX, rightArmRotateY;
+    private TransformNode robotMoveTranslate, robotTranslate, torsoRotateX, torsoRotateY, torsoRotateZ, headRotate, leftArmRotateX, leftArmRotateY, rightArmRotateX, rightArmRotateY;
     private int position;
 
     public Robot(GL3 gl, Camera camera, DirectionalLight sunLight, ArrayList<PointLight> ceilingLights, SpotLight lampLight,float xPosition, float zPosition) {
@@ -62,8 +62,8 @@ public class Robot{
      
     public void poseOne() {
       animation = false;
-      xPosition = -5f;
-      zPosition = -6f;
+      xPosition = -7f;
+      zPosition = -10f;
       updateMove();
       torsoRotateX.setTransform(Mat4Transform.rotateAroundX(0));
       torsoRotateX.update();
@@ -80,8 +80,29 @@ public class Robot{
       leftArmRotateY.setTransform(Mat4Transform.rotateAroundY(0));
       leftArmRotateY.update();
     }
-  
+
     public void poseTwo() {
+      animation = false;
+      xPosition = 1f;
+      zPosition = -7f;
+      updateMove();
+      torsoRotateX.setTransform(Mat4Transform.rotateAroundX(-45));
+      torsoRotateX.update();
+      robotTranslate.setTransform(Mat4Transform.rotateAroundY(160));
+      robotTranslate.update();
+      headRotate.setTransform(Mat4Transform.rotateAroundX(-20));
+      headRotate.update();
+      rightArmRotateX.setTransform(Mat4Transform.rotateAroundX(45));
+      rightArmRotateX.update();
+      rightArmRotateY.setTransform(Mat4Transform.rotateAroundY(90));
+      rightArmRotateY.update();
+      leftArmRotateX.setTransform(Mat4Transform.rotateAroundX(45));
+      leftArmRotateX.update();
+      leftArmRotateY.setTransform(Mat4Transform.rotateAroundY(90));
+      leftArmRotateY.update();
+    }
+
+    public void poseThree() {
       animation = false;
       xPosition = -8f;
       zPosition = -8f;
@@ -99,27 +120,6 @@ public class Robot{
       leftArmRotateX.setTransform(Mat4Transform.rotateAroundX(60));
       leftArmRotateX.update();
       leftArmRotateY.setTransform(Mat4Transform.rotateAroundY(0));
-      leftArmRotateY.update();
-    }
-      
-    public void poseThree() {
-      animation = false;
-      xPosition = -8f;
-      zPosition = 8f;
-      updateMove();
-      torsoRotateX.setTransform(Mat4Transform.rotateAroundX(-45));
-      torsoRotateX.update();
-      torsoRotateZ.setTransform(Mat4Transform.rotateAroundZ(0));
-      torsoRotateZ.update();
-      headRotate.setTransform(Mat4Transform.rotateAroundX(-20));
-      headRotate.update();
-      rightArmRotateX.setTransform(Mat4Transform.rotateAroundX(45));
-      rightArmRotateX.update();
-      rightArmRotateY.setTransform(Mat4Transform.rotateAroundY(90));
-      rightArmRotateY.update();
-      leftArmRotateX.setTransform(Mat4Transform.rotateAroundX(45));
-      leftArmRotateX.update();
-      leftArmRotateY.setTransform(Mat4Transform.rotateAroundY(90));
       leftArmRotateY.update();
     }
        
@@ -195,7 +195,7 @@ public class Robot{
         // moving whole of robot in x axis & z axis
         robotMoveTranslate = new TransformNode("robot transform",Mat4Transform.translate(xPosition,0,zPosition));
         //Translating whole body above world floor
-        TransformNode robotTranslate = new TransformNode("robot transform",Mat4Transform.translate(0,0,0));
+        robotTranslate = new TransformNode("robot transform",Mat4Transform.translate(0,0,0));
         
         //Building the body
         //Foot
@@ -210,7 +210,8 @@ public class Robot{
         TransformNode torsoTranslate = new TransformNode("torso translation",
                                             Mat4Transform.translate(0,footRadius,0));
         torsoRotateX = new TransformNode("upper body rotate about X",Mat4Transform.rotateAroundX(0));
-        torsoRotateZ = new TransformNode("upper body rotate about Y",Mat4Transform.rotateAroundY(0));
+        torsoRotateY = new TransformNode("upper body rotate about Y",Mat4Transform.rotateAroundY(0));
+        torsoRotateZ = new TransformNode("upper body rotate about Y",Mat4Transform.rotateAroundZ(0));
         m = new Mat4(1);
         //m = Mat4Transform.translate(0,footRadius,0);
         m = Mat4Transform.scale(torsoRadius,torsoRadius,torsoRadius);//Mat4.multiply(m, Mat4Transform.scale(torsoRadius,torsoRadius,torsoRadius));

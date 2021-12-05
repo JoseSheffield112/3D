@@ -110,6 +110,16 @@ public class Museum_GLEventListener implements GLEventListener {
   public void poseTwo() {
     myRobot.poseTwo();
   }
+  public void poseThree() {
+    myRobot.poseThree();
+  }
+
+  public void poseFour() {
+    myRobot.poseFour();
+  }
+  public void poseFive() {
+    myRobot.poseFive();
+  }
   
 
   // ***************************************************
@@ -156,7 +166,7 @@ public class Museum_GLEventListener implements GLEventListener {
     
     //Loading up scene graphs!
     theRoom = new Room(gl, camera, sunLight, ceilingLights, lampLight);
-    myRobot = new Robot(gl,camera, sunLight, ceilingLights, lampLight, -5f, -6f);
+    myRobot = new Robot(gl,camera, sunLight, ceilingLights, lampLight, -7f, -10f);
     theExhibition = new Exhibition(gl,camera, sunLight, ceilingLights, lampLight);
     theLamp = new Lamp(gl,camera, sunLight, ceilingLights, lampLight, startAngle);
    

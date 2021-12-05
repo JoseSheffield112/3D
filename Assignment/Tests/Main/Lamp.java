@@ -60,7 +60,6 @@ public class Lamp{
         final float topWidth = 3f;
         final float lampSize = 0.5f;
 
-
         //Models
         //Setting up model for the cube used in the scene!
         Mesh mesh = new Mesh(gl, Cube.vertices.clone(), Cube.indices.clone());
