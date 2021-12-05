@@ -33,7 +33,7 @@ public class Room{
     private int dayCycle = 1;
   
     //Setting Values
-    private float wallSize = 16f;
+    private float wallSize = 24f;
     private float doorSize = wallSize*0.35f;
     private float doorPositioning = 0.75f;
     private Vec3 whiteLight = new Vec3(1.0f, 1.0f, 1.0f);

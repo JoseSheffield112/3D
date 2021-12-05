@@ -39,12 +39,8 @@ public class Museum_GLEventListener implements GLEventListener {
   // sunLight
   private static float dayLight[] = {0.1f, 0.6f};
   private static int currentCycle, oldCycle;
-  // 3D positions for robot render
-  private float xPosition = -5f;
-  private float yPosition = 0f;
-  private float zPosition = -6f;
   // setting speed of lamp swing
-  private float startAngle = 8, currentAngle=startAngle;
+  private float startAngle = 12, currentAngle=startAngle;
   // toggling lamp swinging speed
   private float speedToggle = 0.6f;
 
@@ -107,40 +103,14 @@ public class Museum_GLEventListener implements GLEventListener {
    *
    */
  
-  public void incXPosition() {
-    xPosition += 0.5f;
-    if (xPosition>5f) xPosition = 5f;
-    myRobot.updateMoveX(xPosition);
+  public void poseOne() {
+    myRobot.poseOne();
   }
 
-  public void decXPosition() {
-    xPosition -= 0.5f;
-    if (xPosition<-5f) xPosition = -5f;
-    myRobot.updateMoveX(xPosition);
+  public void poseTwo() {
+    myRobot.poseTwo();
   }
-  public void incYPosition() {
-    yPosition += 0.5f;
-    if (yPosition>5f) yPosition = 5f;
-    myRobot.updateMoveY(yPosition);
-  }
-
-  public void decYPosition() {
-    yPosition -= 0.5f;
-    if (yPosition<-5f) yPosition = -5f;
-    myRobot.updateMoveY(yPosition);
-  }
-
-  public void incZPosition() {
-    zPosition += 0.5f;
-    if (zPosition>5f) zPosition = 5f;
-    myRobot.updateMoveZ(zPosition);
-  }
-
-  public void decZPosition() {
-    zPosition -= 0.5f;
-    if (zPosition<-5f) zPosition = -5f;
-    myRobot.updateMoveZ(zPosition);
-  }
+  
 
   // ***************************************************
   /* THE SCENE
@@ -186,7 +156,7 @@ public class Museum_GLEventListener implements GLEventListener {
     
     //Loading up scene graphs!
     theRoom = new Room(gl, camera, sunLight, ceilingLights, lampLight);
-    myRobot = new Robot(gl,camera, sunLight, ceilingLights, lampLight,  xPosition, yPosition, zPosition);
+    myRobot = new Robot(gl,camera, sunLight, ceilingLights, lampLight, -5f, -6f);
     theExhibition = new Exhibition(gl,camera, sunLight, ceilingLights, lampLight);
     theLamp = new Lamp(gl,camera, sunLight, ceilingLights, lampLight, startAngle);
    

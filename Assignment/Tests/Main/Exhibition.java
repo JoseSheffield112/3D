@@ -50,14 +50,14 @@ public class Exhibition{
         //Sizes
         // plinth variables
         final float plinthWidth, plinthHeight, plinthDepth;
-        plinthWidth = 4f;
+        plinthWidth = 5.5f;
         plinthHeight = 2f;
-        plinthDepth = 1f;
+        plinthDepth = 1.2f;
         // phone
         final float phoneWidth, phoneHeight, phoneDepth;
-        phoneWidth = 3f;
-        phoneHeight = 6f;
-        phoneDepth = 0.8f;
+        phoneWidth = plinthWidth-1f;
+        phoneHeight = plinthHeight*5f;
+        phoneDepth = plinthDepth*0.7f;
         // Egg + Platform variables
         final float platformSize = 2f;
         final float eggRadius = 2f;
@@ -88,7 +88,7 @@ public class Exhibition{
         // Centering the phone attraction
         // MAKE CHANGES HERE !! MAKE CHANGES HERE !! MAKE CHANGES HERE !! MAKE CHANGES HERE !!
         // need to first scale the plinth, then translate it!!!
-        Mat4 m = Mat4Transform.translate(4f, (plinthHeight*0.5f), -6f);
+        Mat4 m = Mat4Transform.translate(1f, (plinthHeight*0.5f), -10f);
         TransformNode centeringPlinth = new TransformNode("Centering plinth & Phone", m);
         // Dealing with plinth
         m = Mat4Transform.scale(plinthWidth, plinthHeight, plinthDepth);
@@ -105,7 +105,7 @@ public class Exhibition{
         // Platform
         NameNode platformEgg = new NameNode("Platform, then Egg");
         // Centering the egg attraction
-        m = Mat4Transform.translate(-2f, (platformSize*0.25f), 2f);
+        m = Mat4Transform.translate(-4f, (platformSize*0.25f), 2f);
         TransformNode centeringPlatform = new TransformNode("Centering Platform & Egg", m);
         // Dealing with platform
         m = Mat4Transform.scale(platformSize, (platformSize*0.5f), platformSize);

@@ -56,25 +56,22 @@ public class Museum extends JFrame implements ActionListener {
       p.add(b);
       b = new JButton("camera Z");
       b.addActionListener(this);
-      p.add(b);/*
-      b = new JButton("increase X position");
+      p.add(b);
+      b = new JButton("Pose 1");
       b.addActionListener(this);
       p.add(b);
-      b = new JButton("decrease X position");
+      b = new JButton("Pose 2");
       b.addActionListener(this);
       p.add(b);
-      b = new JButton("increase Y position");
-      b.addActionListener(this);
-      p.add(b);
-      b = new JButton("decrease Y position");
-      b.addActionListener(this);
-      p.add(b);  
-      b = new JButton("increase Z position");
-      b.addActionListener(this);
-      p.add(b);
-      b = new JButton("decrease Z position");
-      b.addActionListener(this);
-      p.add(b); */
+      // b = new JButton("Pose 3");
+      // b.addActionListener(this);
+      // p.add(b);
+      // b = new JButton("Pose 4");
+      // b.addActionListener(this);
+      // p.add(b);
+      // b = new JButton("Pose 5");
+      // b.addActionListener(this);
+      // p.add(b);
       b = new JButton("Toggle Ceiling Lights");
       b.addActionListener(this);
       p.add(b);
@@ -103,31 +100,28 @@ public class Museum extends JFrame implements ActionListener {
     else if (e.getActionCommand().equalsIgnoreCase("camera Z")) {
       camera.setCamera(Camera.CameraType.Z);
       canvas.requestFocusInWindow();
-    }/*
-    else if (e.getActionCommand().equalsIgnoreCase("increase X position")) {
-      glEventListener.incXPosition();
     }
-    else if (e.getActionCommand().equalsIgnoreCase("decrease X position")) {
-      glEventListener.decXPosition();
-    }
-    else if (e.getActionCommand().equalsIgnoreCase("increase Y position")) {
-      glEventListener.incYPosition();
-    }
-    else if (e.getActionCommand().equalsIgnoreCase("decrease Y position")) {
-      glEventListener.decYPosition();
-    }    
-    else if (e.getActionCommand().equalsIgnoreCase("increase Z position")) {
-      glEventListener.incZPosition();
-    }
-    else if (e.getActionCommand().equalsIgnoreCase("decrease Z position")) {
-      glEventListener.decZPosition();
-    } */
     else if (e.getActionCommand().equalsIgnoreCase("Toggle Ceiling Lights")) {
       glEventListener.toggleCeilingLights();
     }
     else if (e.getActionCommand().equalsIgnoreCase("Toggle Day/Night")) {
       glEventListener.toggleSunLight();
     }
+    else if (e.getActionCommand().equalsIgnoreCase("Pose 1")) {
+      glEventListener.poseOne();
+    }
+    else if (e.getActionCommand().equalsIgnoreCase("Pose 2")) {
+      glEventListener.poseTwo();
+    }
+    // else if (e.getActionCommand().equalsIgnoreCase("Pose 3")) {
+    //   glEventListener.poseThree();
+    // }
+    // else if (e.getActionCommand().equalsIgnoreCase("Pose 4")) {
+    //   glEventListener.poseFour();
+    // }
+    // else if (e.getActionCommand().equalsIgnoreCase("Pose 5")) {
+    //   glEventListener.poseFive();
+    // }
     else if(e.getActionCommand().equalsIgnoreCase("quit"))
       System.exit(0);
   }

@@ -75,7 +75,7 @@ public class Lamp{
 
         // Scene Graph stuff
         // Setting the base
-        Mat4 m = Mat4Transform.translate(7f, (size*0.5f), 0f);
+        Mat4 m = Mat4Transform.translate(10f, (size*0.5f), 0f);
         TransformNode centeringBase = new TransformNode("Centering the lamp", m);
         // base
         NameNode lampBase = new NameNode("Lamp - base");
@@ -90,7 +90,7 @@ public class Lamp{
         //Top
         NameNode lampTop = new NameNode("Lamp - top");
         m = Mat4Transform.translate(-(topWidth*0.4f), (poleHeight*0.5f), 0f);
-        m = Mat4.multiply(m, Mat4Transform.scale(topWidth, (size*0.5f), size));
+        m = Mat4.multiply(m, Mat4Transform.scale(topWidth, (size*0.5f), (size*0.55f)));
         renderingTop = new TransformNode("Translated, then scaled", m);
         //lamp
         NameNode lampCover = new NameNode("Lamp - top");
