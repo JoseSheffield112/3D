@@ -63,29 +63,44 @@ public class Robot{
       robotTranslate.setTransform(Mat4Transform.rotateAroundY(-90));
       robotTranslate.update();
     }
-  
-    
-    public void poseOne() {
-      xPosition = -7f;
-      zPosition = -10f;
-      updateMove();
-      torsoRotateX.setTransform(Mat4Transform.rotateAroundX(0));
-      torsoRotateX.update();
-      torsoRotateZ.setTransform(Mat4Transform.rotateAroundZ(0));
-      torsoRotateZ.update();
+
+    private void resetRotations(){
+      // head rotations
       headRotate.setTransform(Mat4Transform.rotateAroundX(0));
       headRotate.update();
-      rightArmRotateX.setTransform(Mat4Transform.rotateAroundX(180));
+      // Torso rotations
+      torsoRotateX.setTransform(Mat4Transform.rotateAroundX(0));
+      torsoRotateX.update();
+      torsoRotateY.setTransform(Mat4Transform.rotateAroundY(0));
+      torsoRotateY.update();
+      torsoRotateZ.setTransform(Mat4Transform.rotateAroundZ(0));
+      torsoRotateZ.update();
+      // Right arm rotations
+      rightArmRotateX.setTransform(Mat4Transform.rotateAroundX(0));
       rightArmRotateX.update();
       rightArmRotateY.setTransform(Mat4Transform.rotateAroundY(0));
       rightArmRotateY.update();
-      leftArmRotateX.setTransform(Mat4Transform.rotateAroundX(180));
+      // Left Arm rotations
+      leftArmRotateX.setTransform(Mat4Transform.rotateAroundX(0));
       leftArmRotateX.update();
       leftArmRotateY.setTransform(Mat4Transform.rotateAroundY(0));
       leftArmRotateY.update();
     }
+  
+    
+    public void poseOne() {
+      resetRotations();
+      xPosition = -7f;
+      zPosition = -10f;
+      updateMove();
+      rightArmRotateX.setTransform(Mat4Transform.rotateAroundX(180));
+      rightArmRotateX.update();
+      leftArmRotateX.setTransform(Mat4Transform.rotateAroundX(180));
+      leftArmRotateX.update();
+    }
 
     public void poseTwo() {
+      resetRotations();
       xPosition = 1f;
       zPosition = -7f;
       updateMove();
@@ -105,11 +120,10 @@ public class Robot{
       leftArmRotateY.update();
     }
     public void poseThree() {
+      resetRotations();
       xPosition = 6f;
       zPosition = 0f;
       updateMove();
-      torsoRotateX.setTransform(Mat4Transform.rotateAroundX(0));
-      torsoRotateX.update();
       headRotate.setTransform(Mat4Transform.rotateAroundX(20));
       headRotate.update();
     }
@@ -135,23 +149,18 @@ public class Robot{
     }
 
     public void poseFive () {
-      xPosition = -8f;
-      zPosition = -8f;
+      resetRotations();
+      xPosition = -7f;
+      zPosition = 0f;
       updateMove();
       torsoRotateX.setTransform(Mat4Transform.rotateAroundX(45));
       torsoRotateX.update();
-      torsoRotateZ.setTransform(Mat4Transform.rotateAroundZ(0));
-      torsoRotateZ.update();
       headRotate.setTransform(Mat4Transform.rotateAroundX(20));
       headRotate.update();
       rightArmRotateX.setTransform(Mat4Transform.rotateAroundX(60));
       rightArmRotateX.update();
-      rightArmRotateY.setTransform(Mat4Transform.rotateAroundY(0));
-      rightArmRotateY.update();
       leftArmRotateX.setTransform(Mat4Transform.rotateAroundX(60));
       leftArmRotateX.update();
-      leftArmRotateY.setTransform(Mat4Transform.rotateAroundY(0));
-      leftArmRotateY.update();
     }
   
     private void updateMove() {
