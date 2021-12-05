@@ -102,22 +102,35 @@ public class Museum_GLEventListener implements GLEventListener {
    *
    *
    */
- 
+  private boolean animation = false;  //
+  private double elapsedTime = 0;
+   
+  public void startAnimation() {
+    animation = true;
+  }
+   
+  public void stopAnimation() {
+    animation = false;
+  }
   public void poseOne() {
+    stopAnimation();
     myRobot.poseOne();
   }
 
   public void poseTwo() {
+    stopAnimation();
     myRobot.poseTwo();
   }
   public void poseThree() {
+    stopAnimation();
     myRobot.poseThree();
   }
-
   public void poseFour() {
+    stopAnimation();
     myRobot.poseFour();
   }
   public void poseFive() {
+    startAnimation();
     myRobot.poseFive();
   }
   
@@ -132,8 +145,6 @@ public class Museum_GLEventListener implements GLEventListener {
   private void initialise(GL3 gl) {
     createRandomNumbers();
     currentCycle = oldCycle = 1;// Has there been a change?
-
-    
     /**
      * Initialising all my lights!
      */
@@ -207,6 +218,14 @@ public class Museum_GLEventListener implements GLEventListener {
       drawRoomScene(gl);
       oldCycle=currentCycle;
     }
+    // with cos it rotates arms in a circle
+    if(animation){ 
+      float rotateAngle = (60f-Math.abs(22.5f*(float)Math.sin(elapsedTime)));
+      System.out.println("Animation"+rotateAngle);
+      myRobot.updateRightArm(-1*rotateAngle); 
+      myRobot.updateLeftArm(-1*rotateAngle); 
+      myRobot.updateTorso(elapsedTime);
+    }
     roomScene.draw(gl);
   }
   /*
@@ -240,8 +259,9 @@ public class Museum_GLEventListener implements GLEventListener {
 
   private void updateLampPosition(){
     // calculating angle
-    double elapsedTime = getSeconds()-startTime;
+    elapsedTime = getSeconds()-startTime;
     float newAngle = (startAngle*(float)Math.sin(elapsedTime))+180;
+    System.out.println("Lamp " +newAngle);
     // Fetching rotation matrix
     lampTopRotation = theLamp.getRotationMatrix(newAngle);
     lampTopPoints = theLamp.getTopPoints();

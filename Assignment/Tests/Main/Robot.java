@@ -46,22 +46,26 @@ public class Robot{
     /*
     *Interaction
     */
-    private boolean animation = false;
-    private double savedTime = 0;
-     
-    // public void startAnimation() {
-    //   animation = true;
-    //   startTime = getSeconds()-savedTime;
-    // }
-     
-    // public void stopAnimation() {
-    //   animation = false;
-    //   double elapsedTime = getSeconds()-startTime;
-    //   savedTime = elapsedTime;
-    // }
-     
+
+    public void updateRightArm(float rotateAngle) {
+      rightArmRotateX.setTransform(Mat4Transform.rotateAroundX(rotateAngle));
+      rightArmRotateX.update();
+    }
+    
+    public void updateLeftArm(float rotateAngle) {
+      leftArmRotateX.setTransform(Mat4Transform.rotateAroundX(rotateAngle));
+      leftArmRotateX.update();
+    }
+    public void updateTorso(double elapsedTime){
+      float rotateAngle = 0f+45f*(float)Math.sin(elapsedTime);    
+      torsoRotateZ.setTransform(Mat4Transform.rotateAroundZ(rotateAngle));
+      torsoRotateZ.update();
+      robotTranslate.setTransform(Mat4Transform.rotateAroundY(-90));
+      robotTranslate.update();
+    }
+  
+    
     public void poseOne() {
-      animation = false;
       xPosition = -7f;
       zPosition = -10f;
       updateMove();
@@ -82,7 +86,6 @@ public class Robot{
     }
 
     public void poseTwo() {
-      animation = false;
       xPosition = 1f;
       zPosition = -7f;
       updateMove();
@@ -102,8 +105,7 @@ public class Robot{
       leftArmRotateY.update();
     }
 
-    public void poseThree() {
-      animation = false;
+    public void poseThree () {
       xPosition = -8f;
       zPosition = -8f;
       updateMove();
@@ -124,7 +126,6 @@ public class Robot{
     }
        
     public void poseFour() {
-      animation = false;
       xPosition = 8f;
       zPosition = -8f;
       updateMove();
@@ -143,7 +144,6 @@ public class Robot{
     }
        
     public void poseFive() {
-      animation = true;
       xPosition = 8f;
       zPosition = 8f;
       updateMove();
@@ -294,24 +294,6 @@ public class Robot{
         //robotRoot.print(0, false);
         //System.exit(0);
     }
-
-    // public void updateMoveX(float newxPosition) {
-    //     xPosition = newxPosition;
-    //     robotMoveTranslate.setTransform(Mat4Transform.translate(xPosition,yPosition,zPosition));
-    //     robotMoveTranslate.update();
-    // }
-
-    // public void updateMoveY(float newYPosition) {
-    //     yPosition = newYPosition;
-    //     robotMoveTranslate.setTransform(Mat4Transform.translate(xPosition,yPosition,zPosition));
-    //     robotMoveTranslate.update();
-    // }
-
-    // public void updateMoveZ(float newZPosition) {
-    //     zPosition = newZPosition;
-    //     robotMoveTranslate.setTransform(Mat4Transform.translate(xPosition,yPosition,zPosition));
-    //     robotMoveTranslate.update();
-    // }
 
     public SGNode getSceneGraph(){
         return robotRoot;
