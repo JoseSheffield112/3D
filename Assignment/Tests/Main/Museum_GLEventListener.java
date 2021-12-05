@@ -221,6 +221,7 @@ public class Museum_GLEventListener implements GLEventListener {
       float rotateAngle = (60f-Math.abs(40f*(float)Math.sin(elapsedTime)));
       myRobot.updateRightArm(-1*rotateAngle); 
       myRobot.updateLeftArm(-1*rotateAngle); 
+      myRobot.updateNose(-1*rotateAngle); 
       myRobot.updateTorso(elapsedTime);
     }
     roomScene.draw(gl);

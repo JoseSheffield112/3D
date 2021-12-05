@@ -56,6 +56,10 @@ public class Robot{
       leftArmRotateX.setTransform(Mat4Transform.rotateAroundX(rotateAngle));
       leftArmRotateX.update();
     }
+    public void updateNose(float rotateAngle){
+      noseRotate.setTransform(Mat4Transform.rotateAroundX(rotateAngle));
+      noseRotate.update();
+    }
     public void updateTorso(double elapsedTime){
       float rotateAngle = 0f+45f*(float)Math.sin(elapsedTime);    
       torsoRotateZ.setTransform(Mat4Transform.rotateAroundZ(rotateAngle));
@@ -99,6 +103,9 @@ public class Robot{
       rightEyeTransform.update();
       rightEyeTransform.setTransform(Mat4Transform.rotateAroundZ(0));
       rightEyeTransform.update();
+      // nose
+      noseRotate.setTransform(Mat4Transform.rotateAroundX(-180));
+      noseRotate.update();
     }
 
     public void poseOne() {
@@ -315,9 +322,9 @@ public class Robot{
         // Nose
         NameNode nose = new NameNode("Nose");
           m = new Mat4(1);
-          m = Mat4Transform.translate(0,(headRadius*0.05f),(headRadius*0.4f));
+          m = Mat4Transform.translate(0,(headRadius*0.05f),(headRadius*0.35f));
           TransformNode noseTranslate = new TransformNode("Nose scaled", m);
-          noseRotate = new TransformNode("Nose rotation", Mat4Transform.rotateAroundX(-90));
+          noseRotate = new TransformNode("Nose rotation", Mat4Transform.rotateAroundX(-180));
           m = Mat4Transform.scale(noseSize,(noseSize*1.5f),(noseSize*0.5f));
           TransformNode noseScale = new TransformNode("Nose scaled", m);
           ModelNode noseTexture = new ModelNode("Nose (sphere)", sphere);
