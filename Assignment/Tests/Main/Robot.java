@@ -90,6 +90,15 @@ public class Robot{
       headRotateX.update();
       headRotateY.setTransform(Mat4Transform.rotateAroundY(0));
       headRotateY.update();
+      // eyes
+      leftEyeTransform.setTransform(Mat4Transform.rotateAroundX(0));
+      leftEyeTransform.update();
+      leftEyeTransform.setTransform(Mat4Transform.rotateAroundZ(0));
+      leftEyeTransform.update();
+      rightEyeTransform.setTransform(Mat4Transform.rotateAroundX(0));
+      rightEyeTransform.update();
+      rightEyeTransform.setTransform(Mat4Transform.rotateAroundZ(0));
+      rightEyeTransform.update();
     }
 
     public void poseOne() {
@@ -118,6 +127,10 @@ public class Robot{
       leftArmRotateX.update();
       leftArmRotateY.setTransform(Mat4Transform.rotateAroundY(90));
       leftArmRotateY.update();
+      leftEyeTransform.setTransform(Mat4Transform.rotateAroundX(-45));
+      leftEyeTransform.update();
+      rightEyeTransform.setTransform(Mat4Transform.rotateAroundX(-45));
+      rightEyeTransform.update();
     }
     public void poseThree() {
       resetRotations();
@@ -145,6 +158,10 @@ public class Robot{
       leftArmRotateX.update();
       leftArmRotateY.setTransform(Mat4Transform.rotateAroundZ(-45));
       leftArmRotateY.update();
+      leftEyeTransform.setTransform(Mat4Transform.rotateAroundX(45));
+      leftEyeTransform.update();
+      rightEyeTransform.setTransform(Mat4Transform.rotateAroundX(45));
+      rightEyeTransform.update();
     }
 
     public void poseFive () {
@@ -375,14 +392,14 @@ public class Robot{
                                   headTranslate.addChild(eyes);
                                     eyes.addChild(leftEyeTranslate);
                                       leftEyeTranslate.addChild(leftEye);
-                                          leftEye.addChild(leftEyeScale);
-                                            leftEyeScale.addChild(leftEyeTransform);
-                                              leftEyeTransform.addChild(leftEyeTexture);
+                                          leftEye.addChild(leftEyeTransform);
+                                            leftEyeTransform.addChild(leftEyeScale);
+                                              leftEyeScale.addChild(leftEyeTexture);
                                     eyes.addChild(rightEyeTranslate);
                                       rightEyeTranslate.addChild(rightEye);
-                                        rightEye.addChild(rightEyeScale);
-                                          rightEyeScale.addChild(rightEyeTransform);
-                                            rightEyeTransform.addChild(rightEyeTexture);
+                                        rightEye.addChild(rightEyeTransform);
+                                          rightEyeTransform.addChild(rightEyeScale);
+                                            rightEyeScale.addChild(rightEyeTexture);
         robotRoot.update();  // IMPORTANT - don't forget this
         //robotRoot.print(0, false);
         //System.exit(0);
