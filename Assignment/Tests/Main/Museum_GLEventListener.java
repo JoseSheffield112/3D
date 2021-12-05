@@ -122,7 +122,7 @@ public class Museum_GLEventListener implements GLEventListener {
     myRobot.poseTwo();
   }
   public void poseThree() {
-    stopAnimation();
+    startAnimation();
     myRobot.poseThree();
   }
   public void poseFour() {
@@ -130,7 +130,7 @@ public class Museum_GLEventListener implements GLEventListener {
     myRobot.poseFour();
   }
   public void poseFive() {
-    startAnimation();
+    stopAnimation();
     myRobot.poseFive();
   }
   
@@ -218,10 +218,8 @@ public class Museum_GLEventListener implements GLEventListener {
       drawRoomScene(gl);
       oldCycle=currentCycle;
     }
-    // with cos it rotates arms in a circle
     if(animation){ 
-      float rotateAngle = (60f-Math.abs(22.5f*(float)Math.sin(elapsedTime)));
-      System.out.println("Animation"+rotateAngle);
+      float rotateAngle = (60f-Math.abs(40f*(float)Math.sin(elapsedTime)));
       myRobot.updateRightArm(-1*rotateAngle); 
       myRobot.updateLeftArm(-1*rotateAngle); 
       myRobot.updateTorso(elapsedTime);
@@ -261,7 +259,6 @@ public class Museum_GLEventListener implements GLEventListener {
     // calculating angle
     elapsedTime = getSeconds()-startTime;
     float newAngle = (startAngle*(float)Math.sin(elapsedTime))+180;
-    System.out.println("Lamp " +newAngle);
     // Fetching rotation matrix
     lampTopRotation = theLamp.getRotationMatrix(newAngle);
     lampTopPoints = theLamp.getTopPoints();

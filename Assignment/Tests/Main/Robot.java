@@ -89,7 +89,7 @@ public class Robot{
       xPosition = 1f;
       zPosition = -7f;
       updateMove();
-      torsoRotateX.setTransform(Mat4Transform.rotateAroundX(-45));
+      torsoRotateX.setTransform(Mat4Transform.rotateAroundX(-25));
       torsoRotateX.update();
       robotTranslate.setTransform(Mat4Transform.rotateAroundY(160));
       robotTranslate.update();
@@ -104,8 +104,17 @@ public class Robot{
       leftArmRotateY.setTransform(Mat4Transform.rotateAroundY(90));
       leftArmRotateY.update();
     }
+    public void poseThree() {
+      xPosition = 6f;
+      zPosition = 0f;
+      updateMove();
+      torsoRotateX.setTransform(Mat4Transform.rotateAroundX(0));
+      torsoRotateX.update();
+      headRotate.setTransform(Mat4Transform.rotateAroundX(20));
+      headRotate.update();
+    }
 
-    public void poseThree () {
+    public void poseFive () {
       xPosition = -8f;
       zPosition = -8f;
       updateMove();
@@ -141,14 +150,6 @@ public class Robot{
       leftArmRotateX.update();
       leftArmRotateY.setTransform(Mat4Transform.rotateAroundY(90));
       leftArmRotateY.update();
-    }
-       
-    public void poseFive() {
-      xPosition = 8f;
-      zPosition = 8f;
-      updateMove();
-      torsoRotateX.setTransform(Mat4Transform.rotateAroundX(0));
-      torsoRotateX.update();
     }
   
     private void updateMove() {
