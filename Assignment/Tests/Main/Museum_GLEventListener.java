@@ -50,7 +50,7 @@ public class Museum_GLEventListener implements GLEventListener {
   
   public Museum_GLEventListener(Camera camera) {
     this.camera = camera;
-    this.camera.setPosition(new Vec3(4f,12f,18f));
+    this.camera.setPosition(new Vec3(18f,20f,18f));
   }
   
   // ***************************************************
@@ -143,7 +143,6 @@ public class Museum_GLEventListener implements GLEventListener {
 
   
   private void initialise(GL3 gl) {
-    createRandomNumbers();
     currentCycle = oldCycle = 1;// Has there been a change?
     /**
      * Initialising all my lights!

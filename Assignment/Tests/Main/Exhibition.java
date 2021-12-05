@@ -105,7 +105,7 @@ public class Exhibition{
         // Platform
         NameNode platformEgg = new NameNode("Platform, then Egg");
         // Centering the egg attraction
-        m = Mat4Transform.translate(-4f, (platformSize*0.25f), 2f);
+        m = Mat4Transform.translate(-2f, (platformSize*0.25f), 2f);
         TransformNode centeringPlatform = new TransformNode("Centering Platform & Egg", m);
         // Dealing with platform
         m = Mat4Transform.scale(platformSize, (platformSize*0.5f), platformSize);
