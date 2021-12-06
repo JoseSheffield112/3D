@@ -106,8 +106,12 @@ public class Robot{
       // nose
       noseRotate.setTransform(Mat4Transform.rotateAroundX(-180));
       noseRotate.update();
+      noseRotate.setTransform(Mat4Transform.rotateAroundZ(0));
+      noseRotate.update();
       // hat
       hatRotate.setTransform(Mat4Transform.rotateAroundX(0));
+      hatRotate.update();
+      hatRotate.setTransform(Mat4Transform.rotateAroundY(0));
       hatRotate.update();
     }
 
@@ -174,6 +178,10 @@ public class Robot{
       leftEyeTransform.update();
       rightEyeTransform.setTransform(Mat4Transform.rotateAroundX(45));
       rightEyeTransform.update();
+      noseRotate.setTransform(Mat4Transform.rotateAroundZ(-40));
+      noseRotate.update();
+      hatRotate.setTransform(Mat4.multiply(Mat4Transform.rotateAroundZ(-30), Mat4Transform.rotateAroundX(-30)));
+      hatRotate.update();
     }
 
     public void poseFive () {
