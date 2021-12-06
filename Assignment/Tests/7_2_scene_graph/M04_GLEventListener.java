@@ -80,7 +80,7 @@ public class M04_GLEventListener implements GLEventListener {
     double elapsedTime = getSeconds()-startTime;
     savedTime = elapsedTime;
   }
-   
+  
   public void poseOne() {
     animation = false;
     xPosition = 0f;
@@ -107,6 +107,10 @@ public class M04_GLEventListener implements GLEventListener {
     xPosition = -8f;
     zPosition = -8f;
     updateMove();
+    leftEyeTransform.setTransform(Mat4Transform.rotateAroundZ(45));
+    leftEyeTransform.update();
+    rightEyeTransform.setTransform(Mat4Transform.rotateAroundZ(45));
+    rightEyeTransform.update();
     torsoRotateX.setTransform(Mat4Transform.rotateAroundX(45));
     torsoRotateX.update();
     torsoRotateZ.setTransform(Mat4Transform.rotateAroundZ(0));
@@ -128,6 +132,10 @@ public class M04_GLEventListener implements GLEventListener {
     xPosition = -8f;
     zPosition = 8f;
     updateMove();
+    leftEyeTransform.setTransform(Mat4Transform.rotateAroundX(-45));
+    leftEyeTransform.update();
+    rightEyeTransform.setTransform(Mat4Transform.rotateAroundX(-45));
+    rightEyeTransform.update();
     torsoRotateX.setTransform(Mat4Transform.rotateAroundX(-45));
     torsoRotateX.update();
     torsoRotateZ.setTransform(Mat4Transform.rotateAroundZ(0));
@@ -149,6 +157,8 @@ public class M04_GLEventListener implements GLEventListener {
     xPosition = 8f;
     zPosition = -8f;
     updateMove();
+    hatRotate.setTransform(Mat4Transform.rotateAroundX(-20));
+    hatRotate.update();
     torsoRotateX.setTransform(Mat4Transform.rotateAroundX(0));
     torsoRotateX.update();
     torsoRotateZ.setTransform(Mat4Transform.rotateAroundZ(-45));
@@ -168,6 +178,8 @@ public class M04_GLEventListener implements GLEventListener {
     xPosition = 8f;
     zPosition = 8f;
     updateMove();
+    noseRotate.setTransform(Mat4Transform.rotateAroundX(-20));
+    noseRotate.update();
     torsoRotateX.setTransform(Mat4Transform.rotateAroundX(0));
     torsoRotateX.update();
   }
