@@ -34,6 +34,7 @@ public class Room{
   
     //Setting Values
     private float wallSize = 24f;
+    private float leftWallPortion = 8f;
     private float doorSize = wallSize*0.35f;
     private float doorPositioning = 0.75f;
     private Vec3 whiteLight = new Vec3(1.0f, 1.0f, 1.0f);
@@ -107,19 +108,81 @@ public class Room{
         m = Mat4Transform.rotateAroundZ(-90);
         TransformNode zAxisRotation = new TransformNode("Rotating about Z Axis", m);
         // Translation
-        
-        // 2nd value - positive - moves it closer to us
-        // 3rd value - positive - moves it up the screen
 
         // used for far wall
-        m = Mat4Transform.translate(0f, -(wallSize*0.5f), -(wallSize*0.35f));//x,y,z where z is right and y is to us
+        m = Mat4Transform.translate(0f, -(wallSize*0.5f), -(wallSize*0.35f));
         TransformNode farWallTranslation = new TransformNode("Translating about Y and Z axis", m);
         // used for door
-        m = Mat4Transform.translate(-(wallSize*0.3f),0.11f,+(wallSize*0.125f));//x,y,z where z is right and y is to us
-        TransformNode doorTranslation = new TransformNode("Translating about X axis", m);
-        // used for left wall
-        m = Mat4Transform.translate(0f, -(wallSize*0.5f), -(wallSize*0.35f));//x,y,z where z is right and y is to us
-        TransformNode leftWallTranslation = new TransformNode("Translating about X axis", m);
+        m = Mat4Transform.translate(-(wallSize*0.3f),0.11f,+(wallSize*0.125f));
+        TransformNode doorTranslation = new TransformNode("Translating about X axis", m);  
+        // used for left wall view
+        m = Mat4Transform.translate(0f, -(wallSize), -(wallSize*0.35f));
+        TransformNode leftWallView = new TransformNode("Translating about X axis", m);
+
+        // Building left wall
+        m = Mat4Transform.translate(0f, -(wallSize*0.5f), -(leftWallPortion*0.5f));
+        TransformNode leftWallTranslation = new TransformNode("Translating to left wall", m); 
+        // S1 - Bottom left 
+        NameNode S1 = new NameNode("far wall - S1");    
+        m = new Mat4(1);
+        m = Mat4Transform.translate(-leftWallPortion, 0,0);
+        TransformNode bottomLeftTranslation = new TransformNode("Translated to bottom left ", m); 
+        m = Mat4Transform.scale(leftWallPortion,1f,leftWallPortion);  
+        TransformNode enlargenWallS1 = new TransformNode("Enlargened S1 ", m);  
+        ModelNode S1Texture = new ModelNode("Far wall S1 texture", wall);
+        // S4 - Middle Left
+        NameNode S4 = new NameNode("far wall - S4");    
+        m = new Mat4(1);
+        m = Mat4Transform.translate(0, 0, -leftWallPortion);  
+        m = Mat4.multiply(m, Mat4Transform.scale(leftWallPortion,1f,(leftWallPortion+1.56f)));  
+        TransformNode wallS4 = new TransformNode("Enlargened S4 ", m);  
+        ModelNode S4Texture = new ModelNode("Far wall S4 texture", wall);
+        // S2 - Bottom Middle 
+        NameNode S2 = new NameNode("far wall - S2");    
+        m = new Mat4(1);
+        m = Mat4Transform.translate(-(leftWallPortion*0.25f), 0,(leftWallPortion*0.25f));
+        TransformNode s2Translation = new TransformNode("Translated to bottom left ", m);
+        m = Mat4Transform.scale((leftWallPortion*0.5f),1f,(leftWallPortion*0.5f));  
+        TransformNode enlargenWallS2 = new TransformNode("Enlargened S2 ", m);  
+        ModelNode S2Texture = new ModelNode("Far wall S2 texture", wall);
+        // S2.5 - Bottom Middle 
+        NameNode S2_5 = new NameNode("far wall - S2.5");    
+        m = new Mat4(1);
+        m = Mat4Transform.translate(+(leftWallPortion*0.25f), 0,(leftWallPortion*0.25f));
+        TransformNode s2_5Translation = new TransformNode("Translated to bottom left ", m);
+        m = Mat4Transform.scale((leftWallPortion*0.5f),1f,(leftWallPortion*0.5f));  
+        TransformNode enlargenWallS2_5 = new TransformNode("Enlargened S2.5 ", m);  
+        ModelNode S2_5Texture = new ModelNode("Far wall S2.5 texture", wall);
+        // S5 - Top Middle 
+        NameNode S5 = new NameNode("far wall - S2");    
+        m = new Mat4(1);
+        m = Mat4Transform.translate(0, 0,-((leftWallPortion*1.8f)-1.56f));
+        m = Mat4.multiply(m, Mat4Transform.scale((leftWallPortion*0.5f),1f,(leftWallPortion*0.5f)));  
+        TransformNode wallS5 = new TransformNode("Enlargened S2 ", m);  
+        ModelNode S5Texture = new ModelNode("Far wall S2 texture", wall);
+        // S5.5 - Top Middle 
+        NameNode S5_5 = new NameNode("far wall - S2.5");    
+        m = new Mat4(1);
+        m = Mat4Transform.translate(0, 0,-((leftWallPortion*1.8f)-1.56f));
+        m = Mat4.multiply(m, Mat4Transform.scale((leftWallPortion*0.5f),1f,(leftWallPortion*0.5f)));  
+        TransformNode wallS5_5 = new TransformNode("Enlargened S2.5 ", m);  
+        ModelNode S5_5Texture = new ModelNode("Far wall S2.5 texture", wall);
+        // S3 - Bottom Right 
+        NameNode S3 = new NameNode("far wall - S3");    
+        m = new Mat4(1);
+        m = Mat4Transform.translate(leftWallPortion, 0, 0);
+        TransformNode bottomRightTranslation = new TransformNode("Enlargened S3 ", m); 
+        m = Mat4Transform.scale(leftWallPortion,1f,leftWallPortion);  
+        TransformNode enlargenWallS3 = new TransformNode("Enlargened S3 ", m);  
+        ModelNode S3Texture = new ModelNode("Far wall S3 texture", wall);
+        // S6 - Middle Right
+        NameNode S6 = new NameNode("far wall - S6");    
+        m = new Mat4(1);
+        m = Mat4Transform.translate(0, 0, -leftWallPortion);
+        m = Mat4.multiply(m, Mat4Transform.scale(leftWallPortion,1f,(leftWallPortion+1.56f)));  
+        TransformNode wallS6 = new TransformNode("Enlargened S3 ", m);  
+        ModelNode S6Texture = new ModelNode("Far wall S3 texture", wall);
+          
 
         // Texturing the the floor
         NameNode flooring = new NameNode("floor");      
@@ -130,12 +193,12 @@ public class Room{
         // Texturing the door:D
         NameNode doorNode = new NameNode("Door");  
             ModelNode doorTexture = new ModelNode("Door", door);
-        // Texturing the left wall
-        NameNode windowWall = new NameNode("Window wall");    
-            ModelNode windowWallTexture = new ModelNode("left wall view", window);
+        // Texturing the left wall view
+        NameNode windowView = new NameNode("Window wall");    
+            ModelNode windowViewTexture = new ModelNode("left wall view = day", window);
 
         if(dayCycle!=1){
-            windowWallTexture = new ModelNode("left wall VIEW CHANGED HAHA", window2);
+            windowViewTexture = new ModelNode("left wall view = night", window2);
         }
 
         
@@ -156,10 +219,38 @@ public class Room{
                                     doorNode.addChild(doorTexture);
                     ZYPlanes.addChild(zAxisRotation);
                         zAxisRotation.addChild(YPlane);
+                            YPlane.addChild(leftWallView);
+                                leftWallView.addChild(enlargenWallX2);
+                                    enlargenWallX2.addChild(windowView);
+                                        windowView.addChild(windowViewTexture);
                             YPlane.addChild(leftWallTranslation);
-                                leftWallTranslation.addChild(enlargenWallX2);
-                                    enlargenWallX2.addChild(windowWall);
-                                        windowWall.addChild(windowWallTexture);
+                                leftWallTranslation.addChild(bottomLeftTranslation);
+                                    bottomLeftTranslation.addChild(S1);
+                                        S1.addChild(enlargenWallS1);
+                                            enlargenWallS1.addChild(S1Texture);
+                                    bottomLeftTranslation.addChild(S4);
+                                        S4.addChild(wallS4);
+                                            wallS4.addChild(S4Texture);
+                                leftWallTranslation.addChild(s2Translation);
+                                    s2Translation.addChild(S2);
+                                        S2.addChild(enlargenWallS2);
+                                            enlargenWallS2.addChild(S2Texture);
+                                    s2Translation.addChild(wallS5);
+                                        wallS5.addChild(S5Texture);
+                                leftWallTranslation.addChild(s2_5Translation);
+                                    s2_5Translation.addChild(S2_5);
+                                        S2_5.addChild(enlargenWallS2_5);
+                                            enlargenWallS2_5.addChild(S2_5Texture);
+                                    s2_5Translation.addChild(wallS5_5);
+                                        wallS5_5.addChild(S5_5Texture);
+                                leftWallTranslation.addChild(bottomRightTranslation);
+                                    bottomRightTranslation.addChild(S3);
+                                        S3.addChild(enlargenWallS3);
+                                            enlargenWallS3.addChild(S3Texture);
+                                    bottomRightTranslation.addChild(S6);
+                                        S6.addChild(wallS6);
+                                            wallS6.addChild(S6Texture);
+
         museumRoot.update();  // IMPORTANT - don't forget this
         // museumRoot.print(0, false);
         // System.exit(0);        

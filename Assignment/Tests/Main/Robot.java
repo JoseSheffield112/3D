@@ -179,7 +179,7 @@ public class Robot{
     public void poseFive () {
       resetRotations();
       xPosition = -7f;
-      zPosition = 0f;
+      zPosition = 2f;
       updateMove();      
       robotTranslate.setTransform(Mat4Transform.rotateAroundY(-90));
       robotTranslate.update();

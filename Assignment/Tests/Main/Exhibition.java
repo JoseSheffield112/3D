@@ -3,11 +3,6 @@
  * 
  * Unlike previous files, I am using code from various sources to build these objects.. Each model will identify it's source 
  * 
- * *********************TO-DO*********************
- * - Build the lamp
- * - swing the lamp about
- * - build the robot
- * - add 5 distinct poses
 */
 import gmaths.*;
 import java.nio.*;

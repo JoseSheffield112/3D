@@ -202,7 +202,7 @@ public class Museum_GLEventListener implements GLEventListener {
   private void render(GL3 gl) {
     gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
     //For now rendering the lights - won't need to render them soon!
-    sunLight.setPosition(new Vec3(-12f,16f,0f));
+    sunLight.setPosition(new Vec3(-24f,20f,0f));
     sunLight.render(gl);
     /* Setting ceiling lights*/
     lightBulb.setPosition(new Vec3(-6f,11f,-6f));
