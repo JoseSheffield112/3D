@@ -44,6 +44,10 @@ public class Museum_GLEventListener implements GLEventListener {
   // toggling lamp swinging speed
   private float speedToggle = 0.6f;
 
+  // spotlight
+  private static float spotlight[] = {0.0f, 1f};
+  private static int currentSpotLight = 0;
+
   //TransformNode lampTopRotation
   TransformNode lampTopRotation, lampTopPoints;
   
@@ -269,6 +273,19 @@ public class Museum_GLEventListener implements GLEventListener {
     roomScene.update();
   }
 
+  public void toggleSpotlight(){
+    float newDimness=spotlight[currentSpotLight];
+    Vec3 lightColour = new Vec3();
+    lightColour.x = 1.6f * newDimness;
+    lightColour.y = 1.6f * newDimness;
+    lightColour.z = 1.6f * newDimness;
+    // changing lights
+    Material m = lampLight.getMaterial();
+    m.setDiffuse(Vec3.multiply(lightColour,0.5f));
+    m.setAmbient(Vec3.multiply(m.getDiffuse(),0.62f));
+    lampLight.setMaterial(m);
+    currentSpotLight = (currentSpotLight==1) ? 0 : (currentSpotLight+1);
+  }
   // The light's postion is continually being changed, so needs to be calculated for each frame.
   private Vec3 getLightPosition() {
     double elapsedTime = getSeconds()-startTime;

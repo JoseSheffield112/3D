@@ -78,6 +78,9 @@ public class Museum extends JFrame implements ActionListener {
       b = new JButton("Toggle Day/Night");
       b.addActionListener(this);
       p.add(b);
+      b = new JButton("Toggle Spotlight");
+      b.addActionListener(this);
+      p.add(b);
     this.add(p, BorderLayout.SOUTH);
     
     addWindowListener(new WindowAdapter() {
@@ -101,12 +104,6 @@ public class Museum extends JFrame implements ActionListener {
       camera.setCamera(Camera.CameraType.Z);
       canvas.requestFocusInWindow();
     }
-    else if (e.getActionCommand().equalsIgnoreCase("Toggle Ceiling Lights")) {
-      glEventListener.toggleCeilingLights();
-    }
-    else if (e.getActionCommand().equalsIgnoreCase("Toggle Day/Night")) {
-      glEventListener.toggleSunLight();
-    }
     else if (e.getActionCommand().equalsIgnoreCase("Pose 1")) {
       glEventListener.poseOne();
     }
@@ -121,6 +118,15 @@ public class Museum extends JFrame implements ActionListener {
     }
     else if (e.getActionCommand().equalsIgnoreCase("Pose 5")) {
       glEventListener.poseFive();
+    }
+    else if (e.getActionCommand().equalsIgnoreCase("Toggle Ceiling Lights")) {
+      glEventListener.toggleCeilingLights();
+    }
+    else if (e.getActionCommand().equalsIgnoreCase("Toggle Day/Night")) {
+      glEventListener.toggleSunLight();
+    }
+    else if (e.getActionCommand().equalsIgnoreCase("Toggle Spotlight")) {
+      glEventListener.toggleSpotlight();
     }
     else if(e.getActionCommand().equalsIgnoreCase("quit"))
       System.exit(0);

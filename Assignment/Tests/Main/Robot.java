@@ -20,7 +20,7 @@ public class Robot{
     private SGNode robotRoot;
 
     // Declaring models variables
-    private Model sphere, eyeball, cube, cube2;
+    private Model sphere, eyeball, carrot, cube, cube2;
 
     //TEMP
     private DirectionalLight sunLight;
@@ -219,6 +219,7 @@ public class Robot{
         int[] textureId6 = TextureLibrary.loadTexture(gl, "textures/wattBook_specular.jpg");
         int[] textureId7 = TextureLibrary.loadTexture(gl, "textures/jade.jpg");
         int[] textureId8 = TextureLibrary.loadTexture(gl, "textures/jade_specular.jpg");
+        int[] textureId9 = TextureLibrary.loadTexture(gl, "textures/nose_texture.jpg");
     
         // loading models
         Mesh mesh = new Mesh(gl, Sphere.vertices.clone(), Sphere.indices.clone());
@@ -227,6 +228,7 @@ public class Robot{
         Mat4 modelMatrix = Mat4.multiply(Mat4Transform.scale(4,4,4), Mat4Transform.translate(0,0.5f,0));
         sphere = new Model(gl, camera, sunLight, ceilingLights, lampLight, shader, material, modelMatrix, mesh, textureId1); // removed the specular - need to add one!
         eyeball = new Model(gl, camera, sunLight, ceilingLights, lampLight, shader, material, modelMatrix, mesh, textureId7, textureId8); // removed the specular - need to add one!
+        carrot = new Model(gl, camera, sunLight, ceilingLights, lampLight, shader, material, modelMatrix, mesh, textureId9); // removed the specular - need to add one!
     
         mesh = new Mesh(gl, Cube.vertices.clone(), Cube.indices.clone());
         shader = new Shader(gl, "vs_cube.txt", "fs_cube.txt");
@@ -342,7 +344,7 @@ public class Robot{
           noseRotate = new TransformNode("Nose rotation", Mat4Transform.rotateAroundX(-180));
           m = Mat4Transform.scale(noseSize,(noseSize*1.5f),(noseSize*0.5f));
           TransformNode noseScale = new TransformNode("Nose scaled", m);
-          ModelNode noseTexture = new ModelNode("Nose (sphere)", sphere);
+          ModelNode noseTexture = new ModelNode("Nose (sphere)", carrot);
 
         // Two Eyes - LEFT + RIGHT
         NameNode eyes = new NameNode("Eyes");

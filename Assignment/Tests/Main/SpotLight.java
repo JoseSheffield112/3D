@@ -1,9 +1,5 @@
 /**
- * TODO LIST
- * sort out get and set methods
- * when you've introduced the lamp to the scene, you need to!
- *      1   - Turn off the light rotation
- *      2   - Make this light move - don't know how yet :D
+ * 
  */
 import java.util.ArrayList;
 import gmaths.*;
@@ -21,7 +17,7 @@ public class SpotLight extends Light{
 
     public SpotLight(GL3 gl, float dimness){
         super(gl, dimness);
-        this.direction = new Vec3(0f,-1f,0f); //Has to be negative in order to point down!
+        this.direction = new Vec3(0f,-1f,0f); 
         this.constant = 1.0f;
         this.linear = 0.22f;
         this.quadratic = 0.20f;
@@ -80,13 +76,9 @@ public class SpotLight extends Light{
     /**
      * Getting spotlight direction
      */
-
     public Vec3 getDirection() {
         return direction;
     }
-    /**
-     * Getting spotlight floats
-     */
     public float getConstant(){
         return(constant);
     }
