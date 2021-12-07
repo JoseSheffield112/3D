@@ -1,10 +1,14 @@
+/* I declare that this code is my own work */
 /**
- * This whole class was adapted from Dr. Maddocks "Light.java" class
- * So far no modifications have been made to it?
- * 
- * *********************TO-DO*********************
- * - Identify methods you've introduced
-*/
+ * Author: Jose Alves
+ * Email : jalves1@sheffield.ac.uk
+ * Student # : 170163532
+ */
+/**
+ * This whole class was authored by Dr.Maddock - "Light" class
+ * My only changes were adding a "dimness" value to constructor
+ * And creating a second rotation matrix, used for the lamp bulb
+ */
 import gmaths.*;
 import java.nio.*;
 import java.util.ArrayList;
@@ -18,10 +22,11 @@ public class Light {
   private Mat4 model, model2;
   private Shader shader;
   private Camera camera;
-  //
+
   private Vec3 lightAmbient = new Vec3(0.3f, 0.3f, 0.3f);
   private Vec3 lightDiffuse = new Vec3(0.8f, 0.8f, 0.8f);
     
+  // Added a dimness value
   public Light(GL3 gl, float dimness) {
     material = new Material();
     material.setAmbient(Vec3.multiply(lightAmbient, dimness));
@@ -45,6 +50,7 @@ public class Light {
     position.z = z;
   }
 
+  // Set method for rotation matrxi
   public void setModel2(Mat4 givenModel){
     model2 = givenModel;
   }
@@ -67,7 +73,7 @@ public class Light {
   
   public void render(GL3 gl) {
     Mat4 model = new Mat4(1);
-    if(model2!=null){ // If we've added a rotation matrix - mostly just for spot light
+    if(model2!=null){ // If we've added a rotation matrix - used just for spot light
       model = Mat4.multiply(model, Mat4Transform.translate(position));
       model = Mat4.multiply(model, model2);
       model = Mat4.multiply(model, Mat4Transform.scale(0.3f, 0.3f, 0.3f));

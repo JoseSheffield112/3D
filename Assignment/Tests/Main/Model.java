@@ -1,3 +1,13 @@
+/* I declare that this code is my own work */
+/**
+ * Author: Jose Alves
+ * Email : jalves1@sheffield.ac.uk
+ * Student # : 170163532
+ */
+/**
+ * This whole class was authored by Dr. Maddock - "Model.java"
+ * I edited it to include Directional, Spot and Point lights
+ */
 import java.util.ArrayList;
 import gmaths.*;
 import java.nio.*;
@@ -12,12 +22,13 @@ public class Model {
   private Material material;
   private Shader shader;
   private Mat4 modelMatrix;
+  // Lights
   private Camera camera;
   private DirectionalLight sunLight;
   private static ArrayList<PointLight> ceilingLights = new ArrayList<PointLight>();
   private SpotLight spotLight;
   
-  // this model would have both a diffuse texture (textureId1) and then also has a specular texture (textureId2
+  // Added different light types to constructor
   public Model(GL3 gl, Camera camera, DirectionalLight sunLight, ArrayList<PointLight> ceilingLights, SpotLight spotLight, Shader shader, Material material, Mat4 modelMatrix, Mesh mesh, int[] textureId1, int[] textureId2) {
     this.camera = camera;
     this.sunLight = sunLight;
@@ -31,7 +42,6 @@ public class Model {
     this.textureId2 = textureId2;
   }
   
-  // this textureId1 only counts as the diffuse texture for this model
   public Model(GL3 gl, Camera camera, DirectionalLight sunLight, ArrayList<PointLight> ceilingLights, SpotLight spotLight, Shader shader, Material material, Mat4 modelMatrix, Mesh mesh, int[] textureId1) {
     this(gl, camera, sunLight, ceilingLights, spotLight, shader, material, modelMatrix, mesh, textureId1, null);
   }
@@ -40,7 +50,6 @@ public class Model {
     this(gl, camera, sunLight, ceilingLights, spotLight, shader, material, modelMatrix, mesh, null, null);
   }
   
-  // add constructors without modelMatrix? and then set to identity as the default?
   
   public void setModelMatrix(Mat4 m) {
     modelMatrix = m;
@@ -83,7 +92,7 @@ public class Model {
       shader.setFloat(gl, "pointLight["+index+"].quadratic", ceilingLights.get(index).getQuadratic()); 
     }
 
-    // Spot Light - swinging lamp (not swinging yet :( )
+    // Spot Light - swinging lamp
     shader.setVec3(gl, "spotLight.position", spotLight.getPosition());
     shader.setVec3(gl, "spotLight.direction", spotLight.getDirection());
     shader.setVec3(gl, "spotLight.ambient", spotLight.getMaterial().getAmbient());

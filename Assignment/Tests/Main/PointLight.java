@@ -1,6 +1,11 @@
+/* I declare that this code is my own work */
 /**
- * TODO LIST
- * sort out set and get methods
+ * Author: Jose Alves
+ * Email : jalves1@sheffield.ac.uk
+ * Student # : 170163532
+ */
+/**
+ * This whole class extends & was adapted from Dr.Maddocks "Light" class
  */
 import java.util.ArrayList;
 import gmaths.*;
@@ -9,12 +14,14 @@ import com.jogamp.common.nio.*;
 import com.jogamp.opengl.*;
 
 /**
- * creating a subclass of Light class
+ * Extending light class
  */
 public class PointLight extends Light{
 
+    // Declaring variables
     private Float constant, linear, quadratic, cutOff, outerCutOff;
 
+    // Constructor
     public PointLight(GL3 gl, float dimness){
         super(gl, dimness);
         this.constant = 1.0f;
@@ -24,9 +31,6 @@ public class PointLight extends Light{
 
     /**
      * Set methods
-     */
-    /**
-     * Setting pointLight floats
      */
 
     public void setConstant(float constant){
@@ -47,10 +51,6 @@ public class PointLight extends Light{
 
     /**
      * Get methods
-     */
-
-    /**
-     * Getting pointLight floats
      */
 
     public float getConstant(){

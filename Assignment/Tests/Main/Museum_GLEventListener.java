@@ -1,9 +1,11 @@
+/* I declare that this code is my own work */
 /**
- * This whole class was adapted from Dr. Maddocks " M04_GLEventListener.java" class
- * modifications have been made to it
- * 
- * *********************TO-DO*********************
- * - Identify methods you've introduced
+ * Author: Jose Alves
+ * Email : jalves1@sheffield.ac.uk
+ * Student # : 170163532
+ */
+/**
+ * This whole class was adapted from Dr. Maddocks "M04_GLEventListener.java" 
 */
 import java.util.ArrayList;
 import gmaths.*;
@@ -16,15 +18,11 @@ import com.jogamp.opengl.util.glsl.*;
   
 public class Museum_GLEventListener implements GLEventListener {
   
-  private static final boolean DISPLAY_SHADERS = false;
+  // Some initialisers
   private Camera camera;
   private Mat4 perspective;
-  private DirectionalLight sunLight;
-  private PointLight lightBulb, lightBulb2, lightBulb3, lightBulb4, lightBulb5, lightBulb6;
-  private static ArrayList<PointLight> ceilingLights = new ArrayList<PointLight>();
-  private SpotLight lampLight;
 
-  // Scene graph stuff
+  // Scene graph
   private Robot myRobot;
   private Room theRoom;
   private Exhibition theExhibition;
@@ -32,22 +30,27 @@ public class Museum_GLEventListener implements GLEventListener {
   private SGNode roomScene = new NameNode("Museum - Root node");
   private SGNode roomChild = new NameNode("Museum - child node");
 
+  // Lights
+  private DirectionalLight sunLight;
+  private PointLight lightBulb, lightBulb2, lightBulb3, lightBulb4, lightBulb5, lightBulb6;
+  private SpotLight lampLight;
   // dimness setting for lights
-  // Ceiling lights
-  private static float ceilingLightsDimness[] = {0f,0.33f,0.66f,1f}; // different dimness settings for the lights
-  private static int currentDimness = 1; // dimness used for the museum lights - they're fancy but expensive!
-  // sunLight
+  // Sun light
   private static float dayLight[] = {0.1f, 0.6f};
   private static int currentCycle, oldCycle;
-  // setting speed of lamp swing
+  // Ceiling lights
+  private static float ceilingLightsDimness[] = {0f,0.33f,0.66f,1f};
+  private static int currentDimness = 1;
+  private static ArrayList<PointLight> ceilingLights = new ArrayList<PointLight>();
+  // Spot light (lamp)
+  private static float spotlight[] = {0.0f, 0.6f};
+  private static int currentSpotLight = 1;
+
+  // Lamp
+  // angle of swing
   private float startAngle = 12, currentAngle=startAngle;
   // toggling lamp swinging speed
   private float speedToggle = 0.6f;
-
-  // spotlight
-  private static float spotlight[] = {0.0f, 1f};
-  private static int currentSpotLight = 0;
-
   //TransformNode lampTopRotation
   TransformNode lampTopRotation, lampTopPoints;
   
@@ -103,19 +106,23 @@ public class Museum_GLEventListener implements GLEventListener {
   
   // ***************************************************
   /* INTERACTION
-   *
-   *
+   * I have added methods here
+   * Used for the robot poses & toggling of lights
    */
-  private boolean animation = false;  //
+
+  /**
+   * Robot movements
+   */
+  private boolean animation = false;
   private double elapsedTime = 0;
-   
+
   public void startAnimation() {
     animation = true;
   }
-   
   public void stopAnimation() {
     animation = false;
   }
+
   public void poseOne() {
     stopAnimation();
     myRobot.poseOne();
@@ -125,34 +132,85 @@ public class Museum_GLEventListener implements GLEventListener {
     stopAnimation();
     myRobot.poseTwo();
   }
+
   public void poseThree() {
     startAnimation();
     myRobot.poseThree();
   }
+
   public void poseFour() {
     stopAnimation();
     myRobot.poseFour();
   }
+
   public void poseFive() {
     stopAnimation();
     myRobot.poseFive();
   }
-  
+
+  /**
+   * Lights
+   */
+
+  /**
+   * Toggling ceiling lights
+   */
+  public void toggleCeilingLights() {
+    // Calculating light values
+    float newDimness=ceilingLightsDimness[currentDimness];
+    Vec3 lightColour = new Vec3();
+    lightColour.x = 1.6f * newDimness;
+    lightColour.y = 1.6f * newDimness;
+    lightColour.z = 1.6f * newDimness;
+    // Iterating over lights
+    Material m = ceilingLights.get(1).getMaterial();
+    for(int i=0; i<(ceilingLights.size()); i++){
+      m = ceilingLights.get(i).getMaterial();
+      m.setDiffuse(Vec3.multiply(lightColour,0.5f));
+      m.setAmbient(Vec3.multiply(m.getDiffuse(),0.62f));
+      ceilingLights.get(i).setMaterial(m);
+    }
+    currentDimness = (currentDimness==3) ? 0 : (currentDimness+1);
+  }
+
+  /**
+   * Toggling day/night light
+   */
+  public void toggleSunLight(){
+    currentCycle=(currentCycle==1) ? 0 : 1;
+    sunLight.setDefaultAmbient(dayLight[currentCycle]);
+    sunLight.setDefaultDiffuseSpecular(dayLight[currentCycle]);
+  }
+
+  /**
+   * Toggling lamp light
+   */
+  public void toggleSpotlight(){
+    // Calculating light values
+    float newDimness=spotlight[currentSpotLight];
+    Vec3 lightColour = new Vec3();
+    lightColour.x = 1.6f * newDimness;
+    lightColour.y = 1.6f * newDimness;
+    lightColour.z = 1.6f * newDimness;
+    // Setting values
+    Material m = lampLight.getMaterial();
+    m.setDiffuse(Vec3.multiply(lightColour,0.5f));
+    m.setAmbient(Vec3.multiply(m.getDiffuse(),0.62f));
+    lampLight.setMaterial(m);
+    currentSpotLight = (currentSpotLight==1) ? 0 : (currentSpotLight+1);
+  }  
+
 
   // ***************************************************
   /* THE SCENE
-   * Now define all the methods to handle the scene.
-   * This will be added to in later examples.
    */
 
-  
   private void initialise(GL3 gl) {
-    currentCycle = oldCycle = 1;// Has there been a change?
+    currentCycle = oldCycle = 1;// synchronising day cycle 
     /**
-     * Initialising all my lights!
+     * Initialising lights
      */
-    // Setting the ceiling lights of the museum - these are directional lights (museum did this for maximum exhibition clarity :) )
-    // code is wasteful, but it solves my need
+    // Initialising different light types
     sunLight = new DirectionalLight(gl, dayLight[currentCycle]);
     lightBulb = new PointLight(gl, ceilingLightsDimness[currentDimness]);
     lightBulb2 = new PointLight(gl, ceilingLightsDimness[currentDimness]);
@@ -160,8 +218,8 @@ public class Museum_GLEventListener implements GLEventListener {
     lightBulb4 = new PointLight(gl, ceilingLightsDimness[currentDimness]);
     lightBulb5 = new PointLight(gl, ceilingLightsDimness[currentDimness]);
     lightBulb6 = new PointLight(gl, ceilingLightsDimness[currentDimness]);
-    // Messing with point lights
-    lampLight = new SpotLight(gl, 0.5f);
+    lampLight = new SpotLight(gl, spotlight[currentSpotLight]);
+    // Setting camera
     sunLight.setCamera(camera);
     lightBulb.setCamera(camera);
     lightBulb2.setCamera(camera);
@@ -170,7 +228,7 @@ public class Museum_GLEventListener implements GLEventListener {
     lightBulb5.setCamera(camera);
     lightBulb6.setCamera(camera);
     lampLight.setCamera(camera);
-    // an array with the different ceiling lights
+    // Array list for celing lights
     ceilingLights.add(lightBulb);
     ceilingLights.add(lightBulb2);
     ceilingLights.add(lightBulb3);
@@ -178,7 +236,7 @@ public class Museum_GLEventListener implements GLEventListener {
     ceilingLights.add(lightBulb5);
     ceilingLights.add(lightBulb6);   
     
-    //Loading up scene graphs!
+    //Loading up different scene graphs
     theRoom = new Room(gl, camera, sunLight, ceilingLights, lampLight);
     myRobot = new Robot(gl,camera, sunLight, ceilingLights, lampLight, -7f, -10f);
     theExhibition = new Exhibition(gl,camera, sunLight, ceilingLights, lampLight);
@@ -186,10 +244,14 @@ public class Museum_GLEventListener implements GLEventListener {
    
     drawRoomScene(gl);
 
-    // resetting values
+    // resetting light values
     currentDimness+=1;
+    currentSpotLight=0;
   }
 
+  /**
+   * Draw scene graph - used to update texture of view
+   */
   private void drawRoomScene(GL3 gl){
     // updating window wall 
     roomScene = theRoom.updateView(gl, currentCycle);
@@ -205,10 +267,9 @@ public class Museum_GLEventListener implements GLEventListener {
  
   private void render(GL3 gl) {
     gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
-    //For now rendering the lights - won't need to render them soon!
+    // Positioning lights
     sunLight.setPosition(new Vec3(-24f,20f,0f));
     sunLight.render(gl);
-    /* Setting ceiling lights*/
     lightBulb.setPosition(new Vec3(-6f,11f,-6f));
     lightBulb2.setPosition(new Vec3(0f,11f,-6f));
     lightBulb3.setPosition(new Vec3(6f,11f,-6f));
@@ -217,10 +278,14 @@ public class Museum_GLEventListener implements GLEventListener {
     lightBulb6.setPosition(new Vec3(6f,11f,4f));
     updateLampPosition();
     lampLight.render(gl);
-    if(oldCycle!=currentCycle){ // day changed?
+
+    // Day change
+    if(oldCycle!=currentCycle){
       drawRoomScene(gl);
       oldCycle=currentCycle;
     }
+
+    // Robot animation
     if(animation){ 
       float rotateAngle = (60f-Math.abs(40f*(float)Math.sin(elapsedTime)));
       myRobot.updateRightArm(-1*rotateAngle); 
@@ -230,101 +295,30 @@ public class Museum_GLEventListener implements GLEventListener {
     }
     roomScene.draw(gl);
   }
-  /*
-  Updating Ceiling lights
-  */
-  public void toggleCeilingLights() {
-    float newDimness=ceilingLightsDimness[currentDimness];
-    Vec3 lightColour = new Vec3();
-    lightColour.x = 1.6f * newDimness;
-    lightColour.y = 1.6f * newDimness;
-    lightColour.z = 1.6f * newDimness;
-    // changing lights
-    Material m = ceilingLights.get(1).getMaterial();
-    for(int i=0; i<(ceilingLights.size()); i++){
-      m = ceilingLights.get(i).getMaterial();
-      m.setDiffuse(Vec3.multiply(lightColour,0.5f));
-      m.setAmbient(Vec3.multiply(m.getDiffuse(),0.62f));
-      ceilingLights.get(i).setMaterial(m);
-    }
-    currentDimness = (currentDimness==3) ? 0 : (currentDimness+1);
-  }
-  /**
-   * Updating day/night light
-   */
-  
-   public void toggleSunLight(){
-     currentCycle=(currentCycle==1) ? 0 : 1;
-     sunLight.setDefaultAmbient(dayLight[currentCycle]);
-     sunLight.setDefaultDiffuseSpecular(dayLight[currentCycle]);
-   }
 
+  /**
+   * Method used to calculate & set lamp light position based on swing of the lamp
+   */
   private void updateLampPosition(){
-    // calculating angle
     elapsedTime = getSeconds()-startTime;
     float newAngle = (startAngle*(float)Math.sin(elapsedTime))+180;
     // Fetching rotation matrix
     lampTopRotation = theLamp.getRotationMatrix(newAngle);
     lampTopPoints = theLamp.getTopPoints();
-    // Getting new Vec3 postion & setting it
+    // Fetching new Vec3 postion & setting it
     lampLight.setPosition(lampLight.calculateXRotation(lampTopPoints.getTransformPoints(), lampTopRotation.getTransformMatrix()));
-    // rotating lamp scene graph
+    // Setting (rotation) model in light class - makes lamp edges rotate
     lampLight.setModel2(lampTopRotation.getTransformMatrix());
     roomScene.update();
-  }
-
-  public void toggleSpotlight(){
-    float newDimness=spotlight[currentSpotLight];
-    Vec3 lightColour = new Vec3();
-    lightColour.x = 1.6f * newDimness;
-    lightColour.y = 1.6f * newDimness;
-    lightColour.z = 1.6f * newDimness;
-    // changing lights
-    Material m = lampLight.getMaterial();
-    m.setDiffuse(Vec3.multiply(lightColour,0.5f));
-    m.setAmbient(Vec3.multiply(m.getDiffuse(),0.62f));
-    lampLight.setMaterial(m);
-    currentSpotLight = (currentSpotLight==1) ? 0 : (currentSpotLight+1);
-  }
-  // The light's postion is continually being changed, so needs to be calculated for each frame.
-  private Vec3 getLightPosition() {
-    double elapsedTime = getSeconds()-startTime;
-    /*
-    //STATIC LIGHT
-    float x = -3.5f;
-    float y = 3f;
-    float z = 1.5f;*/
-    /*
-    //Dynamic Light*/
-    float x = 5.0f*(float)(Math.sin(Math.toRadians(elapsedTime*50)));
-    float y = 2.7f;
-    float z = 5.0f*(float)(Math.cos(Math.toRadians(elapsedTime*50)));
-    return new Vec3(x,y,z);   
-    //return new Vec3(5f,3.4f,5f);
   }
   
   // ***************************************************
   /* TIME
-   */ 
-  
+   */
+
   private double startTime;
   
   private double getSeconds() {
     return System.currentTimeMillis()/1000.0;
-  }
-
-  // ***************************************************
-  /* An array of random numbers
-   */ 
-  
-  private int NUM_RANDOMS = 1000;
-  private float[] randoms;
-  
-  private void createRandomNumbers() {
-    randoms = new float[NUM_RANDOMS];
-    for (int i=0; i<NUM_RANDOMS; ++i) {
-      randoms[i] = (float)Math.random();
-    }
-  }
-  
+  }  
 }

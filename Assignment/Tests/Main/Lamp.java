@@ -1,14 +1,12 @@
+/* I declare that this code is my own work */
 /**
- * This whole class was adapted from Dr. Maddocks code
- * 
- * Unlike previous files, I am using code from various sources to build these objects.. Each model will identify it's source 
- * 
- * *********************TO-DO*********************
- * - Build the lamp
- * - swing the lamp about
- * - build the robot
- * - add 5 distinct poses
-*/
+ * Author: Jose Alves
+ * Email : jalves1@sheffield.ac.uk
+ * Student # : 170163532
+ */
+/**
+ * This whole class used code from various of Dr.Maddocks 3D tutorials
+ */
 import gmaths.*;
 import java.nio.*;
 import java.util.ArrayList;
@@ -18,22 +16,22 @@ import com.jogamp.opengl.util.*;
 import com.jogamp.opengl.util.awt.*;
 import com.jogamp.opengl.util.glsl.*;
 public class Lamp{
-    /*
-    variables used in class
-    */
+    
+    // variables used in class
     private SGNode lampRoot;
 
-    // Declaring models variables
+    // Models variables
     private Model cube, sphere;
 
-    //TEMP
+    // Lights
     private DirectionalLight sunLight;
     private static ArrayList<PointLight> ceilingLights = new ArrayList<PointLight>();
     private SpotLight lampLight;
     private Camera camera;
     private float rotationAngle;
 
-    //angle
+    // Rotations
+    // These are variables I need to access in methods to update lamp bulb
     private TransformNode rotateTop, renderingCover, renderingTop;
     private Mat4 translateToTop;
 
@@ -47,12 +45,12 @@ public class Lamp{
     }
 
     private void sceneGraph(GL3 gl){
-        //Texture
-        int[] textureId1 = TextureLibrary.loadTexture(gl, "textures/container2.jpg");
-        int[] textureId2 = TextureLibrary.loadTexture(gl, "textures/container2_specular.jpg");
+        //Textures
+        int[] textureId1 = TextureLibrary.loadTexture(gl, "textures/wood_texture.jpg");
+        int[] textureId2 = TextureLibrary.loadTexture(gl, "textures/wood_spec.jpg");
 
         //Sizes
-        // plinth variables
+        // size of base
         final float size = 1f;
         final float poleGirth, poleHeight;
         poleGirth = 0.5f;
@@ -61,7 +59,7 @@ public class Lamp{
         final float lampSize = 0.5f;
 
         //Models
-        //Setting up model for the cube used in the scene!
+        // Cube model
         Mesh mesh = new Mesh(gl, Cube.vertices.clone(), Cube.indices.clone());
         Shader shader = new Shader(gl, "vs_cube.txt", "fs_cube.txt");
         Material material = new Material(new Vec3(1.0f, 0.5f, 0.31f), new Vec3(1.0f, 0.5f, 0.31f), new Vec3(0.5f, 0.5f, 0.5f), 32.0f); // CHANGE THIS TO METAL VALUES
@@ -75,26 +73,30 @@ public class Lamp{
         // Scene Graph stuff
         // Setting the base
         Mat4 m = Mat4Transform.translate(10f, (size*0.5f), 0f);
-        TransformNode centeringBase = new TransformNode("Centering the lamp", m);
+        TransformNode centeringBase = new TransformNode("Translated whole lamp", m);
+
         // base
         NameNode lampBase = new NameNode("Lamp - base");
         m = Mat4Transform.scale(size, size, size);
         TransformNode renderingBase = new TransformNode("Scaled", m);
+
         // Pole
         NameNode lampPole = new NameNode("Lamp - pole");
         m = Mat4Transform.translate(0f, ((size*0.5f)+(poleHeight*0.5f)), 0f); // Gotta place the phone ON TOP of the plinth
-        TransformNode translatingPole = new TransformNode("Translated, then scaled", m);
+        TransformNode translatingPole = new TransformNode("Translated", m);
         m = Mat4Transform.scale(poleGirth, poleHeight, poleGirth);
-        TransformNode scalingPole = new TransformNode("Translated, then scaled", m);
-        //Top
+        TransformNode scalingPole = new TransformNode("Scaled", m);
+
+        // Lamp top
         NameNode lampTop = new NameNode("Lamp - top");
         m = Mat4Transform.translate(-(topWidth*0.4f), (poleHeight*0.5f), 0f);
         m = Mat4.multiply(m, Mat4Transform.scale(topWidth, (size*0.5f), (size*0.55f)));
         renderingTop = new TransformNode("Translated, then scaled", m);
-        //lamp
-        NameNode lampCover = new NameNode("Lamp - top");
-        rotateTop = new TransformNode("rotateAroundX("+rotationAngle+")", (Mat4Transform.rotateAroundX(rotationAngle)));
-        m = Mat4Transform.translate(-(topWidth*0.8f), (poleHeight*0.49f), 0f);//Here is where we'll change the rotation values!
+
+        // Lamp cover
+        NameNode lampCover = new NameNode("Lamp - cober");
+        rotateTop = new TransformNode("Rotating about X", (Mat4Transform.rotateAroundX(rotationAngle)));
+        m = Mat4Transform.translate(-(topWidth*0.8f), (poleHeight*0.49f), 0f);
         m = Mat4.multiply(m, Mat4Transform.scale(lampSize, lampSize, lampSize));
         renderingCover = new TransformNode("Translated, then scaled", m);
 
@@ -133,6 +135,9 @@ public class Lamp{
         // System.exit(0);        
     }
 
+    /**
+     * Method used to get rotation matrix to update lamp bulb
+     */
     public TransformNode getRotationMatrix(float newAngle){
         this.rotationAngle=newAngle;
         Mat4 rotationMatrix = new Mat4(Mat4.multiply(translateToTop, Mat4Transform.rotateAroundX(rotationAngle)));
@@ -140,7 +145,10 @@ public class Lamp{
         lampRoot.update();
         return(rotateTop);
     }
-    
+
+    /**
+     * Getting the lamp top position
+     */    
     public TransformNode getTopPoints(){
         return(renderingTop);
     }

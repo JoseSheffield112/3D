@@ -1,10 +1,12 @@
+/* I declare that this code is my own work */
 /**
- * This whole class was adapted from Dr. Maddocks code from "M04_GLEventListener.java" class
- * Much like "Robot.java", I made this class so I could make the scene graph for the Museum room away from the Museum class
- * 
- * *********************TO-DO*********************
- * - Identify methods you've introduced
-*/
+ * Author: Jose Alves
+ * Email : jalves1@sheffield.ac.uk
+ * Student # : 170163532
+ */
+/**
+ * This whole class used code from various of Dr.Maddocks 3D tutorials
+ */
 import gmaths.*;
 import java.nio.*;
 import java.util.ArrayList;
@@ -14,9 +16,8 @@ import com.jogamp.opengl.util.*;
 import com.jogamp.opengl.util.awt.*;
 import com.jogamp.opengl.util.glsl.*;
 public class Room{
-    /*
-    variables used in class
-    */
+    
+    // variables used in class
     private SGNode museumRoot;
 
     // Declaring models variables
@@ -25,14 +26,14 @@ public class Room{
     //Transform node stuff
     private TransformNode enlargen;
 
-    //TEMP
+    // Lights
     private DirectionalLight sunLight;
     private static ArrayList<PointLight> ceilingLights = new ArrayList<PointLight>();
     private SpotLight lampLight;
     private Camera camera;
     private int dayCycle = 1;
   
-    //Setting Values
+    //Setting Size values
     private float wallSize = 24f;
     private float leftWallPortion = 8f;
     private float doorSize = wallSize*0.35f;
@@ -95,9 +96,9 @@ public class Room{
         TransformNode enlargen = new TransformNode("Enlargening by "+wallSize+" in x & y", m);
         // scaling walls by half
         m = Mat4Transform.scale(wallSize,1f,(wallSize*0.7f));
-        TransformNode enlargenWall = new TransformNode("Enlargening by "+wallSize+" in x & "+(wallSize*0.7f)+"y", m);
-        TransformNode enlargenWallX = new TransformNode("Enlargening by "+wallSize+" in x & "+(wallSize*0.7f)+"y", m);
-        TransformNode enlargenWallX2 = new TransformNode("Enlargening by "+wallSize+" in x & "+(wallSize*0.7f)+"y", m);
+        TransformNode enlargenWall = new TransformNode("Enlargening ", m);
+        TransformNode enlargenWallX = new TransformNode("Enlargening ", m);
+        TransformNode enlargenWallX2 = new TransformNode("Enlargening ", m);
         // Scaling door!
         m = Mat4Transform.scale((wallSize*0.25f),1f,(wallSize*0.45f));
         TransformNode scaleDoor = new TransformNode("Enlargening by "+wallSize+" in x & "+(wallSize*0.7f)+"y", m);

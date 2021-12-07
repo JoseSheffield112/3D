@@ -1,9 +1,12 @@
+/* I declare that this code is my own work */
 /**
- * This whole class was adapted from Dr. Maddocks code
- * 
- * Unlike previous files, I am using code from various sources to build these objects.. Each model will identify it's source 
- * 
-*/
+ * Author: Jose Alves
+ * Email : jalves1@sheffield.ac.uk
+ * Student # : 170163532
+ */
+/**
+ * This whole class used code from various of Dr.Maddocks 3D tutorials
+ */
 import gmaths.*;
 import java.nio.*;
 import java.util.ArrayList;
@@ -13,15 +16,14 @@ import com.jogamp.opengl.util.*;
 import com.jogamp.opengl.util.awt.*;
 import com.jogamp.opengl.util.glsl.*;
 public class Exhibition{
-    /*
-    variables used in class
-    */
+
+    // variables used in class
     private SGNode exhibitionRoot;
 
     // Declaring models variables
-    private Model cube, sphere;
+    private Model cube, sphere, phone;
 
-    //TEMP
+    //Lights
     private DirectionalLight sunLight;
     private static ArrayList<PointLight> ceilingLights = new ArrayList<PointLight>();
     private SpotLight lampLight;
@@ -36,13 +38,15 @@ public class Exhibition{
     }
 
     private void sceneGraph(GL3 gl){
-        //Texture
-        int[] textureId1 = TextureLibrary.loadTexture(gl, "textures/container2.jpg");
-        int[] textureId2 = TextureLibrary.loadTexture(gl, "textures/container2_specular.jpg");
-        int[] textureId3 = TextureLibrary.loadTexture(gl, "textures/jade.jpg");
-        int[] textureId4 = TextureLibrary.loadTexture(gl, "textures/jade_specular.jpg");
+        //Textures
+        int[] textureId1 = TextureLibrary.loadTexture(gl, "textures/wood_texture.jpg");
+        int[] textureId2 = TextureLibrary.loadTexture(gl, "textures/wood_spec.jpg");
+        int[] textureId3 = TextureLibrary.loadTexture(gl, "textures/egg.jpg");
+        int[] textureId4 = TextureLibrary.loadTexture(gl, "textures/egg_spec.jpg");
+        int[] textureId5 = TextureLibrary.loadTexture(gl, "textures/phone_texture.jpg");
+        int[] textureId6 = TextureLibrary.loadTexture(gl, "textures/phone_spec.jpg");
 
-        //Sizes
+        // Objects sizes
         // plinth variables
         final float plinthWidth, plinthHeight, plinthDepth;
         plinthWidth = 5.5f;
@@ -58,13 +62,22 @@ public class Exhibition{
         final float eggRadius = 2f;
 
         //Models
-        //Setting up model for the cube used in the scene!
+        // Cube model
         Mesh mesh = new Mesh(gl, Cube.vertices.clone(), Cube.indices.clone());
         Shader shader = new Shader(gl, "vs_cube.txt", "fs_cube.txt");
         Material material = new Material(new Vec3(1.0f, 0.5f, 0.31f), new Vec3(1.0f, 0.5f, 0.31f), new Vec3(0.5f, 0.5f, 0.5f), 32.0f);
         Mat4 modelMatrix = Mat4Transform.scale(1f,1f,1f);
         cube = new Model(gl, camera, sunLight, ceilingLights, lampLight, shader, material, modelMatrix, mesh, textureId1, textureId2);
-        //Setting up model for the sphere used in the scenes
+
+        // phone model
+        mesh = new Mesh(gl, Phone.vertices.clone(), Phone.indices.clone());
+        shader = new Shader(gl, "vs_cube.txt", "fs_cube.txt");
+        material = new Material(new Vec3(1.0f, 0.5f, 0.31f), new Vec3(1.0f, 0.5f, 0.31f), new Vec3(0.5f, 0.5f, 0.5f), 32.0f);
+        modelMatrix = Mat4Transform.scale(1f,1f,1f);
+        phone = new Model(gl, camera, sunLight, ceilingLights, lampLight, shader, material, modelMatrix, mesh, textureId5);
+
+
+        // Sphere model
         mesh = new Mesh(gl, Sphere.vertices.clone(), Sphere.indices.clone());
         shader = new Shader(gl, "vs_sphere.txt", "fs_sphere.txt");
         material = new Material(new Vec3(1.0f, 0.5f, 0.31f), new Vec3(1.0f, 0.5f, 0.31f), new Vec3(0.5f, 0.5f, 0.5f), 32.0f);
@@ -77,35 +90,33 @@ public class Exhibition{
         // Nodes(objects)
         NameNode attractions = new NameNode("Building attractions");
 
-        // First Build
+        // First object
+
         // Plinth
-        NameNode plinthPhone = new NameNode("Plinth, then phone");
+        NameNode plinthPhone = new NameNode("Phone Plinth");
         // Centering the phone attraction
-        // MAKE CHANGES HERE !! MAKE CHANGES HERE !! MAKE CHANGES HERE !! MAKE CHANGES HERE !!
-        // need to first scale the plinth, then translate it!!!
         Mat4 m = Mat4Transform.translate(1f, (plinthHeight*0.5f), -10f);
-        TransformNode centeringPlinth = new TransformNode("Centering plinth & Phone", m);
+        TransformNode centeringPlinth = new TransformNode("Translating plinth", m);
         // Dealing with plinth
         m = Mat4Transform.scale(plinthWidth, plinthHeight, plinthDepth);
-        TransformNode renderingPlinth = new TransformNode("Scaled", m);
-        // MAKE CHANGES HERE !! MAKE CHANGES HERE !! MAKE CHANGES HERE !! MAKE CHANGES HERE !!
+        TransformNode renderingPlinth = new TransformNode("Scaling plinth", m);
+        
         // Phone
         m = Mat4Transform.translate(0f, ((phoneHeight*0.5f)+(plinthHeight*0.5f)), 0f); // Gotta place the phone ON TOP of the plinth
         m = Mat4.multiply(m, Mat4Transform.scale(phoneWidth, phoneHeight, phoneDepth));
-        // m = Mat4Transform.scale(phoneWidth, phoneHeight, phoneDepth);
-        // m = Mat4.multiply(m, Mat4Transform.translate(1f, 1f, 0f));
         TransformNode renderingPhone = new TransformNode("Translated, then Scaled", m);
 
         // Second build
         // Platform
-        NameNode platformEgg = new NameNode("Platform, then Egg");
+        NameNode platformEgg = new NameNode("Egg Platform");
         // Centering the egg attraction
         m = Mat4Transform.translate(-2f, (platformSize*0.25f), 2f);
-        TransformNode centeringPlatform = new TransformNode("Centering Platform & Egg", m);
+        TransformNode centeringPlatform = new TransformNode("Translated platform", m);
         // Dealing with platform
         m = Mat4Transform.scale(platformSize, (platformSize*0.5f), platformSize);
-        TransformNode renderingPlatform = new TransformNode("Scaled", m);
-        // Egg!
+        TransformNode renderingPlatform = new TransformNode("Scaled platform", m);
+
+        // Egg
         m = Mat4Transform.translate(0f, ((platformSize*0.25f)+(eggRadius*1.25f)), 0f); // Gotta place the phone ON TOP of the plinth
         m = Mat4.multiply(m, Mat4Transform.scale(eggRadius, (eggRadius*2.5f), eggRadius));
         TransformNode renderingEgg = new TransformNode("Translated, then Scaled", m);
@@ -115,7 +126,7 @@ public class Exhibition{
         // Texturing the the plinth 
         ModelNode plinthTexture = new ModelNode("Plinth texture", cube);
         // Texturing the the Phone 
-        ModelNode phoneTexture = new ModelNode("Phone texture", cube);
+        ModelNode phoneTexture = new ModelNode("Phone texture", phone);
 
         // Texturing the the platform
         ModelNode platformTexture = new ModelNode("Platform texture", cube);
