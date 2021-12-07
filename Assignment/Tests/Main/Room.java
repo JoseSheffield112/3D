@@ -53,8 +53,8 @@ public class Room{
         int[] textureId0 = TextureLibrary.loadTexture(gl, "textures/Floor.jpg");
         int[] textureId7 = TextureLibrary.loadTexture(gl, "textures/brickWall.jpg");
         int[] textureId8 = TextureLibrary.loadTexture(gl, "textures/door.jpg");
-        int[] textureId9 = TextureLibrary.loadTexture(gl, "textures/stockPhotos/dimitry-anikin-nSZlic4jLeo-unsplash_512.jpg");
-        int[] textureId10 = TextureLibrary.loadTexture(gl, "textures/stockPhotos/dimitry-anikin-WnAYMHMcmYM-unsplash_2_512.jpg");
+        int[] textureId9 = TextureLibrary.loadTexture(gl, "textures/day_view.jpg");
+        int[] textureId10 = TextureLibrary.loadTexture(gl, "textures/evening_view.jpg");
         
         //Shapes models
         //Floor model
@@ -93,7 +93,7 @@ public class Room{
         NameNode YPlane = new NameNode("Adding X plane");
         // scaling planes
         Mat4 m = Mat4Transform.scale(wallSize,1f,wallSize);
-        TransformNode enlargen = new TransformNode("Enlargening by "+wallSize+" in x & y", m);
+        TransformNode enlargen = new TransformNode("Scaling", m);
         // scaling walls by half
         m = Mat4Transform.scale(wallSize,1f,(wallSize*0.7f));
         TransformNode enlargenWall = new TransformNode("Enlargening ", m);
@@ -101,7 +101,7 @@ public class Room{
         TransformNode enlargenWallX2 = new TransformNode("Enlargening ", m);
         // Scaling door!
         m = Mat4Transform.scale((wallSize*0.25f),1f,(wallSize*0.45f));
-        TransformNode scaleDoor = new TransformNode("Enlargening by "+wallSize+" in x & "+(wallSize*0.7f)+"y", m);
+        TransformNode scaleDoor = new TransformNode("scaling door", m);
         // Transforming about X
         m = Mat4Transform.rotateAroundX(90);
         TransformNode xAxisRotation = new TransformNode("Rotating about X Axis", m);
@@ -117,7 +117,7 @@ public class Room{
         m = Mat4Transform.translate(-(wallSize*0.3f),0.11f,+(wallSize*0.125f));
         TransformNode doorTranslation = new TransformNode("Translating about X axis", m);  
         // used for left wall view
-        m = Mat4Transform.translate(0f, -(wallSize), -(wallSize*0.35f));
+        m = Mat4Transform.translate(0f, -(wallSize*0.8f), -(wallSize*0.35f));
         TransformNode leftWallView = new TransformNode("Translating about X axis", m);
 
         // Building left wall

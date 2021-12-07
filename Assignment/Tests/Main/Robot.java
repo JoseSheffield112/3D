@@ -220,8 +220,8 @@ public class Robot{
 
     private void sceneGraph(GL3 gl){
         // loading textures
-        int[] textureId0 = TextureLibrary.loadTexture(gl, "textures/black_texture.jpg");
-        int[] textureId1 = TextureLibrary.loadTexture(gl, "textures/hat_spec.jpg");
+        int[] textureId0 = TextureLibrary.loadTexture(gl, "textures/hat_nose_texture.jpg");
+        int[] textureId1 = TextureLibrary.loadTexture(gl, "textures/hat_nose_spec.jpg");
         int[] textureId2 = TextureLibrary.loadTexture(gl, "textures/snow.jpg");
         int[] textureId3 = TextureLibrary.loadTexture(gl, "textures/snow_spec.jpg");
         int[] textureId4 = TextureLibrary.loadTexture(gl, "textures/wood_texture.jpg");
